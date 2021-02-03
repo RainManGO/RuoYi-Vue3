@@ -2,8 +2,8 @@
  * @Description: app actions
  * @Author: ZY
  * @Date: 2020-12-23 10:25:37
- * @LastEditors: ZY
- * @LastEditTime: 2021-02-02 20:32:25
+ * @LastEditors: scy😊
+ * @LastEditTime: 2021-02-03 16:02:57
  */
 import { ActionTree, ActionContext } from 'vuex'
 import { RootState, useStore } from '@/store'
@@ -16,7 +16,7 @@ import { removeToken, setToken } from '@/utils/cookies'
 import { PermissionActionType } from '../permission/action-types'
 import router, { resetRouter } from '@/router'
 import { RouteRecordRaw } from 'vue-router'
-
+const OK = 200
 type AugmentedActionContext = {
   commit<K extends keyof Mutations>(
     key: K,
@@ -48,12 +48,10 @@ export const actions: ActionTree<UserState, RootState> & Actions = {
     { commit }: AugmentedActionContext,
     userInfo: { username: string, password: string }
   ) {
-    let { username, password } = userInfo
-    username = username.trim()
-    await loginRequest({ username, password }).then(async(res) => {
-      if (res?.code === 20000 && res.data.token) {
-        setToken(res.data.token)
-        commit(UserMutationTypes.SET_TOKEN, res.data.token)
+    await loginRequest(userInfo).then(async(res) => {
+      if (res?.code === OK && res.token) {
+        setToken(res.token)
+        commit(UserMutationTypes.SET_TOKEN, res.token)
       }
     }).catch((err) => {
       console.log(err)
@@ -74,12 +72,11 @@ export const actions: ActionTree<UserState, RootState> & Actions = {
       throw Error('token is undefined!')
     }
     await userInfoRequest().then((res) => {
-      if (res?.code === 20000) {
-        commit(UserMutationTypes.SET_ROLES, res.data.roles)
-        commit(UserMutationTypes.SET_NAME, res.data.name)
-        commit(UserMutationTypes.SET_AVATAR, res.data.avatar)
-        commit(UserMutationTypes.SET_INTRODUCTION, res.data.introduction)
-        commit(UserMutationTypes.SET_EMAIL, res.data.email)
+      if (res?.code === OK) {
+        commit(UserMutationTypes.SET_ROLES, res.roles)
+        commit(UserMutationTypes.SET_NAME, res.user.userName)
+        commit(UserMutationTypes.SET_AVATAR, res.user.avatar)
+        commit(UserMutationTypes.SET_EMAIL, res.user.email)
         return res
       } else {
         throw Error('Verification failed, please Login again.')

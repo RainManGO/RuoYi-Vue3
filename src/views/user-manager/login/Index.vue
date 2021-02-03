@@ -2,8 +2,8 @@
  * @Description: 登录页面
  * @Author: ZY
  * @Date: 2020-12-28 16:27:50
- * @LastEditors: ZY
- * @LastEditTime: 2021-01-28 16:32:33
+ * @LastEditors: scy😊
+ * @LastEditTime: 2021-02-03 15:25:42
 -->
 
 <template>
@@ -73,17 +73,28 @@
             @blur="capsTooltip = false"
             @keyup.enter="handleLogin"
           />
-          <span
-            class="show-pwd"
-            @click="showPwd"
-          >
-            <svg-icon
-              :name="passwordType === 'password' ? 'eye-off' : 'eye-on'"
-            />
-          </span>
         </el-form-item>
       </el-tooltip>
-
+      <el-form-item prop="code">
+        <el-input
+          v-model="loginForm.code"
+          auto-complete="off"
+          placeholder="验证码"
+          style="width: 63%"
+        >
+          <svg-icon
+            icon-class="validCode"
+            class="el-input__icon input-icon"
+          />
+        </el-input>
+        <div class="login-code">
+          <img
+            :src="codeUrl"
+            class="login-code-img"
+            @click="getSmsCode"
+          >
+        </div>
+      </el-form-item>
       <el-button
         :loading="loading"
         type="primary"
@@ -143,6 +154,7 @@ import { useRoute, LocationQuery, useRouter } from 'vue-router'
 import { useStore } from '@/store'
 import { UserActionTypes } from '@/store/modules/user/action-types'
 import { useI18n } from 'vue-i18n'
+import { getCodeImg } from '@/apis/user'
 export default defineComponent({
   components: {
     LangSelect,
@@ -159,8 +171,11 @@ export default defineComponent({
     const state = reactive({
       loginForm: {
         username: 'admin',
-        password: '111111'
+        password: 'admin123',
+        code: '',
+        uuid: ''
       },
+      codeUrl: '',
       loginRules: {
         username: [{ validator: userNameRef, trigger: 'blur' }],
         password: [{ validator: passwordRef, trigger: 'blur' }]
@@ -243,7 +258,13 @@ export default defineComponent({
       }
     })
 
+    const getSmsCode = async() => {
+      const result = await getCodeImg()
+      state.codeUrl = 'data:image/gif;base64,' + result?.img
+      state.loginForm.uuid = String(result?.uuid)
+    }
     onMounted(() => {
+      getSmsCode()
       if (state.loginForm.username === '') {
         (userNameRef.value as any).focus()
       } else if (state.loginForm.password === '') {
@@ -255,6 +276,7 @@ export default defineComponent({
       userNameRef,
       passwordRef,
       loginFormRef,
+      getSmsCode,
       ...toRefs(state),
       ...toRefs(methods),
       t
@@ -264,6 +286,17 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
+
+.login-code {
+  float: right;
+  height: 47px;
+  margin-left: -100px;
+  img {
+    height: 100%;
+    cursor: pointer;
+    vertical-align: middle;
+  }
+}
 // References: https://www.zhangxinxu.com/wordpress/2018/01/css-caret-color-first-line/
 @supports (-webkit-mask: none) and (not (cater-color: $loginCursorColor)) {
   .login-container .el-input {
@@ -277,6 +310,7 @@ export default defineComponent({
 }
 
 .login-container {
+  overflow: hidden;
   .el-input {
     display: inline-block;
     height: 47px;

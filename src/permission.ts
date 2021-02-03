@@ -2,8 +2,8 @@
  * @Description: 权限
  * @Author: ZY
  * @Date: 2020-12-28 09:12:46
- * @LastEditors: ZY
- * @LastEditTime: 2021-02-02 21:02:54
+ * @LastEditors: scy😊
+ * @LastEditTime: 2021-02-03 16:32:20
  */
 
 import NProgress from 'nprogress'
