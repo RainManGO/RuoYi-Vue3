@@ -3,7 +3,7 @@
  * @Author: ZY
  * @Date: 2020-12-29 15:57:00
  * @LastEditors: scy😊
- * @LastEditTime: 2021-01-15 09:33:11
+ * @LastEditTime: 2021-02-03 16:09:35
  */
 
 // {
@@ -24,18 +24,27 @@
 //     }
 // }
 
-export interface UserInfoModel {
-  id: number
-  username: string
-  password: string
-  name: string
-  avatar: string
-  introduction: string
-  email: string
-  phone: string
+export interface UserInfoModel <T> {
+  code: number
+  permissions: string[]
   roles: string[]
+  user: T
 }
 
-export interface Users {
+export interface UserDesc {
+  admin: boolean
+  avatar: string
+  createBy: string
+  dept: any
+  deptId: number
+  email: string
+  nickName: string
+  phonenumber: string
+  postIds: any
+  remark: string
+  userName: string
+}
+
+export interface Users{
   items: any
 }
