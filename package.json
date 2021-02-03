@@ -85,5 +85,14 @@
     "style-resources-loader": "^1.4.1",
     "vue-cli-plugin-style-resources-loader": "^0.1.4",
     "webpackbar": "^5.0.0-3"
+  },
+  "gitHooks": {
+    "pre-commit": "lint-staged"
+  },
+  "lint-staged": {
+    "*.{js,jsx,vue,ts,tsx}": [
+      "vue-cli-service lint",
+      "git add"
+    ]
   }
 }
