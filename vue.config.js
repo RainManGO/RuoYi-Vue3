@@ -35,7 +35,18 @@ module.exports = {
       warnings: true,
       errors: true,
     },
-  },
+    proxy: {
+      '/api': {     
+          target: 'http://vue.ruoyi.vip/dev-api',  
+          ws: true,      
+          secure: false, 
+          changeOrigin: true, 
+          pathRewrite:{
+              '^/api':''
+          }
+      }
+  }
+},
   pluginOptions: {
     'style-resources-loader': {
       preProcessor: 'scss',

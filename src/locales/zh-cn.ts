@@ -2,8 +2,8 @@
  * @Description:
  * @Author: ZY
  * @Date: 2020-12-28 17:18:24
- * @LastEditors: ZY
- * @LastEditTime: 2021-01-20 15:18:01
+ * @LastEditors: scy😊
+ * @LastEditTime: 2021-02-04 21:17:23
  */
 
 export default {
@@ -70,7 +70,10 @@ export default {
     clipboard: '粘贴板',
     i18n: '国际化',
     externalLink: '外链',
-    profile: '个人中心'
+    profile: '个人中心',
+    system: '系统管理',
+    department: '部门管理',
+    management: '字典管理'
   },
   navbar: {
     logOut: '退出登录',
