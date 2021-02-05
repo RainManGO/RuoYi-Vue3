@@ -3,7 +3,7 @@
  * @Autor: scy😊
  * @Date: 2021-02-03 16:45:46
  * @LastEditors: scy😊
- * @LastEditTime: 2021-02-03 16:48:52
+ * @LastEditTime: 2021-02-04 16:57:51
  */
 import { RouteRecordRaw } from 'vue-router'
 import Layout from '@/layout/Index.vue'
@@ -21,7 +21,7 @@ const SystemRouter: Array<RouteRecordRaw> = [
     children: [
       {
         path: 'management',
-        component: () => import(/* webpackChunkName: "system" */ '@/views/system/dict/management.vue'),
+        component: () => import(/* webpackChunkName: "system" */ '@/views/system/dict/index.vue'),
         name: 'management',
         meta: {
           title: 'management',
@@ -30,12 +30,12 @@ const SystemRouter: Array<RouteRecordRaw> = [
         }
       },
       {
-        path: 'cfg',
-        component: () => import(/* webpackChunkName: "system" */ '@/views/system/dict/test.vue'),
-        name: 'cfg',
+        path: 'department',
+        component: () => import(/* webpackChunkName: "system" */ '@/views/system/dept/department.vue'),
+        name: 'department',
         meta: {
-          title: 'cfg',
-          icon: 'cfg',
+          title: 'department',
+          icon: 'department',
           noCache: true
         }
       }
