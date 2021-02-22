@@ -2,12 +2,11 @@
  * @Description:
  * @Author: ZY
  * @Date: 2020-12-07 10:30:20
- * @LastEditors: scy😊
- * @LastEditTime: 2021-02-03 16:50:40
+ * @LastEditors: ZY
+ * @LastEditTime: 2021-02-22 13:46:00
  */
 import { createRouter, createWebHashHistory, RouteRecordRaw } from 'vue-router'
 import Layout from '@/layout/Index.vue'
-import systemRoute from '@/router/permissionModules/system'
 const constantFiles = require.context('./constantModules', true, /\.ts$/)
 let constantModules: Array<RouteRecordRaw> = []
 constantFiles.keys().forEach((key) => {
@@ -51,8 +50,7 @@ export const constantRoutes: Array<RouteRecordRaw> = [
       }
     ]
   },
-  ...constantModules,
-  ...systemRoute
+  ...constantModules
 ]
 
 export const asyncRoutes: Array<RouteRecordRaw> = [
