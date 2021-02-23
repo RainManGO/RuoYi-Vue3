@@ -3,13 +3,13 @@
  * @Author: ZY
  * @Date: 2020-12-25 11:34:00
  * @LastEditors: ZY
- * @LastEditTime: 2021-02-03 08:28:42
+ * @LastEditTime: 2021-02-22 17:31:39
 -->
 
 <template>
   <div
     v-if="!item.meta || !item.meta.hidden"
-    :class="[isCollapse ? 'full-mode' : 'simple-mode', {'first-level': isFirstLevel}]"
+    :class="[isCollapse ? 'simple-mode' : 'full-mode', {'first-level': isFirstLevel}]"
   >
     <template v-if="!alwaysShowRootMenu && theOnlyOneChild && !theOnlyOneChild.children">
       <SidebarItemLink

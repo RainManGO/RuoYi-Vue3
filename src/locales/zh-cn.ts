@@ -2,8 +2,8 @@
  * @Description:
  * @Author: ZY
  * @Date: 2020-12-28 17:18:24
- * @LastEditors: scy😊
- * @LastEditTime: 2021-02-05 09:57:19
+ * @LastEditors: ZY
+ * @LastEditTime: 2021-02-22 15:18:43
  */
 
 export default {
@@ -75,7 +75,10 @@ export default {
     department: '部门管理',
     management: '字典管理',
     config: '参数设置',
-    post: '岗位管理'
+    post: '岗位管理',
+    monitor: '系统监控',
+    online: '在线用户',
+    job: '定时任务'
   },
   navbar: {
     logOut: '退出登录',
