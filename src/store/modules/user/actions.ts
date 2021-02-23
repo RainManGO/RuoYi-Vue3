@@ -77,6 +77,7 @@ export const actions: ActionTree<UserState, RootState> & Actions = {
         commit(UserMutationTypes.SET_NAME, res.user.userName)
         commit(UserMutationTypes.SET_AVATAR, res.user.avatar)
         commit(UserMutationTypes.SET_EMAIL, res.user.email)
+        commit(UserMutationTypes.SET_PERMISSION, res.permissions)
         return res
       } else {
         throw Error('Verification failed, please Login again.')
