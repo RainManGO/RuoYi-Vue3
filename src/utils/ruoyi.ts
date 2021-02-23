@@ -63,7 +63,7 @@ export const handleTree = (data?: any, id?: any, parentId?: any, children?: any,
 }
 
 // 回显数据字典
-export const selectDictLabel = (datas: [], value: string) => {
+export const selectDictLabel = (datas: Array<any>, value: string) => {
   const actions: string[] = []
   Object.keys(datas).some((key) => {
     if (datas[key].dictValue === value) {

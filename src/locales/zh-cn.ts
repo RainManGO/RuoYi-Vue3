@@ -77,6 +77,7 @@ export default {
     config: '参数设置',
     post: '岗位管理',
     role: '角色管理',
+    Notice: '通知公告',
     monitor: '系统监控',
     online: '在线用户',
     job: '定时任务'
