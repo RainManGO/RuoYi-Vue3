@@ -3,7 +3,7 @@
  * @Author: ZY
  * @Date: 2021-02-22 15:16:05
  * @LastEditors: ZY
- * @LastEditTime: 2021-02-23 14:45:17
+ * @LastEditTime: 2021-02-23 15:03:27
 -->
 
 <template>
@@ -479,8 +479,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onBeforeMount, reactive, toRefs } from 'vue'
-import { listJob, getJob, delJob, addJob, updateJob, exportJob, runJob, changeJobStatus } from '@/apis/monitor/job'
+import { defineComponent, reactive, toRefs } from 'vue'
+// import { listJob, getJob, delJob, addJob, updateJob, exportJob, runJob, changeJobStatus } from '@/apis/monitor/job'
 
 export default defineComponent({
   setup() {
@@ -533,14 +533,14 @@ export default defineComponent({
       }
     })
 
-    const getList = () => {
-      state.loading = true
-      listJob(state.queryParams).then((res) => {
-        state.jobList = res.rows
-        state.total = res.total
-        state.loading = false
-      })
-    }
+    // const getList = () => {
+    //   state.loading = true
+    //   listJob(state.queryParams).then((res) => {
+    //     state.jobList = res.rows
+    //     state.total = res.total
+    //     state.loading = false
+    //   })
+    // }
 
     return {
       ...toRefs(state)
