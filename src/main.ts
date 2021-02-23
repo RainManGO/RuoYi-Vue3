@@ -3,7 +3,7 @@
  * @Autor: ZY
  * @Date: 2020-12-07 10:30:20
  * @LastEditors: ZY
- * @LastEditTime: 2021-01-27 19:20:07
+ * @LastEditTime: 2021-02-22 18:11:03
  */
 import { createApp, Directive } from 'vue'
 import App from './App.vue'
@@ -25,6 +25,9 @@ console.log(process.env.VUE_APP_BASE_API)
 
 // 自定义指令
 Object.keys(directives).forEach(key => {
+  console.log(key)
+  console.log(directives[key])
+
   app.directive(key, (directives as { [key: string ]: Directive })[key])
 })
 

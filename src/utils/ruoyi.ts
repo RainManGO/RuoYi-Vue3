@@ -2,8 +2,8 @@
  * @Description:
  * @Autor: scy😊
  * @Date: 2021-02-04 09:08:51
- * @LastEditors: scy😊
- * @LastEditTime: 2021-02-04 14:49:43
+ * @LastEditors: ZY
+ * @LastEditTime: 2021-02-23 14:44:09
  */
 const baseURL = process.env.VUE_APP_BASE_API
 
@@ -31,6 +31,14 @@ export const addDateRange = (params: Params, dateRange: any, propName?: any) => 
   return search
 }
 
+/**
+ * 构造树型结构数据
+ * @param {*} data 数据源
+ * @param {*} id id字段 默认 'id'
+ * @param {*} parentId 父节点字段 默认 'parentId'
+ * @param {*} children 孩子节点字段 默认 'children'
+ * @param {*} rootId 根Id 默认 0
+ */
 export const handleTree = (data?: any, id?: any, parentId?: any, children?: any, rootId?: any) => {
   id = id || 'id'
   parentId = parentId || 'parentId'
@@ -52,4 +60,16 @@ export const handleTree = (data?: any, id?: any, parentId?: any, children?: any,
     return father[parentId] === rootId
   })
   return treeData !== '' ? treeData : data
+}
+
+// 回显数据字典
+export const selectDictLabel = (datas: [], value: string) => {
+  const actions: string[] = []
+  Object.keys(datas).some((key) => {
+    if (datas[key].dictValue === value) {
+      actions.push(datas[key].dictLabel)
+      return true
+    }
+  })
+  return actions.join('')
 }

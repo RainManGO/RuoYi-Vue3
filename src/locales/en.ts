@@ -3,7 +3,7 @@
  * @Author: ZY
  * @Date: 2020-12-28 17:18:17
  * @LastEditors: ZY
- * @LastEditTime: 2021-01-20 15:18:42
+ * @LastEditTime: 2021-02-22 14:19:00
  */
 
 export default {
@@ -70,7 +70,8 @@ export default {
     clipboard: 'Clipboard',
     i18n: 'I18n',
     externalLink: 'External Link',
-    profile: 'Profile'
+    profile: 'Profile',
+    monitor: 'monitor'
   },
   navbar: {
     logOut: 'Log Out',
