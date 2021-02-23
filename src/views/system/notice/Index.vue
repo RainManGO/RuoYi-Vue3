@@ -79,7 +79,6 @@
           icon="el-icon-plus"
           size="mini"
           @click="handleAdd"
-          v-hasPermi="['system:notice:add']"
         >
           新增
         </el-button>
@@ -165,7 +164,7 @@
         width="100"
       >
         <template #default="scope">
-          <span>{{ parseTime(scope.row.createTime, '{y}-{m}-{d}') }}</span>
+          <span>{{ scope.row.createTime.slice(0.11) }}</span>
         </template>
       </el-table-column>
       <el-table-column
@@ -207,13 +206,13 @@
     <!-- 添加或修改公告对话框 -->
     <el-dialog
       :title="title"
-      v-model:visible="open"
+      v-model="open"
       width="780px"
       append-to-body
     >
       <el-form
-        ref="formRef"
-        :model="form"
+        ref="queryForm"
+        :model="formVal"
         :rules="rules"
         label-width="80px"
       >
@@ -295,13 +294,13 @@ import { listNotice, getNotice, delNotice, addNotice, updateNotice } from '@/api
 import { getDicts } from '@/apis/system'
 import { selectDictLabel } from '@/utils/ruoyi'
 import Editor from '@/components/editor/Index.vue'
-import { ElForm, ElMessage, ElMessageBox } from 'element-plus'
+import { ElMessage, ElMessageBox } from 'element-plus'
 export default defineComponent({
   components: {
     Editor
   },
   setup() {
-    const formRef = ref(ElForm)
+    const queryForm = ref<HTMLInputElement | null>(null)
     const dataMap = reactive({
       // 遮罩层
       loading: true,
@@ -369,17 +368,16 @@ export default defineComponent({
     const typeFormat = (row: {[key: string]: any}) => {
       return selectDictLabel(dataMap.typeOptions, row.noticeType)
     }
-
+    /** 搜索按钮操作 */
+    const handleQuery = () => {
+      dataMap.queryParams.pageNum = 1
+      getList()
+    }
     // 表单重置
     const reset = () => {
-      dataMap.formVal = {
-        noticeId: '',
-        noticeTitle: '',
-        noticeType: '',
-        noticeContent: '',
-        status: '0'
-      }
-      // this.resetForm('form')
+      (queryForm.value as any).resetFields()
+      const form = unref(queryForm)
+      console.log(form)
     }
     // 取消按钮
     const cancel = () => {
@@ -387,14 +385,9 @@ export default defineComponent({
       dataMap.open = false
     }
 
-    /** 搜索按钮操作 */
-    const handleQuery = () => {
-      dataMap.queryParams.pageNum = 1
-      getList()
-    }
     /** 重置按钮操作 */
     const resetQuery = () => {
-      // this.resetForm('queryForm')
+      reset()
       handleQuery()
     }
     // 多选框选中数据
@@ -422,8 +415,7 @@ export default defineComponent({
     }
     /** 提交按钮 */
     const submitForm = () => {
-      const form = unref(formRef)
-      form.validate((valid: any) => {
+      (queryForm.value as any).validate((valid: any) => {
         if (valid) {
           if (dataMap.formVal.noticeId !== undefined) {
             updateNotice(dataMap.formVal).then(() => {
@@ -465,7 +457,7 @@ export default defineComponent({
         dataMap.typeOptions = response?.data
       })
     })
-    return { ...toRefs(dataMap), typeFormat, statusFormat, getList, reset, cancel, resetQuery, handleAdd, handleSelectionChange, formRef, handleDelete, handleUpdate, submitForm }
+    return { ...toRefs(dataMap), typeFormat, statusFormat, getList, reset, cancel, resetQuery, handleAdd, handleSelectionChange, queryForm, handleDelete, handleUpdate, submitForm, handleQuery }
   }
 })
 
