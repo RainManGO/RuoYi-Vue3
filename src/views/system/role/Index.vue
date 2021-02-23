@@ -437,7 +437,7 @@ import { defineComponent, onMounted, reactive, toRefs, ref, unref } from 'vue'
 // import { listRole, changeRoleStatus } from '@/apis/role'
 import { listRole, getRole, exportRole, delRole, dataScope, changeRoleStatus, updateRole, addRole } from '@/apis/role'
 import { getDicts } from '@/apis/system'
-import { download, addDateRange } from '@/utils/ruoyi'
+import { download } from '@/utils/ruoyi'
 
 import { treeselect as menuTreeselect, roleMenuTreeselect } from '@/apis/Treeselect'
 import { treeselect as deptTreeselect, roleDeptTreeselect } from '@/apis/dept'
@@ -545,7 +545,9 @@ export default defineComponent({
     /** 查询角色列表 */
     const getList = () => {
       dataMap.loading = true
-      listRole(addDateRange(dataMap.queryParams, dataMap.dateRange)).then(
+      // addDateRange(dataMap.queryParams, dataMap.dateRange)
+      listRole(dataMap.queryParams).then(
+      // listRole(addDateRange(dataMap.queryParams, dataMap.dateRange)).then(
         (response: any) => {
           dataMap.roleList = response.rows
           dataMap.total = response.total

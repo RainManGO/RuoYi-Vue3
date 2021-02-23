@@ -2514,10 +2514,10 @@ aws4@^1.8.0:
   resolved "https://registry.npm.taobao.org/aws4/download/aws4-1.11.0.tgz?cache=0&sync_timestamp=1604101244098&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Faws4%2Fdownload%2Faws4-1.11.0.tgz#d61f46d83b2519250e2784daf5b09479a8b41c59"
   integrity sha1-1h9G2DslGSUOJ4Ta9bCUeai0HFk=
 
-axios-mapper@^0.5.0:
-  version "0.5.0"
-  resolved "https://registry.npmjs.org/axios-mapper/-/axios-mapper-0.5.0.tgz#e1142fa1d13d976b40ac0fb455f2c3d7a316867f"
-  integrity sha512-B8f2geOCbBWNJcFAKCaFj9V7IZsCjtN+dQ2cHjDiiOHeIlOLJ9CCdImk7AeLBIY2lKBbdOHp/BVM0x4SrU3ZWw==
+axios-mapper@^0.5.2:
+  version "0.5.2"
+  resolved "https://registry.npmjs.org/axios-mapper/-/axios-mapper-0.5.2.tgz#93832dfea9f293ee7ff89f62a5d46a88de30c505"
+  integrity sha512-D9+SecgpU3KruUgKsJtZ3MzHwZzNEgUrAungrhnw1wZWh5JdBzQkv7/7hIlHH281IhpK0ktKm8TkUAdRycfM8Q==
   dependencies:
     "@types/qs" "^6.9.5"
     axios "^0.21.0"
