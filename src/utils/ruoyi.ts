@@ -53,3 +53,15 @@ export const handleTree = (data?: any, id?: any, parentId?: any, children?: any,
   })
   return treeData !== '' ? treeData : data
 }
+
+// 回显数据字典
+export function selectDictLabel(datas: any, value: any) {
+  const actions: Array<any> = []
+  Object.keys(datas).some((key) => {
+    if (datas[key].dictValue === ('' + value)) {
+      actions.push(datas[key].dictLabel)
+      return true
+    }
+  })
+  return actions.join('')
+}

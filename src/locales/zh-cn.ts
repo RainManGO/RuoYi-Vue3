@@ -76,7 +76,8 @@ export default {
     management: '字典管理',
     config: '参数设置',
     post: '岗位管理',
-    role: '角色管理'
+    role: '角色管理',
+    Notice: '通知公告'
   },
   navbar: {
     logOut: '退出登录',
