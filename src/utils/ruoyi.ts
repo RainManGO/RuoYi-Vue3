@@ -12,8 +12,10 @@ export function download(fileName: any) {
 }
 
 // 添加日期范围
-export const addDateRange = (params: any, dateRange: any, propName?: any) => {
-  console.log(params, dateRange, '=======================')
+
+type Params = {[key: string]: any}
+
+export const addDateRange = (params: Params, dateRange: any, propName?: any) => {
   const search = params
   search.params = {}
   if (dateRange !== null && dateRange !== '') {
@@ -25,6 +27,7 @@ export const addDateRange = (params: any, dateRange: any, propName?: any) => {
       search.params['end' + propName] = dateRange[1]
     }
   }
+  console.log(search)
   return search
 }
 

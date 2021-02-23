@@ -3,7 +3,7 @@
  * @Author: ZY
  * @Date: 2020-12-28 17:18:24
  * @LastEditors: scy😊
- * @LastEditTime: 2021-02-05 09:57:19
+ * @LastEditTime: 2021-02-22 11:17:36
  */
 
 export default {
@@ -75,7 +75,8 @@ export default {
     department: '部门管理',
     management: '字典管理',
     config: '参数设置',
-    post: '岗位管理'
+    post: '岗位管理',
+    role: '角色管理'
   },
   navbar: {
     logOut: '退出登录',
