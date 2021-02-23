@@ -25,5 +25,5 @@ export const getUsers = (user: any) => {
 
 // 获取验证码
 export const getCodeImg = () => {
-  return https().request<SmsModel>('/captchaImage', Method.GET, undefined, ContentType.form)
+  return https().request<SmsModel>('captchaImage', Method.GET, undefined, ContentType.form)
 }

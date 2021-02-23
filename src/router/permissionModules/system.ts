@@ -3,7 +3,7 @@
  * @Autor: scy😊
  * @Date: 2021-02-03 16:45:46
  * @LastEditors: scy😊
- * @LastEditTime: 2021-02-05 09:58:37
+ * @LastEditTime: 2021-02-22 11:15:27
  */
 import { RouteRecordRaw } from 'vue-router'
 import Layout from '@/layout/Index.vue'
@@ -56,6 +56,16 @@ const SystemRouter: Array<RouteRecordRaw> = [
         meta: {
           title: 'post',
           icon: 'post',
+          noCache: true
+        }
+      },
+      {
+        path: 'role',
+        component: () => import(/* webpackChunkName: "system" */ '@/views/system/role/Index.vue'),
+        name: 'role',
+        meta: {
+          title: 'role',
+          icon: 'role',
           noCache: true
         }
       }

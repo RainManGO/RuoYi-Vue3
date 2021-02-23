@@ -276,8 +276,8 @@
 
 <script lang="ts">
 import { defineComponent, onMounted, reactive, toRefs, unref, ref } from 'vue'
-import { listDept, getDept, listDeptExcludeChild, getDicts, delDept, updateDept, addDept } from '@/apis/system'
-
+import { getDicts } from '@/apis/system'
+import { listDept, getDept, listDeptExcludeChild, delDept, updateDept, addDept } from '@/apis/dept'
 // // import the styles
 // import Treeselect from 'vue3-treeselect'
 // import 'vue3-treeselect/dist/vue3-treeselect.css'
