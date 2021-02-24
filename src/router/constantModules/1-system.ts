@@ -2,8 +2,8 @@
  * @Description:
  * @Autor: scy😊
  * @Date: 2021-02-03 16:45:46
- * @LastEditors: ZY
- * @LastEditTime: 2021-02-23 18:23:44
+ * @LastEditors: WJM
+ * @LastEditTime: 2021-02-24 12:00:29
  */
 import { RouteRecordRaw } from 'vue-router'
 import Layout from '@/layout/Index.vue'
@@ -84,6 +84,34 @@ const SystemRouter: Array<RouteRecordRaw> = [
         path: 'notice',
         component: () => import(/* webpackChunkName: "system" */ '@/views/system/notice/Index.vue'),
         meta: { title: '通知公告', icon: 'message', noCache: true }
+      },
+      {
+        path: '/log',
+        component: Layout,
+        redirect: 'noredirect',
+        name: 'log',
+        meta: {
+          title: 'log',
+          icon: '#icontable'
+        },
+        children: [
+          {
+            path: 'operlog',
+            component: () => import(/* webpackChunkName: "system" */ '@/views/system/log/operlog.vue'),
+            name: 'operlog',
+            meta: {
+              title: 'operlog',
+              icon: 'operlog',
+              noCache: true
+            }
+          },
+          {
+            name: 'logininfor',
+            path: 'logininfor',
+            component: () => import(/* webpackChunkName: "system" */ '@/views/system/log/logininfor.vue'),
+            meta: { title: '通知公告', icon: 'message', noCache: true }
+          }
+        ]
       }
     ]
   }
