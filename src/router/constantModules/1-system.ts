@@ -2,8 +2,8 @@
  * @Description:
  * @Autor: scy😊
  * @Date: 2021-02-03 16:45:46
- * @LastEditors: scy😊
- * @LastEditTime: 2021-02-22 11:15:27
+ * @LastEditors: ZY
+ * @LastEditTime: 2021-02-23 18:23:44
  */
 import { RouteRecordRaw } from 'vue-router'
 import Layout from '@/layout/Index.vue'
@@ -26,6 +26,16 @@ const SystemRouter: Array<RouteRecordRaw> = [
         meta: {
           title: 'management',
           icon: 'management',
+          noCache: true
+        }
+      },
+      {
+        path: 'menu',
+        component: () => import(/* webpackChunkName: "system" */ '@/views/system/menu/Index.vue'),
+        name: 'Menu',
+        meta: {
+          title: 'menu',
+          icon: 'menu',
           noCache: true
         }
       },

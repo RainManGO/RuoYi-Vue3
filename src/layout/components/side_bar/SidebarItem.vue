@@ -97,8 +97,6 @@ export default defineComponent({
     SidebarItemLink
   },
   setup(props) {
-    console.log('xxxx')
-
     const alwaysShowRootMenu = computed(() => {
       if (props.item.meta && props.item.meta.alwaysShow) {
         return true

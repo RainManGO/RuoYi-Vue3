@@ -3,7 +3,7 @@
  * @Author: ZY
  * @Date: 2020-12-07 10:30:20
  * @LastEditors: ZY
- * @LastEditTime: 2021-02-22 13:46:00
+ * @LastEditTime: 2021-02-23 20:34:46
  */
 import { createRouter, createWebHashHistory, RouteRecordRaw } from 'vue-router'
 import Layout from '@/layout/Index.vue'

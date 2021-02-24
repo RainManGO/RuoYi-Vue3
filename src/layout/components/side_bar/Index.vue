@@ -3,7 +3,7 @@
  * @Author: ZY
  * @Date: 2020-12-24 10:35:47
  * @LastEditors: ZY
- * @LastEditTime: 2021-01-27 09:04:08
+ * @LastEditTime: 2021-02-23 20:45:52
 -->
 <template>
   <div :class="{'has-logo': showLogo}">
@@ -40,7 +40,7 @@ import SidebarLogo from './SidebarLogo.vue'
 import variables from '@/styles/_variables.scss'
 import { useStore } from '@/store'
 import { useRoute } from 'vue-router'
-
+import { constantRoutes } from '@/router/index'
 export default defineComponent({
   components: {
     SidebarItem,
@@ -53,7 +53,8 @@ export default defineComponent({
       return store.state.app.sidebar
     })
     const routes = computed(() => {
-      return store.state.permission.routes
+      // return store.state.permission.routes
+      return constantRoutes
     })
     const showLogo = computed(() => {
       return store.state.settings.showSidebarLogo

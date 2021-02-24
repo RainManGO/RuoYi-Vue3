@@ -2,13 +2,14 @@
  * @Description:表格数据接口
  * @Autor: scy😊
  * @Date: 2021-01-12 11:31:47
- * @LastEditors: scy😊
- * @LastEditTime: 2021-02-05 10:05:55
+ * @LastEditors: ZY
+ * @LastEditTime: 2021-02-23 18:03:59
  */
 import https from '@/utils/https'
 import { RootObject } from '@/model/rootObject'
-import { ContentType, Method } from 'axios-mapper'
+import { ContentType, Method, RequestParams } from 'axios-mapper'
 import { ListTypeFace, ConfigModel } from '../model/imgModel'
+import { MenuModel } from '@/model/system/menuModel'
 //= ===========================字典管理==============================
 export const listData = (params: any) => {
   return https().request<RootObject<any>>('system/dict/data/list', Method.GET, params, ContentType.json)
@@ -151,4 +152,41 @@ export const delPost = (postId: any) => {
 
 export const exportPost = (params: any) => {
   return https().request<RootObject<any>>('system/post/export', Method.GET, params, ContentType.form)
+}
+
+//= =============菜单管理============//
+
+// 查询菜单列表
+export const listMenu = (query: RequestParams) => {
+  return https().request<RootObject<MenuModel[]>>('system/menu/list', Method.GET, query, ContentType.form)
+}
+
+// 查询菜单详细
+export const getMenu = (menuId: string) => {
+  return https().request<RootObject<MenuModel>>(`system/menu/${menuId}`, Method.GET)
+}
+
+// 查询菜单下拉树结构
+export const treeselect = () => {
+  return https().request<RootObject<MenuModel[]>>('system/menu/treeselect', Method.GET)
+}
+
+// 根据角色ID查询菜单下拉树结构
+export const roleMenuTreeselect = (roleId: string) => {
+  return https().request<RootObject<MenuModel[]>>(`system/menu/treeselect/${roleId}`, Method.GET)
+}
+
+// 新增菜单
+export const addMenu = (data: MenuModel) => {
+  return https().request<RootObject<any>>('system/menu', Method.POST, data)
+}
+
+// 修改菜单
+export const updateMenu = (data: MenuModel) => {
+  return https().request<RootObject<any>>('system/menu', Method.PUT, data)
+}
+
+// 删除菜单
+export const delMenu = (menuId: string) => {
+  return https().request<RootObject<any>>(`system/menu/${menuId}`, Method.DELETE)
 }

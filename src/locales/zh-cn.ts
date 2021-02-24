@@ -3,7 +3,7 @@
  * @Author: ZY
  * @Date: 2020-12-28 17:18:24
  * @LastEditors: ZY
- * @LastEditTime: 2021-02-23 14:54:45
+ * @LastEditTime: 2021-02-23 18:19:12
  */
 
 export default {
@@ -72,6 +72,7 @@ export default {
     externalLink: '外链',
     profile: '个人中心',
     system: '系统管理',
+    menu: '菜单管理',
     department: '部门管理',
     management: '字典管理',
     config: '参数设置',
