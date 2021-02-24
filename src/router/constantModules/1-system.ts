@@ -78,6 +78,12 @@ const SystemRouter: Array<RouteRecordRaw> = [
           icon: 'role',
           noCache: true
         }
+      },
+      {
+        name: 'notice',
+        path: 'notice',
+        component: () => import(/* webpackChunkName: "system" */ '@/views/system/notice/Index.vue'),
+        meta: { title: '通知公告', icon: 'message', noCache: true }
       }
     ]
   }

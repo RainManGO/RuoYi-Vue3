@@ -506,46 +506,4 @@ export default defineComponent({
     return { ...toRefs(dataMap), handleExport, formDialog, getList, handleQuery, resetQuery, queryForm, handleAdd, submitForm, handleUpdate, handleSelectionChange, handleDelete }
   }
 })
-// export default {
-//   name: 'Config',
-//   created() {
-
-//   },
-//   methods: {
-//     /** 查询参数列表 */
-
-//     // 参数系统内置字典翻译
-//     typeFormat() {
-//     //   return this.selectDictLabel(this.typeOptions, row.configType)
-
-//       return 1
-//     },
-//     // 取消按钮
-//     cancel() {
-//       this.open = false
-//       this.reset()
-//     },
-//     // 表单重置
-//     reset() {
-//       this.form = {
-//         configId: undefined,
-//         configName: undefined,
-//         configKey: undefined,
-//         configValue: undefined,
-//         configType: 'Y',
-//         remark: undefined
-//       }
-//       this.resetForm('form')
-//     },
-
-//     /** 重置按钮操作 */
-
-//     /** 清理缓存按钮操作 */
-//     handleClearCache() {
-//       clearCache().then(() => {
-//         this.msgSuccess('清理成功')
-//       })
-//     }
-//   }
-// }
 </script>
