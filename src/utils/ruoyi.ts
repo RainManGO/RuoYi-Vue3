@@ -73,3 +73,11 @@ export const selectDictLabel = (datas: Array<any>, value: string) => {
   })
   return actions.join('')
 }
+
+// 转换字符串，undefined,null等转化为""
+export function praseStrEmpty(str: null | undefined) {
+  if (!str || str === undefined || str === null) {
+    return ''
+  }
+  return str
+}
