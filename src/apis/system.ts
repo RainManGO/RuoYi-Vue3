@@ -2,8 +2,8 @@
  * @Description:表格数据接口
  * @Autor: scy😊
  * @Date: 2021-01-12 11:31:47
- * @LastEditors: ZY
- * @LastEditTime: 2021-02-23 18:03:59
+ * @LastEditors: WJM
+ * @LastEditTime: 2021-02-25 16:36:24
  */
 import https from '@/utils/https'
 import { RootObject } from '@/model/rootObject'
@@ -68,6 +68,18 @@ export const updateType = (data: any) => {
 // 导出字典类型
 export const exportType = (data: any) => {
   return https().request<RootObject<any>>('system/dict/type/export', Method.GET, data, ContentType.form)
+}
+
+//= ==============日志管理==================//
+// 查询参数列表
+export const listOperlog = (params: any) => {
+  console.log(params)
+  return https().request<ConfigModel>('monitor/operlog/list', Method.GET, params, ContentType.form)
+}
+// 查询参数列表
+export const listLogin = (params: any) => {
+  console.log(params)
+  return https().request<ConfigModel>('monitor/logininfor/list', Method.GET, params, ContentType.form)
 }
 
 //= ==============参数管理==================//

@@ -3,11 +3,11 @@
  * @Autor: scy😊
  * @Date: 2021-02-03 16:45:46
  * @LastEditors: WJM
- * @LastEditTime: 2021-02-24 12:00:29
+ * @LastEditTime: 2021-02-25 09:02:26
  */
 import { RouteRecordRaw } from 'vue-router'
 import Layout from '@/layout/Index.vue'
-
+import View from '@/components/view/Index.vue'
 const SystemRouter: Array<RouteRecordRaw> = [
   {
     path: '/system',
@@ -86,10 +86,10 @@ const SystemRouter: Array<RouteRecordRaw> = [
         meta: { title: '通知公告', icon: 'message', noCache: true }
       },
       {
-        path: '/log',
-        component: Layout,
-        redirect: 'noredirect',
         name: 'log',
+        path: '/system/log',
+        redirect: 'noRedirect',
+        component: View,
         meta: {
           title: 'log',
           icon: '#icontable'
@@ -100,16 +100,16 @@ const SystemRouter: Array<RouteRecordRaw> = [
             component: () => import(/* webpackChunkName: "system" */ '@/views/system/log/operlog.vue'),
             name: 'operlog',
             meta: {
-              title: 'operlog',
-              icon: 'operlog',
-              noCache: true
+              title: 'operlog'
             }
           },
           {
             name: 'logininfor',
             path: 'logininfor',
             component: () => import(/* webpackChunkName: "system" */ '@/views/system/log/logininfor.vue'),
-            meta: { title: '通知公告', icon: 'message', noCache: true }
+            meta: {
+              title: 'logininfor'
+            }
           }
         ]
       }
