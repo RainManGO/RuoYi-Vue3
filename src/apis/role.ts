@@ -11,8 +11,8 @@ export const listRole = (params: any) => {
 
 // 查询角色详细
 
-export const getRole = (roleId: any) => {
-  return https().request<RootObject<any>>(`system/role/${roleId}`, Method.GET, undefined, ContentType.form)
+export const getRole = (roleId: number) => {
+  return https().request<any>(`system/role/${roleId}`, Method.GET, undefined, ContentType.form)
 }
 
 // 新增角色

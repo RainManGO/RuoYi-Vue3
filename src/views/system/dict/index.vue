@@ -94,6 +94,7 @@
           plain
           icon="el-icon-plus"
           @click="handleAdd"
+          v-hasPermi="['system:dict:add']"
         >
           新增
         </el-button>
@@ -105,6 +106,7 @@
           icon="el-icon-edit"
           :disabled="single"
           @click="handleUpdate"
+          v-hasPermi="['system:dict:edit']"
         >
           修改
         </el-button>
@@ -116,6 +118,7 @@
           icon="el-icon-delete"
           :disabled="multiple"
           @click="handleDelete"
+          v-hasPermi="['system:dict:remove']"
         >
           删除
         </el-button>
@@ -126,6 +129,7 @@
           plain
           icon="el-icon-download"
           @click="handleExport"
+          v-hasPermi="['system:dict:export']"
         >
           导出
         </el-button>
@@ -164,7 +168,7 @@
       >
         <template #default="scope">
           <router-link
-            :to="'/dict/type/data/' + scope.row.dictId"
+            :to="'/system/dict/type/data/' + scope.row.dictId"
             class="link-type"
           >
             <span>{{ scope.row.dictType }}</span>
@@ -203,6 +207,7 @@
             type="text"
             icon="el-icon-edit"
             @click="handleUpdate(scope.row)"
+            v-hasPermi="['system:dict:edit']"
           >
             修改
           </el-button>
@@ -210,6 +215,7 @@
             type="text"
             icon="el-icon-delete"
             @click="handleDelete(scope.row)"
+            v-hasPermi="['system:dict:remove']"
           >
             删除
           </el-button>
@@ -234,7 +240,7 @@
     >
       <el-form
         ref="postFormNode"
-        model="form"
+        :model="formData"
         :rules="rules"
         label-width="80px"
       >
@@ -243,7 +249,7 @@
           prop="dictName"
         >
           <el-input
-            v-model="formData.dictNameValue"
+            v-model="formData.dictName"
             placeholder="请输入字典名称"
           />
         </el-form-item>
@@ -252,7 +258,7 @@
           prop="dictType"
         >
           <el-input
-            v-model="formData.dictTypes"
+            v-model="formData.dictType"
             placeholder="请输入字典类型"
           />
         </el-form-item>
@@ -301,14 +307,16 @@
 
 <script lang="ts">
 import { reactive, toRefs, defineComponent, onMounted, ref, unref } from 'vue'
-import { listType, getType, addType, updateType, getDicts, delType } from '@/apis/system'
-import { ElForm, ElMessage } from 'element-plus'
+import { listType, getType, addType, updateType, getDicts, delType, exportType } from '@/apis/system'
+import { ElForm, ElMessage, ElMessageBox } from 'element-plus'
 // import { ElMessage } from 'element-plus'
-// import { download, addDateRange } from '@/utils/download'
+import { download } from '@/utils/ruoyi'
+
 export default defineComponent({
   name: 'App',
   setup() {
     const postFormNode = ref(ElForm)
+    const queryForm = ref(ElForm)
     const data = reactive({
       // 遮罩层
       loading: true,
@@ -343,17 +351,17 @@ export default defineComponent({
       // 表单参数
       formData: {
         dictId: '',
-        dictNameValue: '',
-        dictTypes: '',
+        dictName: '',
+        dictType: '',
         status: '0',
         remark: ''
       },
       // 表单校验
       rules: {
-        dictNameValue: [
+        dictName: [
           { required: true, message: '字典名称不能为空', trigger: 'blur' }
         ],
-        dictTypes: [
+        dictType: [
           { required: true, message: '字典类型不能为空', trigger: 'blur' }
         ]
       }
@@ -380,8 +388,8 @@ export default defineComponent({
     const reset = () => {
       data.formData = {
         dictId: '',
-        dictNameValue: '',
-        dictTypes: '',
+        dictName: '',
+        dictType: '',
         status: '0',
         remark: ''
       }
@@ -402,8 +410,9 @@ export default defineComponent({
     }
     /** 重置按钮操作 */
     const resetQuery = () => {
+      const form = unref(queryForm)
+      form.resetFields()
       data.dateRange = []
-      // this.resetForm('queryForm')
       handleQuery()
     }
 
@@ -434,48 +443,52 @@ export default defineComponent({
     /** 提交按钮 */
     const submitForm = () => {
       const form = unref(postFormNode)
-      form.validate((valid: any) => {
-        alert(valid)
+      form.validate((valid: Boolean) => {
         if (valid) {
           if (data.formData?.dictId !== undefined) {
-            updateType(data.formData).then(() => {
-              ElMessage.success('修改成功')
-              data.open = false
-              getList()
+            updateType(data.formData).then((res: {[key: string]: any} | null) => {
+              res?.code === 0 ? ElMessage.success('修改成功') : ElMessage.error(res?.msg)
             })
           } else {
-            addType(data.formData).then(() => {
-              ElMessage.success('新增成功')
-              data.open = false
-              getList()
+            addType(data.formData).then((res: {[key: string]: any} | null) => {
+              res?.code === 0 ? ElMessage.success('新增成功') : ElMessage.error(res?.msg)
             })
           }
+          data.open = false
+          getList()
         }
       })
     }
     /** 删除按钮操作 */
-    const handleDelete = async(row: any) => {
-      console.log(row)
+    const handleDelete = async(row: {[key: string]: any}) => {
       const dictIds = row.dictId || data.ids
-
-      const result = await delType(dictIds)
-      if (result?.code === 200) {
-        getList()
-        ElMessage.success('删除成功')
-      }
+      ElMessageBox.confirm('是否确认删除字典编号为"' + dictIds + '"的数据项?', '警告', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(function() {
+        return delType(dictIds)
+      }).then((response: {[key: string]: any} |null) => {
+        if (response?.code === 0) {
+          getList()
+          ElMessage.success('删除成功')
+        } else {
+          ElMessage.error(response?.msg)
+        }
+      })
     }
     /** 导出按钮操作 */
     const handleExport = () => {
-      // const queryParams = data.queryParams
-      // this.$confirm('是否确认导出所有类型数据项?', '警告', {
-      //   confirmButtonText: '确定',
-      //   cancelButtonText: '取消',
-      //   type: 'warning'
-      // }).then(function() {
-      //   return exportType(queryParams)
-      // }).then((response: any) => {
-      //   download(response.msg)
-      // })
+      const queryParams = data.queryParams
+      ElMessageBox.confirm('是否确认导出所有类型数据项?', '警告', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(function() {
+        return exportType(queryParams)
+      }).then((response: any) => {
+        download(response.msg)
+      })
     }
     onMounted(() => {
       getList()
@@ -483,7 +496,7 @@ export default defineComponent({
         data.statusOptions = response.data
       })
     })
-    return { ...toRefs(data), statusFormat, postFormNode, getList, cancel, reset, handleQuery, handleExport, handleDelete, submitForm, resetQuery, handleAdd, handleSelectionChange, handleUpdate }
+    return { ...toRefs(data), queryForm, statusFormat, postFormNode, getList, cancel, reset, handleQuery, handleExport, handleDelete, submitForm, resetQuery, handleAdd, handleSelectionChange, handleUpdate }
   }
 })
 </script>

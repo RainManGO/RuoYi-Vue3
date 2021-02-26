@@ -20,13 +20,18 @@ const SystemRouter: Array<RouteRecordRaw> = [
     },
     children: [
       {
-        path: 'management',
-        component: () => import(/* webpackChunkName: "system" */ '@/views/system/dict/index.vue'),
-        name: 'management',
+        path: 'dict/type/data/:id',
+        component: () => import(/* webpackChunkName: "system" */ '@/views/system/dict/data.vue'),
+        name: 'Data',
+        meta: { title: '字典数据', icon: '', hiddden: true }
+      },
+
+      {
+        path: 'dict',
+        component: () => import(/* webpackChunkName: "system" */ '@/views/system/dict/Index.vue'),
+        name: 'dict',
         meta: {
-          title: 'management',
-          icon: 'management',
-          noCache: true
+          title: 'dict', icon: 'dict', noCache: false
         }
       },
       {
@@ -40,14 +45,11 @@ const SystemRouter: Array<RouteRecordRaw> = [
         }
       },
       {
-        path: 'department',
-        component: () => import(/* webpackChunkName: "system" */ '@/views/system/dept/department.vue'),
-        name: 'department',
-        meta: {
-          title: 'department',
-          icon: 'department',
-          noCache: true
-        }
+        name: 'dept',
+        path: 'dept',
+        component: () => import(/* webpackChunkName: "system" */ '@/views/system/dept/Index.vue'),
+        meta: { title: 'dept', icon: 'tree', noCache: false }
+
       },
       {
         path: 'config',
@@ -83,13 +85,13 @@ const SystemRouter: Array<RouteRecordRaw> = [
         name: 'notice',
         path: 'notice',
         component: () => import(/* webpackChunkName: "system" */ '@/views/system/notice/Index.vue'),
-        meta: { title: '通知公告', icon: 'message', noCache: true }
+        meta: { title: 'notice', icon: 'message', noCache: true }
       },
       {
         name: 'user',
         path: 'user',
         component: () => import(/* webpackChunkName: "system" */ '@/views/system/user/Index.vue'),
-        meta: { title: '用户管理', icon: 'user', noCache: true }
+        meta: { title: 'user', icon: 'user', noCache: true }
       }
     ]
   }

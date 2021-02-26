@@ -73,15 +73,17 @@ export default {
     profile: '个人中心',
     system: '系统管理',
     menu: '菜单管理',
-    department: '部门管理',
-    management: '字典管理',
+    dept: '部门管理',
     config: '参数设置',
     post: '岗位管理',
     role: '角色管理',
-    Notice: '通知公告',
+    notice: '通知公告',
     monitor: '系统监控',
     online: '在线用户',
-    job: '定时任务'
+    job: '定时任务',
+    dict: '字典管理',
+    user: '用户管理',
+    dictdata: '字典数据'
   },
   navbar: {
     logOut: '退出登录',
