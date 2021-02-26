@@ -164,7 +164,7 @@
         width="100"
       >
         <template #default="scope">
-          <span>{{ scope.row.createTime.slice(0.11) }}</span>
+          <span>{{ parseTime(scope.row.createTime,'{y}-{m}-{d}' ) }}</span>
         </template>
       </el-table-column>
       <el-table-column
@@ -292,7 +292,7 @@
 import { defineComponent, onMounted, reactive, toRefs, ref, unref } from 'vue'
 import { listNotice, getNotice, delNotice, addNotice, updateNotice } from '@/apis/notice'
 import { getDicts } from '@/apis/system'
-import { selectDictLabel } from '@/utils/ruoyi'
+import { selectDictLabel, parseTime } from '@/utils/ruoyi'
 import Editor from '@/components/editor/Index.vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 export default defineComponent({
@@ -457,7 +457,7 @@ export default defineComponent({
         dataMap.typeOptions = response?.data
       })
     })
-    return { ...toRefs(dataMap), typeFormat, statusFormat, getList, reset, cancel, resetQuery, handleAdd, handleSelectionChange, queryForm, handleDelete, handleUpdate, submitForm, handleQuery }
+    return { ...toRefs(dataMap), parseTime, typeFormat, statusFormat, getList, reset, cancel, resetQuery, handleAdd, handleSelectionChange, queryForm, handleDelete, handleUpdate, submitForm, handleQuery }
   }
 })
 

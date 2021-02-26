@@ -2,8 +2,8 @@
  * @Description:
  * @Autor: scy😊
  * @Date: 2021-01-19 19:22:27
- * @LastEditors: WJM
- * @LastEditTime: 2021-01-22 13:56:00
+ * @LastEditors: ZY
+ * @LastEditTime: 2021-02-24 18:41:07
 -->
 <template>
   <div class="board-column">

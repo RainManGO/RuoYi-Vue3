@@ -12,11 +12,11 @@ import { ListTypeFace, ConfigModel } from '../model/imgModel'
 import { MenuModel } from '@/model/system/menuModel'
 //= ===========================字典管理==============================
 export const listData = (params: any) => {
-  return https().request<RootObject<any>>('system/dict/data/list', Method.GET, params, ContentType.json)
+  return https().request<RootObject<any>>('system/dict/data/list', Method.GET, params, ContentType.form)
 }
 
 export const getData = (dictCode: any) => {
-  return https().request<RootObject<any>>('system/dict/data/', Method.GET, dictCode, ContentType.json)
+  return https().request<RootObject<any>>(`system/dict/data/${dictCode}`, Method.GET, undefined, ContentType.form)
 }
 
 export const addData = (data: any) => {
@@ -34,7 +34,7 @@ export const exportData = (params: any) => {
   return https().request<RootObject<any>>('system/dict/data/export', Method.GET, params, ContentType.json)
 }
 
-export const listType = (params: any) => {
+export const listType = (params?: any) => {
   return https().request<ListTypeFace<any>>('system/dict/type/list', Method.GET, params, ContentType.form)
 }
 

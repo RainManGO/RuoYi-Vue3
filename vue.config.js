@@ -3,7 +3,7 @@
  * @Author: ZY
  * @Date: 2020-12-07 11:41:22
  * @LastEditors: ZY
- * @LastEditTime: 2021-01-27 15:17:29
+ * @LastEditTime: 2021-02-26 09:31:50
  */
 const { resolve } = require('path')
 const path = require('path')
@@ -37,7 +37,7 @@ module.exports = {
     },
     proxy: {
       '/api': {     
-          target: 'http://vue.ruoyi.vip/dev-api',  
+          target: 'https://boss-dev.rencaiyoujia.cn',  
           ws: true,      
           secure: false, 
           changeOrigin: true, 

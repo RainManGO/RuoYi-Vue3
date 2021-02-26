@@ -803,6 +803,13 @@
   dependencies:
     regenerator-runtime "^0.13.4"
 
+"@babel/runtime@^7.3.1":
+  version "7.13.6"
+  resolved "https://registry.npmjs.org/@babel/runtime/-/runtime-7.13.6.tgz#86e0fad6cbb46a680e21c1aa4748717a058d345a"
+  integrity sha512-Y/DEVhSQ91u27rxq7D0EH/sewS6+x06p/MgO1VppbDHMzYXLZrAR5cFjCom78e9RUw1BQAq6qJg6fXc/ep7glA==
+  dependencies:
+    regenerator-runtime "^0.13.4"
+
 "@babel/template@^7.0.0", "@babel/template@^7.12.13", "@babel/template@^7.4.0":
   version "7.12.13"
   resolved "https://registry.npm.taobao.org/@babel/template/download/@babel/template-7.12.13.tgz#530265be8a2589dbb37523844c5bcb55947fb327"
@@ -1128,6 +1135,20 @@
   resolved "https://registry.npmjs.org/@popperjs/core/-/core-2.6.0.tgz#f022195afdfc942e088ee2101285a1d31c7d727f"
   integrity sha512-cPqjjzuFWNK3BSKLm0abspP0sp/IGOli4p5I5fKFAzdS8fvjdOwDCfZqAaIiXd9lPkOWi3SUUfZof3hEb7J/uw==
 
+"@riophae/vue-treeselect@^0.4.0":
+  version "0.4.0"
+  resolved "https://registry.npmjs.org/@riophae/vue-treeselect/-/vue-treeselect-0.4.0.tgz#0baed5a794cffc580b63591f35c125e51c0df241"
+  integrity sha512-J4atYmBqXQmiPFK/0B5sXKjtnGc21mBJEiyKIDZwk0Q9XuynVFX6IJ4EpaLmUgL5Tve7HAS7wkiGGSti6Uaxcg==
+  dependencies:
+    "@babel/runtime" "^7.3.1"
+    babel-helper-vue-jsx-merge-props "^2.0.3"
+    easings-css "^1.0.0"
+    fuzzysearch "^1.0.3"
+    is-promise "^2.1.0"
+    lodash "^4.0.0"
+    material-colors "^1.2.6"
+    watch-size "^2.0.0"
+
 "@samverschueren/stream-to-observable@^0.3.0":
   version "0.3.1"
   resolved "https://registry.npm.taobao.org/@samverschueren/stream-to-observable/download/@samverschueren/stream-to-observable-0.3.1.tgz?cache=0&sync_timestamp=1596971813506&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40samverschueren%2Fstream-to-observable%2Fdownload%2F%40samverschueren%2Fstream-to-observable-0.3.1.tgz#a21117b19ee9be70c379ec1877537ef2e1c63301"
@@ -1434,6 +1455,13 @@
   integrity sha1-l/8w5hoKpodsJwtfU4c34tarjOs=
   dependencies:
     source-map "^0.6.1"
+
+"@types/vue-cropperjs@^4.1.1":
+  version "4.1.1"
+  resolved "https://registry.npm.taobao.org/@types/vue-cropperjs/download/@types/vue-cropperjs-4.1.1.tgz#325acccf408338ddbf8993845ee89b5885d66bfd"
+  integrity sha1-MlrMz0CDON2/iZOEXuibWIXWa/0=
+  dependencies:
+    vue "^2.0.0"
 
 "@types/webpack-dev-server@^3.11.0":
   version "3.11.1"
@@ -2550,6 +2578,11 @@ babel-extract-comments@^1.0.0:
   integrity sha1-Cirt+BQX7TkbheGLRhTmk6A1GiE=
   dependencies:
     babylon "^6.18.0"
+
+babel-helper-vue-jsx-merge-props@^2.0.3:
+  version "2.0.3"
+  resolved "https://registry.npmjs.org/babel-helper-vue-jsx-merge-props/-/babel-helper-vue-jsx-merge-props-2.0.3.tgz#22aebd3b33902328e513293a8e4992b384f9f1b6"
+  integrity sha512-gsLiKK7Qrb7zYJNgiXKpXblxbV5ffSwR0f5whkPAaBAR4fhi6bwRZxX9wBlIc5M/v8CCkXUbXZL4N/nSE97cqg==
 
 babel-jest@^24.9.0:
   version "24.9.0"
@@ -3800,6 +3833,11 @@ create-hmac@^1.1.0, create-hmac@^1.1.4, create-hmac@^1.1.7:
     safe-buffer "^5.0.1"
     sha.js "^2.4.8"
 
+cropperjs@^1.5.6:
+  version "1.5.11"
+  resolved "https://registry.npm.taobao.org/cropperjs/download/cropperjs-1.5.11.tgz#502ae6d8ca098b124de6813601cca70015879fc0"
+  integrity sha1-UCrm2MoJixJN5oE2AcynABWHn8A=
+
 cross-env@^7.0.3:
   version "7.0.3"
   resolved "https://registry.npmjs.org/cross-env/-/cross-env-7.0.3.tgz#865264b29677dc015ba8418918965dd232fc54cf"
@@ -4477,6 +4515,11 @@ duplexify@^3.4.2, duplexify@^3.6.0:
     inherits "^2.0.1"
     readable-stream "^2.0.0"
     stream-shift "^1.0.0"
+
+easings-css@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.npmjs.org/easings-css/-/easings-css-1.0.0.tgz#dde569003bb7a4a0c0b77878f5db3e0be5679c81"
+  integrity sha512-7Uq7NdazNfVtr0RNmPAys8it0zKCuaqxJStYKEl72D3j4gbvXhhaM7iWNbqhA4C94ygCye6VuyhzBRQC4szeBg==
 
 easy-stack@^1.0.1:
   version "1.0.1"
@@ -5668,6 +5711,11 @@ functional-red-black-tree@^1.0.1:
   version "1.0.1"
   resolved "https://registry.npm.taobao.org/functional-red-black-tree/download/functional-red-black-tree-1.0.1.tgz#1b0ab3bd553b2a0d6399d29c0e3ea0b252078327"
   integrity sha1-GwqzvVU7Kg1jmdKcDj6gslIHgyc=
+
+fuzzysearch@^1.0.3:
+  version "1.0.3"
+  resolved "https://registry.npmjs.org/fuzzysearch/-/fuzzysearch-1.0.3.tgz#dffc80f6d6b04223f2226aa79dd194231096d008"
+  integrity sha1-3/yA9tawQiPyImqnndGUIxCW0Ag=
 
 generic-names@^2.0.1:
   version "2.0.1"
@@ -7803,6 +7851,11 @@ lodash@4.17.15:
   resolved "https://registry.npm.taobao.org/lodash/download/lodash-4.17.15.tgz?cache=0&sync_timestamp=1602337231142&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Flodash%2Fdownload%2Flodash-4.17.15.tgz#b447f6670a0455bbfeedd11392eff330ea097548"
   integrity sha1-tEf2ZwoEVbv+7dETku/zMOoJdUg=
 
+lodash@^4.0.0:
+  version "4.17.21"
+  resolved "https://registry.npmjs.org/lodash/-/lodash-4.17.21.tgz#679591c564c3bffaae8454cf0b3df370c3d6911c"
+  integrity sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==
+
 lodash@^4.17.10, lodash@^4.17.11, lodash@^4.17.14, lodash@^4.17.15, lodash@^4.17.19, lodash@^4.17.20, lodash@^4.17.3, lodash@^4.17.4:
   version "4.17.20"
   resolved "https://registry.npm.taobao.org/lodash/download/lodash-4.17.20.tgz?cache=0&sync_timestamp=1602337231142&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Flodash%2Fdownload%2Flodash-4.17.20.tgz#b44a9b6297bcb698f1c51a3545a2b3b368d59c52"
@@ -7930,6 +7983,11 @@ map-visit@^1.0.0:
   integrity sha1-7Nyo8TFE5mDxtb1B8S80edmN+48=
   dependencies:
     object-visit "^1.0.0"
+
+material-colors@^1.2.6:
+  version "1.2.6"
+  resolved "https://registry.npmjs.org/material-colors/-/material-colors-1.2.6.tgz#6d1958871126992ceecc72f4bcc4d8f010865f46"
+  integrity sha512-6qE4B9deFBIa9YSpOc9O0Sgc43zTeVYbgDT5veRKSlB2+ZuHNoVVxA1L/ckMUayV9Ay9y7Z/SZCLcGteW9i7bg==
 
 md5.js@^1.3.4:
   version "1.3.5"
@@ -11740,6 +11798,13 @@ vue-count-to@^1.0.13:
   resolved "https://registry.npmjs.org/vue-count-to/-/vue-count-to-1.0.13.tgz#3e7573ea6e64c2b2972f64e0a2ab2e23c7590ff3"
   integrity sha512-6R4OVBVNtQTlcbXu6SJ8ENR35M2/CdWt3Jmv57jOUM+1ojiFmjVGvZPH8DfHpMDSA+ITs+EW5V6qthADxeyYOQ==
 
+vue-cropperjs@^5.0.0:
+  version "5.0.0"
+  resolved "https://registry.npm.taobao.org/vue-cropperjs/download/vue-cropperjs-5.0.0.tgz#7f8cbc460737af3831b4ded634c95905198e329e"
+  integrity sha1-f4y8Rgc3rzgxtN7WNMlZBRmOMp4=
+  dependencies:
+    cropperjs "^1.5.6"
+
 vue-draggable-next@^2.0.1:
   version "2.0.1"
   resolved "https://registry.npmjs.org/vue-draggable-next/-/vue-draggable-next-2.0.1.tgz#bb64efb302c7b8e759fd3f21427871789b624c67"
@@ -11845,11 +11910,19 @@ vue3-count-to@^1.0.7:
     lodash-es "^4.17.15"
     vue-count-to "^1.0.13"
 
+<<<<<<< HEAD
+=======
 vue3-treeselect@^0.1.0:
   version "0.1.0"
   resolved "https://registry.npm.taobao.org/vue3-treeselect/download/vue3-treeselect-0.1.0.tgz#a1f0f498415d2ae494ec3fc3aa2a270bbeabf434"
   integrity sha1-ofD0mEFdKuSU7D/DqionC76r9DQ=
 
+vue@^2.0.0:
+  version "2.6.12"
+  resolved "https://registry.npm.taobao.org/vue/download/vue-2.6.12.tgz#f5ebd4fa6bd2869403e29a896aed4904456c9123"
+  integrity sha1-9evU+mvShpQD4pqJau1JBEVskSM=
+
+>>>>>>> b83537c569883955f53d0524e869b4995366f09b
 vue@^3.0.5:
   version "3.0.5"
   resolved "https://registry.npmjs.org/vue/-/vue-3.0.5.tgz#de1b82eba24abfe71e0970fc9b8d4b2babdc3fe1"
@@ -11886,6 +11959,11 @@ walker@^1.0.7, walker@~1.0.5:
   integrity sha1-L3+bj9ENZ3JisYqITijRlhjgKPs=
   dependencies:
     makeerror "1.0.x"
+
+watch-size@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.npmjs.org/watch-size/-/watch-size-2.0.0.tgz#096ee28d0365bd7ea03d9c8bf1f2f50a73be1474"
+  integrity sha512-M92R89dNoTPWyCD+HuUEDdhaDnh9jxPGOwlDc0u51jAgmjUvzqaEMynXSr3BaWs+QdHYk4KzibPy1TFtjLmOZQ==
 
 watchpack-chokidar2@^2.0.1:
   version "2.0.1"

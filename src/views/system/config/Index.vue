@@ -196,7 +196,7 @@
         width="180"
       >
         <template #default="scope">
-          <span>{{ scope.row.createTime }}</span>
+          <span>{{ parseTime( scope.row.createTime) }}</span>
         </template>
       </el-table-column>
       <el-table-column
@@ -321,7 +321,7 @@
 import { listConfig, getDicts, updateConfig, addConfig, getConfig, delConfig, exportConfig } from '@/apis/system'
 import { defineComponent, onMounted, reactive, toRefs, ref, unref } from 'vue'
 import { ElForm, ElMessage, ElMessageBox } from 'element-plus'
-import { download } from '@/utils/ruoyi'
+import { download, parseTime } from '@/utils/ruoyi'
 export default defineComponent({
   setup() {
     const queryForm = ref(ElForm)
@@ -400,6 +400,14 @@ export default defineComponent({
     const resetTable = () => {
       const form = unref(queryForm)
       form.resetFields()
+      dataMap.formData = {
+        remark: '',
+        configType: '',
+        configValue: '',
+        configKey: '',
+        configName: '',
+        configId: ''
+      }
     }
     const resetQuery = () => {
       resetTable()
@@ -408,7 +416,7 @@ export default defineComponent({
 
     /** 新增按钮操作 */
     const handleAdd = () => {
-    //   this.reset()
+      resetTable()
       dataMap.open = true
       dataMap.title = '添加参数'
     }
@@ -420,14 +428,9 @@ export default defineComponent({
         if (valid) {
           if (dataMap.formData.configId === '') {
             updateConfig(dataMap.formData).then((res) => {
-              if (res?.code === 200) {
-                ElMessage.success('新增成功')
-                dataMap.open = false
-                getList()
-              } else {
-                dataMap.open = false
-                ElMessage.warning(res?.msg)
-              }
+              res?.code === 200 ? ElMessage.success('新增成功') : ElMessage.warning(res?.msg)
+              dataMap.open = false
+              getList()
             })
           } else {
             addConfig(dataMap.formData).then((res) => {
@@ -503,7 +506,7 @@ export default defineComponent({
         dataMap.typeOptions = response?.data
       })
     })
-    return { ...toRefs(dataMap), handleExport, formDialog, getList, handleQuery, resetQuery, queryForm, handleAdd, submitForm, handleUpdate, handleSelectionChange, handleDelete }
+    return { ...toRefs(dataMap), parseTime, handleExport, formDialog, getList, handleQuery, resetQuery, queryForm, handleAdd, submitForm, handleUpdate, handleSelectionChange, handleDelete }
   }
 })
 </script>

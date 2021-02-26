@@ -65,6 +65,7 @@
           icon="el-icon-plus"
           size="mini"
           @click="handleAdd"
+          v-hasPermi="['system:dict:add']"
         >
           新增
         </el-button>
@@ -104,9 +105,9 @@
         prop="createTime"
         width="200"
       >
-        <!-- <template #default="scope">
+        <template #default="scope">
           <span>{{ parseTime(scope.row.createTime) }}</span>
-        </template> -->
+        </template>
       </el-table-column>
       <el-table-column
         label="操作"
@@ -119,6 +120,7 @@
             type="text"
             icon="el-icon-edit"
             @click="handleUpdate(scope.row)"
+            v-hasPermi="['system:dict:edit']"
           >
             修改
           </el-button>
@@ -127,6 +129,7 @@
             type="text"
             icon="el-icon-plus"
             @click="handleAdd(scope.row)"
+            v-hasPermi="['system:dict:add']"
           >
             新增
           </el-button>
@@ -140,6 +143,7 @@
                 size="mini"
                 type="text"
                 icon="el-icon-delete"
+                v-hasPermi="['system:dict:remove']"
               >
                 删除
               </el-button>
@@ -197,9 +201,9 @@
               prop="orderNum"
             >
               <el-input-number
+                :min="0"
                 v-model="orderNum"
                 controls-position="right"
-                :min="0"
               />
             </el-form-item>
           </el-col>
@@ -281,7 +285,7 @@ import { listDept, getDept, listDeptExcludeChild, delDept, updateDept, addDept }
 // // import the styles
 // import Treeselect from 'vue3-treeselect'
 // import 'vue3-treeselect/dist/vue3-treeselect.css'
-import { handleTree } from '@/utils/ruoyi'
+import { handleTree, parseTime } from '@/utils/ruoyi'
 import { ElForm, ElMessage } from 'element-plus'
 export default defineComponent({
   // components: {
@@ -313,7 +317,7 @@ export default defineComponent({
       deptId: '',
       parentId: '',
       deptName: '',
-      orderNum: '',
+      orderNum: 0,
       leader: '',
       phone: '',
       email: '',
@@ -397,7 +401,7 @@ export default defineComponent({
       dataMap.deptName = ''
       dataMap.deptId = ''
       dataMap.parentId = ''
-      dataMap.orderNum = ''
+      dataMap.orderNum = 0
       dataMap.leader = ''
       dataMap.phone = ''
       dataMap.email = ''
@@ -424,8 +428,8 @@ export default defineComponent({
         dataMap.phone = result.data.phone
         dataMap.email = result.data.email
         dataMap.status = result.data.status
-        dataMap.open = true
         dataMap.title = '修改部门'
+        dataMap.open = true
       }
       listDeptExcludeChild(row.deptId).then((response: any) => {
         dataMap.deptOptions = handleTree(response.data, 'deptId')
@@ -442,7 +446,7 @@ export default defineComponent({
             deptId: dataMap.deptId,
             parentId: dataMap.parentId,
             deptName: dataMap.deptName,
-            orderNum: dataMap.orderNum,
+            orderNum: Number(dataMap.orderNum),
             leader: dataMap.leader,
             phone: dataMap.phone,
             email: dataMap.email,
@@ -505,7 +509,7 @@ export default defineComponent({
       })
     })
 
-    return { ...toRefs(dataMap), formVal, formDialog, statusFormat, queryForm, getList, normalizer, handleDelete, cancel, handleQuery, resetQuery, handleAdd, handleUpdate, submitForm }
+    return { ...toRefs(dataMap), parseTime, formVal, formDialog, statusFormat, queryForm, getList, normalizer, handleDelete, cancel, handleQuery, resetQuery, handleAdd, handleUpdate, submitForm }
   }
 })
 
