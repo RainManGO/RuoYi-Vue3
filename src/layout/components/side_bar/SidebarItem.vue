@@ -3,7 +3,7 @@
  * @Author: ZY
  * @Date: 2020-12-25 11:34:00
  * @LastEditors: ZY
- * @LastEditTime: 2021-02-03 08:28:42
+ * @LastEditTime: 2021-02-22 17:31:39
 -->
 
 <template>
@@ -97,8 +97,6 @@ export default defineComponent({
     SidebarItemLink
   },
   setup(props) {
-    console.log('xxxx')
-
     const alwaysShowRootMenu = computed(() => {
       if (props.item.meta && props.item.meta.alwaysShow) {
         return true

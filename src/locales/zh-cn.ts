@@ -3,7 +3,7 @@
  * @Author: ZY
  * @Date: 2020-12-28 17:18:24
  * @LastEditors: ZY
- * @LastEditTime: 2021-01-20 15:18:01
+ * @LastEditTime: 2021-02-23 18:19:12
  */
 
 export default {
@@ -70,7 +70,18 @@ export default {
     clipboard: '粘贴板',
     i18n: '国际化',
     externalLink: '外链',
-    profile: '个人中心'
+    profile: '个人中心',
+    system: '系统管理',
+    menu: '菜单管理',
+    department: '部门管理',
+    management: '字典管理',
+    config: '参数设置',
+    post: '岗位管理',
+    role: '角色管理',
+    Notice: '通知公告',
+    monitor: '系统监控',
+    online: '在线用户',
+    job: '定时任务'
   },
   navbar: {
     logOut: '退出登录',

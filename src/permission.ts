@@ -3,7 +3,7 @@
  * @Author: ZY
  * @Date: 2020-12-28 09:12:46
  * @LastEditors: ZY
- * @LastEditTime: 2021-02-02 21:02:54
+ * @LastEditTime: 2021-02-23 20:35:15
  */
 
 import NProgress from 'nprogress'
@@ -51,10 +51,9 @@ router.beforeEach(async(to: RouteLocationNormalized, _: RouteLocationNormalized,
           const accessRoutes = await store.dispatch(PermissionActionType.ACTION_SET_ROUTES, undefined)
           // Dynamically add accessible routes
           console.log(accessRoutes)
-
-          accessRoutes.forEach((route) => {
-            router.addRoute(route)
-          })
+          // accessRoutes.forEach((route) => {
+          //   router.addRoute(route)
+          // })
           // Hack: ensure addRoutes is complete
           // Set the replace: true, so the navigation will not leave a history record
           next({ ...to, replace: true })
@@ -83,8 +82,7 @@ router.beforeEach(async(to: RouteLocationNormalized, _: RouteLocationNormalized,
   }
 })
 
-router.afterEach((to: RouteLocationNormalized) => {
-  console.log(to)
+router.afterEach(() => {
   // Finish progress bar
   // hack: https://github.com/PanJiaChen/vue-element-admin/pull/2939
   NProgress.done()
