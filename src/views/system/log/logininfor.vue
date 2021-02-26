@@ -9,10 +9,10 @@
     >
       <el-form-item
         label="登录地址"
-        prop="userName"
+        prop="ipaddr"
       >
         <el-input
-          v-model="queryParams.userName"
+          v-model="queryParams.ipaddr"
           placeholder="请输入登录地址"
           clearable
           style="width: 240px"
@@ -96,8 +96,7 @@
           type="danger"
           plain
           icon="el-icon-edit"
-          :disabled="single"
-          @click="handleUpdate"
+          @click="handleClean"
         >
           清空
         </el-button>
@@ -150,19 +149,17 @@
         label="浏览器"
         align="center"
         prop="browser"
-        :formatter="typeFormat"
       />
       <el-table-column
         label="操作系统"
         align="center"
         prop="os"
-        :formatter="typeFormat"
       />
       <el-table-column
         label="登录状态"
         align="center"
         prop="status"
-        :formatter="typeFormat"
+        :formatter="statusFormat"
       />
       <el-table-column
         label="操作信息"
@@ -193,7 +190,7 @@
 </template>
 
 <script lang='ts'>
-import { listLogin, getDicts, delConfig, exportConfig } from '@/apis/system'
+import { listLogin, getDicts, delLogin, exportLogin, cleanLogin } from '@/apis/system'
 import { defineComponent, onMounted, reactive, toRefs, ref, unref } from 'vue'
 import { ElForm, ElMessage, ElMessageBox } from 'element-plus'
 import { download } from '@/utils/ruoyi'
@@ -226,7 +223,6 @@ export default defineComponent({
       dateRange: [],
       formData: {
         status: '',
-        configType: '',
         browser: '',
         os: '',
         msg: '',
@@ -241,7 +237,7 @@ export default defineComponent({
         pageSize: 10,
         userName: undefined,
         ipaddr: undefined,
-        configType: undefined
+        status: undefined
       }
     })
 
@@ -270,7 +266,27 @@ export default defineComponent({
       resetTable()
       handleQuery()
     }
-
+    /** 清空按钮操作 */
+    const handleClean = () => {
+      ElMessageBox.confirm('是否确认清空所有操作日志数据项?', '警告', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(function() {
+        return cleanLogin(dataMap.queryParams)
+      }).then((res) => {
+        if (res?.code === 200) {
+          getList()
+          ElMessage.error('删除成功')
+        } else {
+          ElMessage.error(res?.msg)
+        }
+      })
+    }
+    // 状态
+    const statusFormat = (row: any) => {
+      return row.status === '0' ? '成功' : ' 失败'
+    }
     // 多选框选中数据
     const handleSelectionChange = (selection: any) => {
       dataMap.ids = selection.map((item: any) => item.infoId)
@@ -286,7 +302,7 @@ export default defineComponent({
         cancelButtonText: '取消',
         type: 'warning'
       }).then(function() {
-        return delConfig(infoIds)
+        return delLogin(infoIds)
       }).then((res) => {
         if (res?.code === 200) {
           getList()
@@ -305,7 +321,7 @@ export default defineComponent({
         cancelButtonText: '取消',
         type: 'warning'
       }).then(function() {
-        return exportConfig(queryParams)
+        return exportLogin(queryParams)
       }).then((response) => {
         download(response?.msg)
       })
@@ -316,7 +332,7 @@ export default defineComponent({
         dataMap.typeOptions = response?.data
       })
     })
-    return { ...toRefs(dataMap), handleExport, formDialog, getList, handleQuery, resetQuery, queryForm, handleSelectionChange, handleDelete }
+    return { ...toRefs(dataMap), handleExport, formDialog, statusFormat, handleClean, getList, handleQuery, resetQuery, queryForm, handleSelectionChange, handleDelete }
   }
 })
 </script>

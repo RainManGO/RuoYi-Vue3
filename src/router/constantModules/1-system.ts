@@ -3,7 +3,7 @@
  * @Autor: scy😊
  * @Date: 2021-02-03 16:45:46
  * @LastEditors: WJM
- * @LastEditTime: 2021-02-25 09:02:26
+ * @LastEditTime: 2021-02-26 15:27:09
  */
 import { RouteRecordRaw } from 'vue-router'
 import Layout from '@/layout/Index.vue'
@@ -85,7 +85,7 @@ const SystemRouter: Array<RouteRecordRaw> = [
         name: 'notice',
         path: 'notice',
         component: () => import(/* webpackChunkName: "system" */ '@/views/system/notice/Index.vue'),
-        meta: { title: '通知公告', icon: 'message', noCache: true }
+        meta: { title: 'notice', icon: 'message', noCache: true }
       },
       {
         name: 'log',
@@ -114,7 +114,6 @@ const SystemRouter: Array<RouteRecordRaw> = [
             }
           }
         ]
-        meta: { title: 'notice', icon: 'message', noCache: true }
       },
       {
         name: 'user',
