@@ -40,6 +40,10 @@ export default defineComponent({
       type: String,
       default: ''
     },
+    user: {
+      type: Boolean,
+      default: false
+    },
     // 选项列表数据(一维数组)
     originOptions: { type: Array, required: true },
     // 选项列表数据(树形结构的对象数组)
@@ -63,6 +67,9 @@ export default defineComponent({
   },
   emits: ['callBack'],
   setup(props, ctx) {
+    console.log(props.options)
+    console.log(props.treeProps)
+
     const instance = getCurrentInstance() as any
     const state = reactive({
       valueId: 0,
@@ -94,17 +101,21 @@ export default defineComponent({
 
     // 处理默认值并显示
     const defaultValue = () => {
+      console.log('xxxxxx')
+
       if (props.defalut !== null) {
         const deafaultModels = props.originOptions.filter((item: any) => {
-          return item.menuId === props.defalut
+          return item[props.treeProps.value] === props.defalut
         })
 
         if (deafaultModels.length > 0) {
           state.valueId = props.defalut
-          state.valueTitle = (deafaultModels[0] as any).menuName
+          state.valueTitle = (deafaultModels[0] as any)[props.treeProps.label]
         } else {
-          state.valueId = 0
-          state.valueTitle = '主类目'
+          if (!props.user) {
+            state.valueId = 0
+            state.valueTitle = '主类目'
+          }
         }
         instance.ctx.$refs.selectTree.setCurrentKey(props.defalut)
         state.defaultExpandedKey = [props.defalut] as number[]

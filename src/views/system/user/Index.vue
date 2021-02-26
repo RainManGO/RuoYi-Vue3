@@ -319,9 +319,10 @@
       v-model="open"
       width="600px"
       append-to-body
+      @opened="showDialog"
     >
       <el-form
-        ref="queryForm"
+        ref="addForm"
         :model="formVal"
         :rules="rules"
         label-width="80px"
@@ -344,10 +345,14 @@
               prop="deptId"
             >
               <Treeselect
-                v-model="formVal.deptId"
+                :treeProps="props"
                 :options="deptOptions"
-                :show-count="true"
                 placeholder="请选择归属部门"
+                :originOptions="originOptions"
+                :defalut="formVal.deptId"
+                :accordion="isAccordion"
+                @getValue="getParentValue($event)"
+                :user="true"
               />
             </el-form-item>
           </el-col>
@@ -381,7 +386,7 @@
         <el-row>
           <el-col :span="12">
             <el-form-item
-              v-if="formVal.userId = undefined"
+              v-if="formVal.userId === undefined"
               label="用户名称"
               prop="userName"
             >
@@ -575,17 +580,32 @@
 import { listUser, getUser, delUser, addUser, updateUser, exportUser, resetUserPwd, changeUserStatus, importTemplate } from '@/apis/user'
 import { getToken } from '@/utils/cookies'
 import { treeselect } from '@/apis/dept'
+
+import Treeselect from '@/components/tree-select/Index.vue'
+
 // import Treeselect from '@riophae/vue-treeselect'
 // import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 import { defineComponent, reactive, toRefs, ref, unref, onMounted, watchEffect } from 'vue'
 import { ElMessage, ElMessageBox, ElTree } from 'element-plus'
 import { download, parseTime } from '@/utils/ruoyi'
 import { getDicts, getConfigKey } from '@/apis/system'
+
 export default defineComponent({
+  components: {
+    Treeselect
+  },
   setup() {
     const treeRef = ref(ElTree)
     const queryForm = ref<HTMLInputElement | null>(null)
+    const addForm = ref<HTMLInputElement | null>(null)
     const dataMap = reactive({
+      props: { // 配置项（必选）
+        value: 'id',
+        label: 'label',
+        children: 'children'
+        // disabled:true
+      },
+      addformFlag: false,
       // 阻止触发switch  change事件
       tigger: false,
       // 遮罩层
@@ -600,12 +620,13 @@ export default defineComponent({
       showSearch: true,
       // 总条数
       total: 0,
+      originOptions: [],
       // 用户表格数据
       userList: null,
       // 弹出层标题
       title: '',
       // 部门树选项
-      deptOptions: undefined,
+      deptOptions: [],
       // 是否显示弹出层
       open: false,
       // 部门名称
@@ -625,7 +646,7 @@ export default defineComponent({
       // 表单参数
       formVal: {
         userId: undefined,
-        deptId: undefined,
+        deptId: '',
         userName: undefined,
         nickName: undefined,
         password: '',
@@ -636,6 +657,7 @@ export default defineComponent({
         remark: undefined,
         postIds: [],
         roleIds: []
+
       },
       defaultProps: {
         children: 'children',
@@ -714,12 +736,27 @@ export default defineComponent({
       }
       )
     }
+
+    const flatten = (origin: any) => {
+      let result: any = []
+      for (let i = 0; i < origin.length; i++) {
+        const item = origin[i]
+        if (Array.isArray(item.children)) {
+          result = result.concat(flatten(item.children))
+        } else {
+          result.push(item)
+        }
+      }
+      return result
+    }
     /** 查询部门下拉树结构 */
     const getTreeselect = () => {
       treeselect().then(response => {
         dataMap.deptOptions = response?.data
+        dataMap.originOptions = flatten(response?.data)
       })
     }
+
     // 筛选节点
     const filterNode = (value: string, data: any) => {
       if (!value) return true
@@ -755,9 +792,12 @@ export default defineComponent({
     }
     /** 重置按钮操作 */
     const resetQuery = () => {
-      //   this.resetForm('queryForm')
       (queryForm.value as any).resetFields()
       handleQuery()
+    }
+
+    const resetForm = () => {
+      (addForm.value as any).resetFields()
     }
     // 多选框选中数据
     const handleSelectionChange = (selection: any) => {
@@ -767,6 +807,22 @@ export default defineComponent({
     }
     /** 新增按钮操作 */
     const handleAdd = () => {
+      dataMap.addformFlag = true
+      dataMap.formVal = {
+        userId: undefined,
+        deptId: '',
+        userName: undefined,
+        nickName: undefined,
+        password: '',
+        phonenumber: undefined,
+        email: undefined,
+        sex: undefined,
+        status: '0',
+        remark: undefined,
+        postIds: [],
+        roleIds: []
+      }
+      dataMap.originOptions = []
       getTreeselect()
       getUser().then(response => {
         dataMap.postOptions = response.posts
@@ -779,8 +835,6 @@ export default defineComponent({
 
     /** 修改按钮操作 */
     const handleUpdate = (row: {[key: string]: any}) => {
-    //   this.reset()
-      getTreeselect()
       const userId = row.userId || dataMap.ids
       getUser(userId).then(response => {
         dataMap.formVal = response.data
@@ -791,6 +845,7 @@ export default defineComponent({
         dataMap.open = true
         dataMap.title = '修改用户'
         dataMap.formVal.password = ''
+        dataMap.formVal.deptId = response.data.deptId
       })
     }
     /** 重置密码按钮操作 */
@@ -901,7 +956,10 @@ export default defineComponent({
       })
     })
 
-    return { ...toRefs(dataMap), parseTime, queryForm, treeRef, handleQuery, handleExport, submitFileForm, handleImport, handleFileSuccess, handleStatusChange, handleFileUploadProgress, importTemplateDown, handleNodeClick, filterNode, getTreeselect, getList, resetQuery, handleAdd, handleSelectionChange, handleUpdate, handleResetPwd, submitForm, handleDelete }
+    const showDialog = () => {
+      getTreeselect()
+    }
+    return { ...toRefs(dataMap), resetForm, addForm, showDialog, flatten, parseTime, queryForm, treeRef, handleQuery, handleExport, submitFileForm, handleImport, handleFileSuccess, handleStatusChange, handleFileUploadProgress, importTemplateDown, handleNodeClick, filterNode, getTreeselect, getList, resetQuery, handleAdd, handleSelectionChange, handleUpdate, handleResetPwd, submitForm, handleDelete }
   }
 })
 </script>
