@@ -258,10 +258,10 @@
             label="创建时间"
             align="center"
             prop="createTime"
-            width="160"
+            width="120"
           >
             <template #default="scope">
-              <span>{{ scope.row.createTime }}</span>
+              <span>{{ parseTime(scope.row.createTime,'{y}-{m}-{d}' ) }}</span>
             </template>
           </el-table-column>
           <el-table-column
@@ -579,7 +579,7 @@ import { treeselect } from '@/apis/dept'
 // import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 import { defineComponent, reactive, toRefs, ref, unref, onMounted, watchEffect } from 'vue'
 import { ElMessage, ElMessageBox, ElTree } from 'element-plus'
-import { download } from '@/utils/ruoyi'
+import { download, parseTime } from '@/utils/ruoyi'
 import { getDicts, getConfigKey } from '@/apis/system'
 export default defineComponent({
   setup() {
@@ -901,7 +901,23 @@ export default defineComponent({
       })
     })
 
-    return { ...toRefs(dataMap), queryForm, treeRef, handleQuery, handleExport, submitFileForm, handleImport, handleFileSuccess, handleStatusChange, handleFileUploadProgress, importTemplateDown, handleNodeClick, filterNode, getTreeselect, getList, resetQuery, handleAdd, handleSelectionChange, handleUpdate, handleResetPwd, submitForm, handleDelete }
+    return { ...toRefs(dataMap), parseTime, queryForm, treeRef, handleQuery, handleExport, submitFileForm, handleImport, handleFileSuccess, handleStatusChange, handleFileUploadProgress, importTemplateDown, handleNodeClick, filterNode, getTreeselect, getList, resetQuery, handleAdd, handleSelectionChange, handleUpdate, handleResetPwd, submitForm, handleDelete }
   }
 })
 </script>
+<style lang="scss" scoped>
+.small-padding {
+  .cell {
+    padding-left: 5px;
+    padding-right: 5px;
+  }
+}
+
+.fixed-width {
+  .el-button--mini {
+    padding: 7px 10px;
+    width: 60px;
+  }
+}
+
+</style>
