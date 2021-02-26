@@ -33,10 +33,10 @@
       </el-form-item>
       <el-form-item
         label="类型"
-        prop="operatorType"
+        prop="businessType"
       >
         <el-select
-          v-model="queryParams.operatorType"
+          v-model="queryParams.businessType"
           placeholder="操作类型"
           clearable
         >
@@ -113,8 +113,7 @@
           type="danger"
           plain
           icon="el-icon-edit"
-          :disabled="single"
-          @click="handleUpdate"
+          @click="handleClean"
         >
           清空
         </el-button>
@@ -155,8 +154,8 @@
       <el-table-column
         label="操作类型"
         align="center"
-        prop="operatorType"
-        :show-overflow-tooltip="true"
+        prop="businessType"
+        :formatter="typeFormat"
       />
       <el-table-column
         label="请求方式"
@@ -167,25 +166,24 @@
         label="操作人员"
         align="center"
         prop="operName"
-        :formatter="typeFormat"
       />
       <el-table-column
         label="主机"
         align="center"
         prop="operIp"
-        :formatter="typeFormat"
+        :show-overflow-tooltip="true"
       />
       <el-table-column
         label="操作地点"
         align="center"
         prop="operLocation"
-        :formatter="typeFormat"
+        :show-overflow-tooltip="true"
       />
       <el-table-column
         label="操作状态"
         align="center"
         prop="status"
-        :show-overflow-tooltip="true"
+        :formatter="statusFormat"
       />
       <el-table-column
         label="操作日期"
@@ -230,8 +228,88 @@
       append-to-body
     >
       <el-row>
+        <el-col :span="12">
+          <div class="dialog-item">
+            <div class="dialog-tit">
+              操作模块:
+            </div>
+            <div>{{ formData.title }}/{{ formData.businessType }}</div>
+          </div>
+        </el-col>
+        <el-col :span="12">
+          <div class="dialog-item">
+            <div class="dialog-tit">
+              请求地址:
+            </div>
+            <div>{{ formData.operUrl }}</div>
+          </div>
+        </el-col>
+        <el-col :span="12">
+          <div class="dialog-item">
+            <div class="dialog-tit">
+              登录信息:
+            </div>
+            <div>{{ formData.operIp }}{{ formData.operLocation }}</div>
+          </div>
+        </el-col>
+        <el-col :span="12">
+          <div class="dialog-item">
+            <div class="dialog-tit">
+              请求方式:
+            </div>
+            <div>{{ formData.requestMethod }}</div>
+          </div>
+        </el-col>
         <el-col :span="24">
-          <span>参数名称: {{ formData.title }}</span>
+          <div class="dialog-item">
+            <div class="dialog-tit">
+              操作方法:
+            </div>
+            <div>{{ formData.method }}</div>
+          </div>
+        </el-col>
+        <el-col :span="24">
+          <div class="dialog-item">
+            <div class="dialog-tit">
+              请求参数:
+            </div>
+            <div>{{ formData.operParam }}</div>
+          </div>
+        </el-col>
+        <el-col :span="24">
+          <div class="dialog-item">
+            <div class="dialog-tit">
+              返回参数:
+            </div>
+            <div>{{ formData.jsonResult }}</div>
+          </div>
+        </el-col>
+        <el-col :span="12">
+          <div class="dialog-item">
+            <div class="dialog-tit">
+              操作状态:
+            </div>
+            <div>{{ formData.status }}</div>
+          </div>
+        </el-col>
+        <el-col :span="12">
+          <div class="dialog-item">
+            <div class="dialog-tit">
+              操作时间:
+            </div>
+            <div>{{ formData.operTime }}</div>
+          </div>
+        </el-col>
+        <el-col :span="24">
+          <div
+            class="dialog-item"
+            v-if="formData.errorMsg"
+          >
+            <div class="dialog-tit">
+              异常信息:
+            </div>
+            <div>{{ formData.errorMsg }}</div>
+          </div>
         </el-col>
       </el-row>
       <template #footer>
@@ -248,7 +326,7 @@
 </template>
 
 <script lang='ts'>
-import { listOperlog, getDicts, getConfig, delConfig, exportConfig } from '@/apis/system'
+import { listOperlog, getDicts, delOperlog, exportOperlog, cleanOperlog } from '@/apis/system'
 import { defineComponent, onMounted, reactive, toRefs, ref, unref } from 'vue'
 import { ElForm, ElMessage, ElMessageBox } from 'element-plus'
 import { download } from '@/utils/ruoyi'
@@ -284,7 +362,7 @@ export default defineComponent({
         status: '',
         operName: '',
         requestMethod: '',
-        operatorType: '',
+        businessType: '',
         title: '',
         operIp: '',
         operLocation: ''
@@ -293,8 +371,9 @@ export default defineComponent({
       queryParams: {
         pageNum: 1,
         pageSize: 10,
+        status: undefined,
         title: undefined,
-        operatorType: undefined,
+        businessType: undefined,
         operName: undefined
       }
     })
@@ -328,25 +407,84 @@ export default defineComponent({
 
     /** 查看详情操作 */
     const handleUpdate = (row: any) => {
-      // resetTable()
-      const operId = row.operId || dataMap.ids
-      getConfig(operId).then(response => {
-        console.log('response', response)
-        if (response?.code === 200) {
-          dataMap.formData = response.data
-          dataMap.open = true
-          // dataMap.title = '修改参数'
-        }
-      })
+      if (row.status === 0) {
+        row.status = '成功'
+      } else {
+        row.status = '失败'
+      }
+      if (row.businessType === 1) {
+        row.businessType = '新增'
+      } else if (row.businessType === 2) {
+        row.businessType = '修改'
+      } else if (row.businessType === 3) {
+        row.businessType = '删除'
+      } else if (row.businessType === 4) {
+        row.businessType = '授权'
+      } else if (row.businessType === 5) {
+        row.businessType = '导出'
+      } else if (row.businessType === 6) {
+        row.businessType = '导入'
+      } else if (row.businessType === 7) {
+        row.businessType = '强退'
+      } else if (row.businessType === 8) {
+        row.businessType = '生成代码'
+      }
+      dataMap.open = true
+      dataMap.formData = row
     }
 
+    // 取消按钮
+    const cancel = () => {
+      dataMap.open = false
+    }
     // 多选框选中数据
     const handleSelectionChange = (selection: any) => {
       dataMap.ids = selection.map((item: any) => item.operId)
       dataMap.single = selection.length !== 1
       dataMap.multiple = !selection.length
     }
-
+    /** 清空按钮操作 */
+    const handleClean = () => {
+      ElMessageBox.confirm('是否确认清空所有操作日志数据项?', '警告', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(function() {
+        return cleanOperlog(dataMap.queryParams)
+      }).then((res) => {
+        if (res?.code === 200) {
+          getList()
+          ElMessage.error('删除成功')
+        } else {
+          ElMessage.error(res?.msg)
+        }
+      })
+    }
+    // 类型
+    const typeFormat = (row: any) => {
+      if (row.businessType === 1) {
+        row.businessType = '新增'
+      } else if (row.businessType === 2) {
+        row.businessType = '修改'
+      } else if (row.businessType === 3) {
+        row.businessType = '删除'
+      } else if (row.businessType === 4) {
+        row.businessType = '授权'
+      } else if (row.businessType === 5) {
+        row.businessType = '导出'
+      } else if (row.businessType === 6) {
+        row.businessType = '导入'
+      } else if (row.businessType === 7) {
+        row.businessType = '强退'
+      } else if (row.businessType === 8) {
+        row.businessType = '生成代码'
+      }
+      return row.businessType
+    }
+    // 状态
+    const statusFormat = (row: any) => {
+      return row.status === 0 ? '成功' : ' 失败'
+    }
     /** 删除按钮操作 */
     const handleDelete = (row: any) => {
       const operId = row.operId || dataMap.ids
@@ -355,7 +493,7 @@ export default defineComponent({
         cancelButtonText: '取消',
         type: 'warning'
       }).then(function() {
-        return delConfig(operId)
+        return delOperlog(operId)
       }).then((res) => {
         if (res?.code === 200) {
           getList()
@@ -374,7 +512,7 @@ export default defineComponent({
         cancelButtonText: '取消',
         type: 'warning'
       }).then(function() {
-        return exportConfig(queryParams)
+        return exportOperlog(queryParams)
       }).then((response) => {
         download(response?.msg)
       })
@@ -389,7 +527,19 @@ export default defineComponent({
         dataMap.statusOptions = response?.data
       })
     })
-    return { ...toRefs(dataMap), handleExport, formDialog, getList, handleQuery, resetQuery, queryForm, handleUpdate, handleSelectionChange, handleDelete }
+    return { ...toRefs(dataMap), handleExport, formDialog, getList, handleQuery, typeFormat, statusFormat, cancel, resetQuery, queryForm, handleUpdate, handleClean, handleSelectionChange, handleDelete }
   }
 })
 </script>
+
+<style scoped>
+.dialog-item{
+  display: flex;
+  justify-content: flex-start;
+  line-height: 30px;
+  margin-right: 10px;
+}
+.dialog-tit{
+  width: 75px;
+}
+</style>
