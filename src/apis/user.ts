@@ -3,7 +3,7 @@
  * @Author: ZY
  * @Date: 2020-12-28 14:40:50
  * @LastEditors: ZY
- * @LastEditTime: 2021-02-20 16:26:16
+ * @LastEditTime: 2021-02-26 09:49:14
  */
 import { RootObject } from '@/model/rootObject'
 import { UserInfoModel, Users, UserDesc } from '@/model/userModel'
@@ -13,7 +13,7 @@ import { RequestParams, ContentType, Method } from 'axios-mapper'
 import { SmsModel } from '../model/imgModel'
 
 export const loginRequest = (userInfo: RequestParams) => {
-  return https(false).request<LoginModel>('login', Method.POST, userInfo, ContentType.json)
+  return https(false).request<LoginModel>('auth/login', Method.POST, userInfo, ContentType.json)
 }
 export const userInfoRequest = () => {
   return https().request<UserInfoModel<UserDesc>>('getInfo', Method.GET, undefined, ContentType.form)

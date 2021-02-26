@@ -3,7 +3,7 @@
  * @Author: ZY
  * @Date: 2021-02-23 15:09:41
  * @LastEditors: ZY
- * @LastEditTime: 2021-02-24 09:47:37
+ * @LastEditTime: 2021-02-25 15:48:24
 -->
 
 <template>
@@ -104,7 +104,20 @@
         width="100"
       >
         <template #default="scope">
-          <svg-icon :icon-class="scope.row.icon" />
+          <svg
+            class="icon"
+            aria-hidden="true"
+            font-size="20px"
+          >
+            <use :xlink:href="scope.row.icon" />
+          </svg>
+          <!-- <svg
+            class="icon"
+            aria-hidden="true"
+            font-size="20px"
+          >
+            <use xlink:href="#icondashboard" />
+          </svg> -->
         </template>
       </el-table-column>
       <el-table-column
@@ -180,9 +193,10 @@
       v-model="open"
       width="600px"
       append-to-body
+      @opened="showDialog"
     >
       <el-form
-        ref="addForm"
+        ref="dialogForm"
         :model="form"
         :rules="rules"
         label-width="80px"
@@ -190,13 +204,15 @@
         <el-row>
           <el-col :span="24">
             <el-form-item label="上级菜单">
-              <!-- <Treeselect
-                v-model="form.parentId"
+              <Treeselect
+                :props="props"
+                placeholder="请选择上级菜单"
+                :defalut="form.parentId"
                 :options="menuOptions"
-                :normalizer="normalizer"
-                :show-count="true"
-                placeholder="选择上级菜单"
-              /> -->
+                :originOptions="menuNoTreeList"
+                :accordion="isAccordion"
+                @getValue="getParentValue($event)"
+              />
             </el-form-item>
           </el-col>
           <el-col :span="24">
@@ -222,33 +238,10 @@
               v-if="form.menuType !== 'F'"
               label="菜单图标"
             >
-              <el-popover
-                placement="bottom-start"
-                width="460"
-                trigger="click"
-                @show="$refs['iconSelect'].reset()"
-              >
-                <!-- <IconSelect
-                  ref="iconSelect"
-                  @selected="selected"
-                /> -->
-                <el-input
-                  v-model="form.icon"
-                  placeholder="点击选择图标"
-                  readonly
-                >
-                  <svg-icon
-                    v-if="form.icon"
-                    :icon-class="form.icon"
-                    class="el-input__icon"
-                    style="height: 32px;width: 16px;"
-                  />
-                  <i
-                    v-else
-                    class="el-icon-search el-input__icon"
-                  />
-                </el-input>
-              </el-popover>
+              <el-input
+                v-model="form.icon"
+                placeholder="请前往iconfont 选择symbol图标粘贴"
+              />
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -301,32 +294,6 @@
               />
             </el-form-item>
           </el-col>
-          <el-col
-            :span="12"
-            v-if="form.menuType === 'C'"
-          >
-            <el-form-item
-              label="组件路径"
-              prop="component"
-            >
-              <el-input
-                v-model="form.component"
-                placeholder="请输入组件路径"
-              />
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item
-              v-if="form.menuType !== 'M'"
-              label="权限标识"
-            >
-              <el-input
-                v-model="form.perms"
-                placeholder="请权限标识"
-                maxlength="50"
-              />
-            </el-form-item>
-          </el-col>
           <el-col :span="12">
             <el-form-item
               v-if="form.menuType !== 'F'"
@@ -357,6 +324,32 @@
                   {{ dict.dictLabel }}
                 </el-radio>
               </el-radio-group>
+            </el-form-item>
+          </el-col>
+          <el-col
+            :span="12"
+            v-if="form.menuType === 'C'"
+          >
+            <el-form-item
+              label="组件路径"
+              prop="component"
+            >
+              <el-input
+                v-model="form.component"
+                placeholder="请输入组件路径"
+              />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item
+              v-if="form.menuType !== 'M'"
+              label="权限标识"
+            >
+              <el-input
+                v-model="form.perms"
+                placeholder="请权限标识"
+                maxlength="50"
+              />
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -396,27 +389,42 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onBeforeMount, reactive, toRefs, ref } from 'vue'
+import { defineComponent, onBeforeMount, reactive, toRefs, getCurrentInstance } from 'vue'
 import { listMenu, getMenu, delMenu, addMenu, updateMenu, getDicts } from '@/apis/system'
 import { DictKey } from '@/constant/dictKey'
 import { selectDictLabel, handleTree } from '@/utils/ruoyi'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { MenuModel } from '@/model/system/menuModel'
 import { parseTime } from '@/utils/index'
-
+import Treeselect from '@/components/tree-select/Index.vue'
 export default defineComponent({
+  components: {
+    Treeselect
+  },
   setup() {
-    const queryForm = ref(null)
-    const addForm = ref(null)
+    const { ctx } = getCurrentInstance() as any
+    // const queryForm = ref(null)
     const state = reactive({
       // 遮罩层
       loading: true,
       // 显示搜索条件
       showSearch: true,
       // 菜单表格树数据
+      menuNoTreeList: Array<MenuModel>(),
+      // 菜单表格树数据
       menuList: Array<MenuModel>(),
       // 菜单树选项
       menuOptions: [],
+      // 添加主类目，非菜单树数据源
+      menuMainSelectList: [],
+      props: { // 配置项（必选）
+        value: 'menuId',
+        label: 'menuName',
+        children: 'children'
+        // disabled:true
+      },
+      isClearable: true, // 可清空（可选）
+      isAccordion: true, // 可收起（可选）
       // 弹出层标题
       title: '',
       // 是否显示弹出层
@@ -445,6 +453,10 @@ export default defineComponent({
         ]
       }
     })
+
+    const getParentValue = (e: any) => {
+      console.log(e)
+    }
 
     /** 查询菜单列表 */
     const getList = () => {
@@ -479,11 +491,13 @@ export default defineComponent({
 
     /** 查询菜单下拉树结构 */
     const getTreeselect = () => {
-      listMenu(state.queryParams).then(response => {
+      listMenu({}).then(response => {
         state.menuOptions = []
         const menu = { menuId: 0, menuName: '主类目', children: [] }
         menu.children = response && handleTree(response.data, 'menuId');
         (state.menuOptions as any).push(menu)
+
+        state.menuNoTreeList = response && response.data as any
       })
     }
 
@@ -517,7 +531,8 @@ export default defineComponent({
         visible: '0',
         status: '0'
       } as any
-    //   (addForm.value as any).resetFields()
+
+      // (ctx.$refs.dialogForm as any).resetFields()
     }
 
     // 取消按钮
@@ -533,14 +548,13 @@ export default defineComponent({
 
     /** 重置按钮操作 */
     const resetQuery = () => {
-      (queryForm.value as any).resetFields()
+      (ctx.$refs.queryForm as any).resetFields()
       handleQuery()
     }
 
     /** 新增按钮操作 */
     const handleAdd = (row: MenuModel) => {
       reset()
-      getTreeselect()
       if (row !== null && row.menuId) {
         state.form.parentId = row.menuId
       } else {
@@ -553,9 +567,10 @@ export default defineComponent({
     /** 修改按钮操作 */
     const handleUpdate = (row: MenuModel) => {
       reset()
-      getTreeselect()
       getMenu(row.menuId.toString()).then(response => {
         state.form = response && response.data as any
+        console.log(state.form)
+
         state.open = true
         state.title = '修改菜单'
       })
@@ -563,7 +578,7 @@ export default defineComponent({
 
     /** 提交按钮 */
     const submitForm = () => {
-      (addForm.value as any).validate((valid: Boolean) => {
+      (ctx.$refs.dialogForm as any).validate((valid: Boolean) => {
         if (valid) {
           if (state.form.menuId !== undefined) {
             updateMenu(state.form).then(() => {
@@ -596,10 +611,14 @@ export default defineComponent({
       })
     }
 
+    const showDialog = () => {
+      getTreeselect()
+    }
+
     return {
       ...toRefs(state),
-      queryForm,
-      addForm,
+      showDialog,
+      getParentValue,
       normalizer,
       handleDelete,
       submitForm,
