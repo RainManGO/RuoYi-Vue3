@@ -187,7 +187,11 @@ export default defineComponent({
       redirect: '',
       otherQuery: {}
     })
-
+    const getSmsCode = async() => {
+      const result = await getCodeImg()
+      state.codeUrl = 'data:image/gif;base64,' + result?.img
+      state.loginForm.uuid = String(result?.uuid)
+    }
     const methods = reactive({
       validateUsername: (rule: any, value: string, callback: Function) => {
         if (!isValidUsername(value)) {
@@ -222,7 +226,11 @@ export default defineComponent({
         (loginFormRef.value as any).validate(async(valid: boolean) => {
           if (valid) {
             state.loading = true
-            await store.dispatch(UserActionTypes.ACTION_LOGIN, state.loginForm)
+            const params = {
+              userInfo: state.loginForm,
+              callback: getSmsCode
+            }
+            await store.dispatch(UserActionTypes.ACTION_LOGIN, params)
             router
               .push({
                 path: state.redirect || '/',
@@ -258,11 +266,6 @@ export default defineComponent({
       }
     })
 
-    const getSmsCode = async() => {
-      const result = await getCodeImg()
-      state.codeUrl = 'data:image/gif;base64,' + result?.img
-      state.loginForm.uuid = String(result?.uuid)
-    }
     onMounted(() => {
       getSmsCode()
       if (state.loginForm.username === '') {

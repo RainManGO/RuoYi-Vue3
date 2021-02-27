@@ -16,6 +16,7 @@ import { removeToken, setToken } from '@/utils/cookies'
 import { PermissionActionType } from '../permission/action-types'
 import router, { resetRouter } from '@/router'
 import { RouteRecordRaw } from 'vue-router'
+import { ElMessage } from 'element-plus'
 const OK = 200
 type AugmentedActionContext = {
   commit<K extends keyof Mutations>(
@@ -27,7 +28,7 @@ type AugmentedActionContext = {
 export interface Actions {
   [UserActionTypes.ACTION_LOGIN](
     { commit }: AugmentedActionContext,
-    userInfo: { username: string, password: string }
+   params: {userInfo: { username: string, password: string }, callback: Function}
   ): void
   [UserActionTypes.ACTION_RESET_TOKEN](
     { commit }: AugmentedActionContext
@@ -44,18 +45,23 @@ export interface Actions {
 }
 
 export const actions: ActionTree<UserState, RootState> & Actions = {
+
   async [UserActionTypes.ACTION_LOGIN](
     { commit }: AugmentedActionContext,
-    userInfo: { username: string, password: string }
+    params: { userInfo: { username: string, password: string }, callback: Function}
   ) {
-    await loginRequest(userInfo).then(async(res) => {
+    try {
+      const res = await loginRequest(params.userInfo)
       if (res?.code === OK && res.token) {
         setToken(res.token)
         commit(UserMutationTypes.SET_TOKEN, res.token)
+      } else {
+        ElMessage.error(res?.msg)
+        params.callback()
       }
-    }).catch((err) => {
-      console.log(err)
-    })
+    } catch (error) {
+      ElMessage.error(error)
+    }
   },
 
   [UserActionTypes.ACTION_RESET_TOKEN](
