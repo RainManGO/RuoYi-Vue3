@@ -2,8 +2,8 @@
  * @Description:表格数据接口
  * @Autor: scy😊
  * @Date: 2021-01-12 11:31:47
- * @LastEditors: ZY
- * @LastEditTime: 2021-02-23 18:03:59
+ * @LastEditors: WJM
+ * @LastEditTime: 2021-02-26 16:00:25
  */
 import https from '@/utils/https'
 import { RootObject } from '@/model/rootObject'
@@ -68,6 +68,49 @@ export const updateType = (data: any) => {
 // 导出字典类型
 export const exportType = (data: any) => {
   return https().request<RootObject<any>>('system/dict/type/export', Method.GET, data, ContentType.form)
+}
+
+//= ==============日志管理==================//
+// 查询操作日志列表
+export const listOperlog = (params: any) => {
+  console.log(params)
+  return https().request<any>('monitor/operlog/list', Method.GET, params, ContentType.form)
+}
+// 查询登录日志列表
+export const listLogin = (params: any) => {
+  console.log(params)
+  return https().request<any>('monitor/logininfor/list', Method.GET, params, ContentType.form)
+}
+
+// 删除登录日志
+export const delLogin = (infoId: any) => {
+  return https().request<RootObject<any>>(`monitor/logininfor/${infoId}/`, Method.DELETE, undefined, ContentType.form)
+}
+// 清空登录日志
+export const cleanLogin = (params: any) => {
+  console.log(params)
+  return https().request<any>('monitor/logininfor/clean', Method.DELETE, undefined, ContentType.form)
+}
+// 导出登录日志
+
+export const exportLogin = (data: any) => {
+  return https().request<RootObject<any>>('monitor/logininfor/export/', Method.GET, data, ContentType.form)
+}
+
+// 清空操作日志
+export const cleanOperlog = (params: any) => {
+  console.log(params)
+  return https().request<any>('monitor/operlog/clean', Method.DELETE, undefined, ContentType.form)
+}
+// 导出操作日志
+
+export const exportOperlog = (data: any) => {
+  return https().request<RootObject<any>>('monitor/operlog/export/', Method.GET, data, ContentType.form)
+}
+
+// 删除操作日志
+export const delOperlog = (operId: any) => {
+  return https().request<RootObject<any>>(`monitor/operlog/${operId}/`, Method.DELETE, undefined, ContentType.form)
 }
 
 //= ==============参数管理==================//

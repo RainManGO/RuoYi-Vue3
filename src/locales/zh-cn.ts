@@ -2,8 +2,8 @@
  * @Description:
  * @Author: ZY
  * @Date: 2020-12-28 17:18:24
- * @LastEditors: ZY
- * @LastEditTime: 2021-02-23 18:19:12
+ * @LastEditors: WJM
+ * @LastEditTime: 2021-02-26 15:34:17
  */
 
 export default {
@@ -78,6 +78,9 @@ export default {
     post: '岗位管理',
     role: '角色管理',
     notice: '通知公告',
+    log: '日志管理',
+    operlog: '操作日志',
+    logininfor: '登录日志',
     monitor: '系统监控',
     online: '在线用户',
     job: '定时任务',

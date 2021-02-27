@@ -2,12 +2,12 @@
  * @Description:
  * @Autor: scy😊
  * @Date: 2021-02-03 16:45:46
- * @LastEditors: ZY
- * @LastEditTime: 2021-02-23 18:23:44
+ * @LastEditors: WJM
+ * @LastEditTime: 2021-02-26 15:27:09
  */
 import { RouteRecordRaw } from 'vue-router'
 import Layout from '@/layout/Index.vue'
-
+import View from '@/components/view/Index.vue'
 const SystemRouter: Array<RouteRecordRaw> = [
   {
     path: '/system',
@@ -86,6 +86,34 @@ const SystemRouter: Array<RouteRecordRaw> = [
         path: 'notice',
         component: () => import(/* webpackChunkName: "system" */ '@/views/system/notice/Index.vue'),
         meta: { title: 'notice', icon: 'message', noCache: true }
+      },
+      {
+        name: 'log',
+        path: '/system/log',
+        redirect: 'noRedirect',
+        component: View,
+        meta: {
+          title: 'log',
+          icon: '#icontable'
+        },
+        children: [
+          {
+            path: 'operlog',
+            component: () => import(/* webpackChunkName: "system" */ '@/views/system/log/operlog.vue'),
+            name: 'operlog',
+            meta: {
+              title: 'operlog'
+            }
+          },
+          {
+            name: 'logininfor',
+            path: 'logininfor',
+            component: () => import(/* webpackChunkName: "system" */ '@/views/system/log/logininfor.vue'),
+            meta: {
+              title: 'logininfor'
+            }
+          }
+        ]
       },
       {
         name: 'user',

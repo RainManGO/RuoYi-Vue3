@@ -37,7 +37,7 @@ module.exports = {
     },
     proxy: {
       '/api': {     
-          target: 'https://boss-dev.rencaiyoujia.cn',  
+          target: 'http://vue.ruoyi.vip/prod-api',  
           ws: true,      
           secure: false, 
           changeOrigin: true, 
