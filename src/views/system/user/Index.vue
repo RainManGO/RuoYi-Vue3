@@ -577,9 +577,9 @@
 </template>
 
 <script lang='ts'>
-import { listUser, getUser, delUser, addUser, updateUser, exportUser, resetUserPwd, changeUserStatus, importTemplate } from '@/apis/user'
+import { listUser, getUser, delUser, addUser, updateUser, exportUser, resetUserPwd, changeUserStatus, importTemplate } from '@/apis/system/user'
 import { getToken } from '@/utils/cookies'
-import { treeselect } from '@/apis/dept'
+import { treeselect } from '@/apis/system/dept'
 
 import Treeselect from '@/components/tree-select/Index.vue'
 
@@ -588,7 +588,7 @@ import Treeselect from '@/components/tree-select/Index.vue'
 import { defineComponent, reactive, toRefs, ref, unref, onMounted, watchEffect } from 'vue'
 import { ElMessage, ElMessageBox, ElTree } from 'element-plus'
 import { download, parseTime } from '@/utils/ruoyi'
-import { getDicts, getConfigKey } from '@/apis/system'
+import { getDicts, getConfigKey } from '@/apis/system/system'
 
 export default defineComponent({
   components: {

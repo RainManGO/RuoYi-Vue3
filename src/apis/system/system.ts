@@ -8,7 +8,7 @@
 import https from '@/utils/https'
 import { RootObject } from '@/model/rootObject'
 import { ContentType, Method, RequestParams } from 'axios-mapper'
-import { ListTypeFace, ConfigModel } from '../model/imgModel'
+import { ListTypeFace, ConfigModel } from '@/model/imgModel'
 import { MenuModel } from '@/model/system/menuModel'
 //= ===========================字典管理==============================
 export const listData = (params: any) => {

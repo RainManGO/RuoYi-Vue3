@@ -282,7 +282,7 @@
 <script lang='ts'>
 
 // import { listPost, getPost, delPost, addPost, updatePost, exportPost, getDicts } from '@/apis/system'
-import { listPost, getDicts, updatePost, addPost, getPost, delPost, exportPost } from '@/apis/system'
+import { listPost, getDicts, updatePost, addPost, getPost, delPost, exportPost } from '@/apis/system/system'
 import { ElForm, ElMessage, ElMessageBox } from 'element-plus'
 import { download, parseTime } from '@/utils/ruoyi'
 import pagination from '@/components/pagination/Index.vue'

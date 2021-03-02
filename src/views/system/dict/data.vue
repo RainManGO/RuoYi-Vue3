@@ -313,7 +313,7 @@
 </template>
 
 <script lang='ts'>
-import { listData, getData, delData, addData, updateData, exportData, listType, getType, getDicts } from '@/apis/system'
+import { listData, getData, delData, addData, updateData, exportData, listType, getType, getDicts } from '@/apis/system/system'
 
 import { ElForm, ElMessage, ElMessageBox } from 'element-plus'
 import { defineComponent, onMounted, reactive, ref, toRefs, unref } from 'vue'

@@ -56,7 +56,7 @@
 
 <script lang='ts'>
 import { defineComponent, reactive, ref, toRefs, unref } from 'vue'
-import { updateUserPwd } from '@/apis/user'
+import { updateUserPwd } from '@/apis/system/user'
 import { ElForm, ElMessage } from 'element-plus'
 import { useRouter, useRoute } from 'vue-router'
 import { useStore } from '@/store'

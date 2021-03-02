@@ -326,7 +326,7 @@
 </template>
 
 <script lang='ts'>
-import { listOperlog, getDicts, delOperlog, exportOperlog, cleanOperlog } from '@/apis/system'
+import { listOperlog, getDicts, delOperlog, exportOperlog, cleanOperlog } from '@/apis/system/system'
 import { defineComponent, onMounted, reactive, toRefs, ref, unref } from 'vue'
 import { ElForm, ElMessage, ElMessageBox } from 'element-plus'
 import { download } from '@/utils/ruoyi'
