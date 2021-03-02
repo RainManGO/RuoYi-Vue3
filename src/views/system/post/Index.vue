@@ -285,9 +285,14 @@
 import { listPost, getDicts, updatePost, addPost, getPost, delPost, exportPost } from '@/apis/system'
 import { ElForm, ElMessage, ElMessageBox } from 'element-plus'
 import { download, parseTime } from '@/utils/ruoyi'
+import pagination from '@/components/pagination/Index.vue'
+
 import { defineComponent, onMounted, reactive, toRefs, ref, unref } from 'vue'
 
 export default defineComponent({
+  components: {
+    pagination
+  },
   setup() {
     const formNode = ref(ElForm)
     const dataMap = reactive({

@@ -223,8 +223,8 @@
       </el-table-column>
     </el-table>
 
-    <el-pagination
-      v-show="total > 0"
+    <pagination
+      v-show="total>0"
       :total="total"
       v-model:page="queryParams.pageNum"
       v-model:limit="queryParams.pageSize"
@@ -311,8 +311,12 @@ import { listType, getType, addType, updateType, getDicts, delType, exportType }
 import { ElForm, ElMessage, ElMessageBox } from 'element-plus'
 // import { ElMessage } from 'element-plus'
 import { download } from '@/utils/ruoyi'
+import pagination from '@/components/pagination/Index.vue'
 
 export default defineComponent({
+  components: {
+    pagination
+  },
   name: 'App',
   setup() {
     const postFormNode = ref(ElForm)

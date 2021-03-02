@@ -194,7 +194,12 @@ import { listLogin, getDicts, delLogin, exportLogin, cleanLogin } from '@/apis/s
 import { defineComponent, onMounted, reactive, toRefs, ref, unref } from 'vue'
 import { ElForm, ElMessage, ElMessageBox } from 'element-plus'
 import { download } from '@/utils/ruoyi'
+import pagination from '@/components/pagination/Index.vue'
+
 export default defineComponent({
+  components: {
+    pagination
+  },
   setup() {
     const queryForm = ref(ElForm)
     const formDialog = ref(ElForm)

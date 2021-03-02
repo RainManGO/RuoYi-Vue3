@@ -295,9 +295,11 @@ import { getDicts } from '@/apis/system'
 import { selectDictLabel, parseTime } from '@/utils/ruoyi'
 import Editor from '@/components/editor/Index.vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
+import pagination from '@/components/pagination/Index.vue'
 export default defineComponent({
   components: {
-    Editor
+    Editor,
+    pagination
   },
   setup() {
     const queryForm = ref<HTMLInputElement | null>(null)
