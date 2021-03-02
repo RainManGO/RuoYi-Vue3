@@ -318,7 +318,7 @@
 
 <script lang='ts'>
 // import { listConfig, getConfig, delConfig, exportConfig, clearCache, getDicts } from '@/apis/system'
-import { listConfig, getDicts, updateConfig, addConfig, getConfig, delConfig, exportConfig } from '@/apis/system'
+import { listConfig, getDicts, updateConfig, addConfig, getConfig, delConfig, exportConfig } from '@/apis/system/system'
 import { defineComponent, onMounted, reactive, toRefs, ref, unref } from 'vue'
 import { ElForm, ElMessage, ElMessageBox } from 'element-plus'
 import { download, parseTime } from '@/utils/ruoyi'

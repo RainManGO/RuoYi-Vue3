@@ -128,7 +128,7 @@ import { defineComponent, reactive, toRefs, ref } from 'vue'
 import { useStore } from '@/store'
 import { ElMessage } from 'element-plus'
 import { UserMutationTypes } from '@/store/modules/user/mutation-types'
-import { uploadAvatar } from '@/apis/user'
+import { uploadAvatar } from '@/apis/system/user'
 import VueCropper from 'vue-cropperjs'
 import 'cropperjs/dist/cropper.css'
 export default defineComponent({

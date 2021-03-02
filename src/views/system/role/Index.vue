@@ -434,11 +434,11 @@
 
 <script lang='ts'>
 import { defineComponent, onMounted, reactive, toRefs, ref, unref, nextTick } from 'vue'
-import { listRole, getRole, exportRole, delRole, dataScope, changeRoleStatus, updateRole, addRole } from '@/apis/role'
-import { getDicts } from '@/apis/system'
+import { listRole, getRole, exportRole, delRole, dataScope, changeRoleStatus, updateRole, addRole } from '@/apis/system/role'
+import { getDicts } from '@/apis/system/system'
 import { download } from '@/utils/ruoyi'
-import { treeselect as menuTreeselect, roleMenuTreeselect } from '@/apis/Treeselect'
-import { treeselect as deptTreeselect, roleDeptTreeselect } from '@/apis/dept'
+import { treeselect as menuTreeselect, roleMenuTreeselect } from '@/apis/system/Treeselect'
+import { treeselect as deptTreeselect, roleDeptTreeselect } from '@/apis/system/dept'
 import { ElForm, ElMessage, ElMessageBox } from 'element-plus'
 import pagination from '@/components/pagination/Index.vue'
 export default defineComponent({

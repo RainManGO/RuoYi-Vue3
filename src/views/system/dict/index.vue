@@ -307,7 +307,7 @@
 
 <script lang="ts">
 import { reactive, toRefs, defineComponent, onMounted, ref, unref } from 'vue'
-import { listType, getType, addType, updateType, getDicts, delType, exportType } from '@/apis/system'
+import { listType, getType, addType, updateType, getDicts, delType, exportType } from '@/apis/system/system'
 import { ElForm, ElMessage, ElMessageBox } from 'element-plus'
 // import { ElMessage } from 'element-plus'
 import { download } from '@/utils/ruoyi'
