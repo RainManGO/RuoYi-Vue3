@@ -96,7 +96,7 @@
 import userAvatar from './userAvatar.vue'
 import userInfo from './userInfo.vue'
 import resetPwd from './resetPwd.vue'
-import { getUserProfile } from '@/apis/system/user'
+import { getUserProfile } from '@/apis/user'
 import { defineComponent, onMounted, reactive, toRefs } from 'vue'
 export default defineComponent({
   name: 'Profile',

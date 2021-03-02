@@ -154,7 +154,7 @@ import { useRoute, LocationQuery, useRouter } from 'vue-router'
 import { useStore } from '@/store'
 import { UserActionTypes } from '@/store/modules/user/action-types'
 import { useI18n } from 'vue-i18n'
-import { getCodeImg } from '@/apis/system/user'
+import { getCodeImg } from '@/apis/user'
 export default defineComponent({
   components: {
     LangSelect,

@@ -14,7 +14,7 @@ import { PermissionMutationType } from './mutation-types'
 import { PermissionActionType } from './action-types'
 // import { asyncRoutes } from '@/router'
 import { RouteRecordRaw } from 'vue-router'
-import { getRoutesList } from '@/apis/system/menu'
+import { getRoutesList } from '@/apis/menu'
 import { asyncJsonRoutes } from '@/utils/routeHelper'
 type AugmentedActionContext = {
     commit<K extends keyof Mutations>(

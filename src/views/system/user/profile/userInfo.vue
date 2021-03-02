@@ -59,7 +59,7 @@
 </template>
 
 <script>
-import { updateUserProfile } from '@/apis/system/user'
+import { updateUserProfile } from '@/apis/user'
 import { useStore } from '@/store'
 import { TagsActionTypes } from '@/store/modules/tagsview/action-types'
 import { ElMessage } from 'element-plus'

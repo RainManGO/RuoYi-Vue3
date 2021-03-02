@@ -481,11 +481,8 @@
 <script lang="ts">
 import { defineComponent, reactive, toRefs } from 'vue'
 // import { listJob, getJob, delJob, addJob, updateJob, exportJob, runJob, changeJobStatus } from '@/apis/monitor/job'
-import pagination from '@/components/pagination/Index.vue'
+
 export default defineComponent({
-  components: {
-    pagination
-  },
   setup() {
     const state = reactive({
       // 遮罩层
@@ -499,7 +496,7 @@ export default defineComponent({
       // 显示搜索条件
       showSearch: true,
       // 总条数
-      total: 100,
+      total: 0,
       // 定时任务表格数据
       jobList: [],
       // 弹出层标题

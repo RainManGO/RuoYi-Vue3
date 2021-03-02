@@ -157,7 +157,7 @@ import {
 } from 'vue'
 import { isValidURL } from '@/utils/validate'
 import { getArticle, defaultArticleModel } from '@/apis/articles'
-import { getUsers } from '@/apis/system/user'
+import { getUsers } from '@/apis/user'
 import { TagView } from '@/store/modules/tagsview/state'
 import MaterialInput from '@/components/material-input/Index.vue'
 import Sticky from '@/components/sticky/Index.vue'

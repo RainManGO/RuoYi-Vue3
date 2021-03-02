@@ -190,7 +190,7 @@
 </template>
 
 <script lang='ts'>
-import { listLogin, getDicts, delLogin, exportLogin, cleanLogin } from '@/apis/system/system'
+import { listLogin, getDicts, delLogin, exportLogin, cleanLogin } from '@/apis/system'
 import { defineComponent, onMounted, reactive, toRefs, ref, unref } from 'vue'
 import { ElForm, ElMessage, ElMessageBox } from 'element-plus'
 import { download } from '@/utils/ruoyi'

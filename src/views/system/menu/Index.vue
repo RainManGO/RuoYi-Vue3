@@ -390,7 +390,7 @@
 
 <script lang="ts">
 import { defineComponent, onBeforeMount, reactive, toRefs, getCurrentInstance } from 'vue'
-import { listMenu, getMenu, delMenu, addMenu, updateMenu, getDicts } from '@/apis/system/system'
+import { listMenu, getMenu, delMenu, addMenu, updateMenu, getDicts } from '@/apis/system'
 import { DictKey } from '@/constant/dictKey'
 import { selectDictLabel, handleTree } from '@/utils/ruoyi'
 import { ElMessage, ElMessageBox } from 'element-plus'

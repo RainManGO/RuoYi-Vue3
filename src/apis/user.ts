@@ -10,7 +10,7 @@ import { UserInfoModel, Users, UserDesc } from '@/model/userModel'
 import https from '@/utils/https'
 import { LoginModel } from '@/views/user-manager/login/model/loginModel'
 import { RequestParams, ContentType, Method } from 'axios-mapper'
-import { SmsModel } from '@/model/imgModel'
+import { SmsModel } from '../model/imgModel'
 import { praseStrEmpty } from '@/utils/ruoyi'
 export const loginRequest = (userInfo: RequestParams) => {
   return https(false).request<LoginModel>('login', Method.POST, userInfo, ContentType.json)

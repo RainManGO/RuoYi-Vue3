@@ -290,8 +290,8 @@
 
 <script lang='ts'>
 import { defineComponent, onMounted, reactive, toRefs, ref, unref } from 'vue'
-import { listNotice, getNotice, delNotice, addNotice, updateNotice } from '@/apis/system/notice'
-import { getDicts } from '@/apis/system/system'
+import { listNotice, getNotice, delNotice, addNotice, updateNotice } from '@/apis/notice'
+import { getDicts } from '@/apis/system'
 import { selectDictLabel, parseTime } from '@/utils/ruoyi'
 import Editor from '@/components/editor/Index.vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
