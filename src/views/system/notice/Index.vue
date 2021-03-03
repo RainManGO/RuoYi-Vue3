@@ -417,7 +417,7 @@ export default defineComponent({
     }
     /** 提交按钮 */
     const submitForm = () => {
-      (queryForm.value as any).validate((valid: any) => {
+      (queryForm.value as any).validate((valid: Boolean) => {
         if (valid) {
           if (dataMap.formVal.noticeId !== undefined) {
             updateNotice(dataMap.formVal).then(() => {
@@ -436,7 +436,7 @@ export default defineComponent({
       })
     }
     /** 删除按钮操作 */
-    const handleDelete = (row: any) => {
+    const handleDelete = (row: {[key: string]: any}) => {
       const noticeIds = row.noticeId || dataMap.ids
       ElMessageBox.confirm('是否确认删除公告编号为"' + noticeIds + '"的数据项?', '警告', {
         confirmButtonText: '确定',
@@ -459,6 +459,7 @@ export default defineComponent({
         dataMap.typeOptions = response?.data
       })
     })
+
     return { ...toRefs(dataMap), parseTime, typeFormat, statusFormat, getList, reset, cancel, resetQuery, handleAdd, handleSelectionChange, queryForm, handleDelete, handleUpdate, submitForm, handleQuery }
   }
 })

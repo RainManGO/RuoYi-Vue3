@@ -86,7 +86,8 @@ export default {
     job: '定时任务',
     dict: '字典管理',
     user: '用户管理',
-    dictdata: '字典数据'
+    dictdata: '字典数据',
+    cache: '缓存监控'
   },
   navbar: {
     logOut: '退出登录',

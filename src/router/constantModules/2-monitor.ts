@@ -38,6 +38,16 @@ const MonitorRouter: Array<RouteRecordRaw> = [
           icon: 'job',
           noCache: true
         }
+      },
+      {
+        path: 'cache',
+        component: () => import(/* webpackChunkName: "system" */ '@/views/monitor/cache/Index.vue'),
+        name: 'cache',
+        meta: {
+          title: 'cache',
+          icon: 'cache',
+          noCache: true
+        }
       }
     ]
   }
