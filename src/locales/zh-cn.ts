@@ -87,7 +87,9 @@ export default {
     dict: '字典管理',
     user: '用户管理',
     dictdata: '字典数据',
-    cache: '缓存监控'
+    cache: '缓存监控',
+    server: '服务监控',
+    druid: '数据监控'
   },
   navbar: {
     logOut: '退出登录',

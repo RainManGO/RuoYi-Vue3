@@ -18,7 +18,7 @@ export const listJob = (query: RequestParams) => {
 
 // 查询定时任务调度详细
 export const getJob = (jobId: string) => {
-  return https().request<RootPageObject<JobModel>>(`monitor/job/${jobId}`, Method.GET)
+  return https().request<any>(`monitor/job/${jobId}`, Method.GET)
 }
 
 // 新增定时任务调度

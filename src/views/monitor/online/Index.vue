@@ -208,7 +208,6 @@ export default defineComponent({
         res?.code === 0 ? ElMessage.success('强退成功') : ElMessage.error(res.msg)
       })
     }
-
     onBeforeMount(() => {
       getList()
     })

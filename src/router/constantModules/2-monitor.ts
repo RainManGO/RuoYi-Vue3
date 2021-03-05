@@ -31,7 +31,7 @@ const MonitorRouter: Array<RouteRecordRaw> = [
       },
       {
         path: 'job',
-        component: () => import(/* webpackChunkName: "system" */ '@/views/monitor/job/Index.vue'),
+        component: () => import(/* webpackChunkName: "job" */ '@/views/monitor/job/Index.vue'),
         name: 'Job',
         meta: {
           title: 'job',
@@ -40,12 +40,42 @@ const MonitorRouter: Array<RouteRecordRaw> = [
         }
       },
       {
+        path: 'job/log',
+        component: () => import(/* webpackChunkName: "job" */ '@/views/monitor/job/log.vue'),
+        name: 'jobLog',
+        meta: {
+          title: 'jobLog',
+          icon: 'jobLog',
+          noCache: true
+        }
+      },
+      {
         path: 'cache',
-        component: () => import(/* webpackChunkName: "system" */ '@/views/monitor/cache/Index.vue'),
+        component: () => import(/* webpackChunkName: "cache" */ '@/views/monitor/cache/Index.vue'),
         name: 'cache',
         meta: {
           title: 'cache',
           icon: 'cache',
+          noCache: true
+        }
+      },
+      {
+        path: 'server',
+        component: () => import(/* webpackChunkName: "server" */ '@/views/monitor/server/Index.vue'),
+        name: 'server',
+        meta: {
+          title: 'server',
+          icon: 'server',
+          noCache: true
+        }
+      },
+      {
+        path: 'druid',
+        component: () => import(/* webpackChunkName:"druid" */ '@/views/monitor/druid/Index.vue'),
+        name: 'druid',
+        meta: {
+          title: 'druid',
+          icon: 'druid',
           noCache: true
         }
       }
