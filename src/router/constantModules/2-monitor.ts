@@ -46,7 +46,8 @@ const MonitorRouter: Array<RouteRecordRaw> = [
         meta: {
           title: 'jobLog',
           icon: 'jobLog',
-          noCache: true
+          noCache: true,
+          hidden: true
         }
       },
       {
