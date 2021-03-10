@@ -23,7 +23,7 @@ const SystemRouter: Array<RouteRecordRaw> = [
         path: 'dict/type/data/:id',
         component: () => import(/* webpackChunkName: "system" */ '@/views/system/dict/data.vue'),
         name: 'Data',
-        meta: { title: '字典数据', icon: '', hiddden: true }
+        meta: { title: '字典数据', icon: '', hidden: true }
       },
 
       {
@@ -88,6 +88,12 @@ const SystemRouter: Array<RouteRecordRaw> = [
         meta: { title: 'notice', icon: 'message', noCache: true }
       },
       {
+        name: 'user',
+        path: 'user',
+        component: () => import(/* webpackChunkName: "system" */ '@/views/system/user/Index.vue'),
+        meta: { title: 'user', icon: 'user', noCache: true }
+      },
+      {
         name: 'log',
         path: '/system/log',
         redirect: 'noRedirect',
@@ -114,13 +120,8 @@ const SystemRouter: Array<RouteRecordRaw> = [
             }
           }
         ]
-      },
-      {
-        name: 'user',
-        path: 'user',
-        component: () => import(/* webpackChunkName: "system" */ '@/views/system/user/Index.vue'),
-        meta: { title: 'user', icon: 'user', noCache: true }
       }
+
     ]
   }
 ]

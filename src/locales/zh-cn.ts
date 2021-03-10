@@ -89,7 +89,9 @@ export default {
     dictdata: '字典数据',
     cache: '缓存监控',
     server: '服务监控',
-    druid: '数据监控'
+    druid: '数据监控',
+    swagger: '系统接口',
+    tool: '系统工具'
   },
   navbar: {
     logOut: '退出登录',

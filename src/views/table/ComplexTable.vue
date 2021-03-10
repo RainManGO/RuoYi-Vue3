@@ -616,7 +616,6 @@ export default defineComponent({
       }
     })
     onMounted(() => {
-      console.log(typeof ElForm)
       dataMap.getList(null, null, 20)
     })
     return { t, ...toRefs(dataMap), dataForm }
