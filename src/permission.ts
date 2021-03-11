@@ -51,9 +51,10 @@ router.beforeEach(async(to: RouteLocationNormalized, _: RouteLocationNormalized,
           const accessRoutes = await store.dispatch(PermissionActionType.ACTION_SET_ROUTES, undefined)
           // Dynamically add accessible routes
           console.log(accessRoutes)
-          // accessRoutes.forEach((route) => {
-          //   router.addRoute(route)
-          // })
+          accessRoutes.forEach((route) => {
+            console.log(route, '==================================')
+            router.addRoute(route)
+          })
           // Hack: ensure addRoutes is complete
           // Set the replace: true, so the navigation will not leave a history record
           next({ ...to, replace: true })

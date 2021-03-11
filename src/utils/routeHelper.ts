@@ -6,18 +6,21 @@
  * @LastEditTime: 2021-02-03 08:25:40
  */
 import layout from '@/layout/Index.vue'
+import ParentView from '@/components/ParentView/Index.vue'
 // import { RemoteRoute } from '@/model/remoteRouteModel'
-
-export const asyncJsonRoutes = (routes: any[]) => {
-  const asyncRouters = routes.filter(route => {
+const loadView = (view: string) => {
+  const viewReg = view.replace('index', 'Index')
+  return () => require(`@/views/${viewReg}.vue`)
+}
+export const asyncJsonRoutes = (routes: any) => {
+  const asyncRouters = routes.filter((route: any) => {
     if (route.component) {
       if (route.component === 'Layout') {
         route.component = layout
+      } else if (route.component === 'ParentView') {
+        route.component = ParentView
       } else {
-        // const name = route.component
-        console.log(import('@/views/charts/BarChartDemo.vue'))
-        route.component = import('@/views/charts/BarChartDemo.vue')
-        // route.component = () => import(`@/${name}.vue`)
+        route.component = loadView(route.component)
       }
     }
     // 如果有子路由，递归添加
