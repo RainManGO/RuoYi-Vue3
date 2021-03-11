@@ -59,7 +59,7 @@ export const actions: ActionTree<PermissionState, RootState> & Actions = {
     { commit }: AugmentedActionContext) {
     return new Promise((resolve, reject) => {
       getRoutesList().then(response => {
-        const menus = [response?.data[0]]
+        const menus = response?.data.slice(0, 2)
         if (menus) {
           const remoteRoutes = asyncJsonRoutes(menus)
           commit(PermissionMutationType.SET_ROUTES, remoteRoutes)
