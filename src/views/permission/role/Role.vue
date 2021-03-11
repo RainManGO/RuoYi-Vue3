@@ -124,7 +124,7 @@
 <script lang="ts">
 import { computed, defineComponent, onBeforeMount, reactive, toRefs, ref, nextTick, getCurrentInstance } from 'vue'
 import { RouteRecordRaw } from 'vue-router'
-import { getRoutes, getRoles, delRole, updateRole, createRole } from '@/apis/roles'
+import { getRoutes, getRoles, delRole, updateRole, createRole } from '@/apis/system/roles'
 import { resolve } from 'path'
 import { useI18n } from 'vue-i18n'
 import editRole from './editRole'

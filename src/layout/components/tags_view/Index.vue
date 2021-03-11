@@ -26,7 +26,7 @@
         @click.middle="!isAffix(tag)?closeSelectedTag(tag):''"
         @contextmenu.prevent="openMenu(tag, $event)"
       >
-        {{ t('route.' + tag.meta.title) }}
+        {{ tag.meta.title }}
         <span
           v-if="!isAffix(tag)"
           class="el-icon-close"

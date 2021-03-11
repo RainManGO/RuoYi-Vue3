@@ -157,9 +157,9 @@
         prop="createTime"
         width="180"
       >
-        <!-- <template #default="scope">
+        <template #default="scope">
           <span>{{ parseTime(scope.row.createTime) }}</span>
-        </template> -->
+        </template>
       </el-table-column>
       <el-table-column
         label="操作"
@@ -282,12 +282,17 @@
 <script lang='ts'>
 
 // import { listPost, getPost, delPost, addPost, updatePost, exportPost, getDicts } from '@/apis/system'
-import { listPost, getDicts, updatePost, addPost, getPost, delPost, exportPost } from '@/apis/system'
+import { listPost, getDicts, updatePost, addPost, getPost, delPost, exportPost } from '@/apis/system/system'
 import { ElForm, ElMessage, ElMessageBox } from 'element-plus'
-import { download } from '@/utils/ruoyi'
+import { download, parseTime } from '@/utils/ruoyi'
+import pagination from '@/components/pagination/Index.vue'
+
 import { defineComponent, onMounted, reactive, toRefs, ref, unref } from 'vue'
 
 export default defineComponent({
+  components: {
+    pagination
+  },
   setup() {
     const formNode = ref(ElForm)
     const dataMap = reactive({
@@ -449,59 +454,7 @@ export default defineComponent({
       })
     })
 
-    return { ...toRefs(dataMap), getList, handleQuery, statusFormat, handleAdd, submitForm, formNode, resetTable, handleUpdate, handleSelectionChange, handleDelete, handleExport }
+    return { ...toRefs(dataMap), parseTime, getList, handleQuery, statusFormat, handleAdd, submitForm, formNode, resetTable, handleUpdate, handleSelectionChange, handleDelete, handleExport }
   }
 })
-// export default {
-
-//   created() {
-
-//   },
-
-//   methods: {
-//     /** 查询岗位列表 */
-
-//     // 岗位状态字典翻译
-//     statusFormat(row, column) {
-//       return this.selectDictLabel(this.statusOptions, row.status)
-//     },
-//     // 取消按钮
-//     cancel() {
-//       this.open = false
-//       this.reset()
-//     },
-//     // 表单重置
-//     reset() {
-//       this.form = {
-//         postId: undefined,
-//         postCode: undefined,
-//         postName: undefined,
-//         postSort: 0,
-//         status: '0',
-//         remark: undefined
-//       }
-//       this.resetForm('form')
-//     },
-//
-//     /** 重置按钮操作 */
-//     resetQuery() {
-//       this.resetForm('queryForm')
-//       this.handleQuery()
-//     },
-
-//     /** 导出按钮操作 */
-//     handleExport() {
-//       const queryParams = this.queryParams
-//       this.$confirm('是否确认导出所有岗位数据项?', '警告', {
-//         confirmButtonText: '确定',
-//         cancelButtonText: '取消',
-//         type: 'warning'
-//       }).then(function() {
-//         return exportPost(queryParams)
-//       }).then(response => {
-//         this.download(response.msg)
-//       })
-//     }
-//   }
-// }
 </script>

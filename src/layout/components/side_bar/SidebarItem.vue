@@ -30,7 +30,7 @@
           </svg>
           <span
             v-if="theOnlyOneChild.meta.title"
-          >{{ t('route.' + theOnlyOneChild.meta.title) }}</span>
+          >{{ theOnlyOneChild.meta.title }}</span>
         </el-menu-item>
       </SidebarItemLink>
     </template>
@@ -50,7 +50,7 @@
         </svg>
         <span
           v-if="item.meta && item.meta.title"
-        >{{ t('route.' +item.meta.title) }}</span>
+        >{{ item.meta.title }}</span>
       </template>
       <template v-if="item.children">
         <sidebar-item

@@ -14,7 +14,7 @@ import { PermissionMutationType } from './mutation-types'
 import { PermissionActionType } from './action-types'
 // import { asyncRoutes } from '@/router'
 import { RouteRecordRaw } from 'vue-router'
-import { getRoutesList } from '@/apis/menu'
+import { getRoutesList } from '@/apis/system/menu'
 import { asyncJsonRoutes } from '@/utils/routeHelper'
 type AugmentedActionContext = {
     commit<K extends keyof Mutations>(
@@ -59,7 +59,7 @@ export const actions: ActionTree<PermissionState, RootState> & Actions = {
     { commit }: AugmentedActionContext) {
     return new Promise((resolve, reject) => {
       getRoutesList().then(response => {
-        const menus = [response?.data[0]]
+        const menus = response?.data.slice(0, 2)
         if (menus) {
           const remoteRoutes = asyncJsonRoutes(menus)
           commit(PermissionMutationType.SET_ROUTES, remoteRoutes)

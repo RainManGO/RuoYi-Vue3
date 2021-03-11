@@ -2,8 +2,8 @@
  * @Description: 菜单管理
  * @Author: ZY
  * @Date: 2021-02-23 15:09:41
- * @LastEditors: ZY
- * @LastEditTime: 2021-02-25 15:48:24
+ * @LastEditors: scy😊
+ * @LastEditTime: 2021-02-26 14:21:13
 -->
 
 <template>
@@ -205,7 +205,7 @@
           <el-col :span="24">
             <el-form-item label="上级菜单">
               <Treeselect
-                :props="props"
+                :treeProps="props"
                 placeholder="请选择上级菜单"
                 :defalut="form.parentId"
                 :options="menuOptions"
@@ -390,7 +390,7 @@
 
 <script lang="ts">
 import { defineComponent, onBeforeMount, reactive, toRefs, getCurrentInstance } from 'vue'
-import { listMenu, getMenu, delMenu, addMenu, updateMenu, getDicts } from '@/apis/system'
+import { listMenu, getMenu, delMenu, addMenu, updateMenu, getDicts } from '@/apis/system/system'
 import { DictKey } from '@/constant/dictKey'
 import { selectDictLabel, handleTree } from '@/utils/ruoyi'
 import { ElMessage, ElMessageBox } from 'element-plus'

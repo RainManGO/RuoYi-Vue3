@@ -164,7 +164,7 @@
         width="100"
       >
         <template #default="scope">
-          <span>{{ scope.row.createTime.slice(0.11) }}</span>
+          <span>{{ parseTime(scope.row.createTime,'{y}-{m}-{d}' ) }}</span>
         </template>
       </el-table-column>
       <el-table-column
@@ -290,14 +290,16 @@
 
 <script lang='ts'>
 import { defineComponent, onMounted, reactive, toRefs, ref, unref } from 'vue'
-import { listNotice, getNotice, delNotice, addNotice, updateNotice } from '@/apis/notice'
-import { getDicts } from '@/apis/system'
-import { selectDictLabel } from '@/utils/ruoyi'
+import { listNotice, getNotice, delNotice, addNotice, updateNotice } from '@/apis/system/notice'
+import { getDicts } from '@/apis/system/system'
+import { selectDictLabel, parseTime } from '@/utils/ruoyi'
 import Editor from '@/components/editor/Index.vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
+import pagination from '@/components/pagination/Index.vue'
 export default defineComponent({
   components: {
-    Editor
+    Editor,
+    pagination
   },
   setup() {
     const queryForm = ref<HTMLInputElement | null>(null)
@@ -415,7 +417,7 @@ export default defineComponent({
     }
     /** 提交按钮 */
     const submitForm = () => {
-      (queryForm.value as any).validate((valid: any) => {
+      (queryForm.value as any).validate((valid: Boolean) => {
         if (valid) {
           if (dataMap.formVal.noticeId !== undefined) {
             updateNotice(dataMap.formVal).then(() => {
@@ -434,7 +436,7 @@ export default defineComponent({
       })
     }
     /** 删除按钮操作 */
-    const handleDelete = (row: any) => {
+    const handleDelete = (row: {[key: string]: any}) => {
       const noticeIds = row.noticeId || dataMap.ids
       ElMessageBox.confirm('是否确认删除公告编号为"' + noticeIds + '"的数据项?', '警告', {
         confirmButtonText: '确定',
@@ -457,7 +459,8 @@ export default defineComponent({
         dataMap.typeOptions = response?.data
       })
     })
-    return { ...toRefs(dataMap), typeFormat, statusFormat, getList, reset, cancel, resetQuery, handleAdd, handleSelectionChange, queryForm, handleDelete, handleUpdate, submitForm, handleQuery }
+
+    return { ...toRefs(dataMap), parseTime, typeFormat, statusFormat, getList, reset, cancel, resetQuery, handleAdd, handleSelectionChange, queryForm, handleDelete, handleUpdate, submitForm, handleQuery }
   }
 })
 

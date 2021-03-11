@@ -152,8 +152,12 @@ import { list, forceLogout } from '@/apis/monitor/online'
 import { OnlineUserModel } from '@/model/monitor/onlineUserModel'
 import { ElMessageBox, ElMessage } from 'element-plus'
 import { parseTime } from '@/utils/index'
+import pagination from '@/components/pagination/Index.vue'
 export default defineComponent({
   name: 'Online',
+  components: {
+    pagination
+  },
   setup() {
     const queryForm = ref(null)
     const state = reactive({
@@ -199,12 +203,11 @@ export default defineComponent({
         type: 'warning'
       }).then(function() {
         return forceLogout(model.tokenId)
-      }).then(() => {
+      }).then((res: any) => {
         getList()
-        ElMessage.success('强退成功')
+        res?.code === 0 ? ElMessage.success('强退成功') : ElMessage.error(res.msg)
       })
     }
-
     onBeforeMount(() => {
       getList()
     })

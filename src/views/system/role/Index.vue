@@ -273,9 +273,9 @@
           prop="roleSort"
         >
           <el-input-number
-            v-model="formVal.roleSort"
+            v-model="roleSort"
             controls-position="right"
-            :min="1"
+            :min="0"
           />
         </el-form-item>
         <el-form-item label="状态">
@@ -433,18 +433,20 @@
 </template>
 
 <script lang='ts'>
-import { defineComponent, onMounted, reactive, toRefs, ref, unref } from 'vue'
-// import { listRole, changeRoleStatus } from '@/apis/role'
-import { listRole, getRole, exportRole, delRole, dataScope, changeRoleStatus, updateRole, addRole } from '@/apis/role'
-import { getDicts } from '@/apis/system'
+import { defineComponent, onMounted, reactive, toRefs, ref, unref, nextTick } from 'vue'
+import { listRole, getRole, exportRole, delRole, dataScope, changeRoleStatus, updateRole, addRole } from '@/apis/system/role'
+import { getDicts } from '@/apis/system/system'
 import { download } from '@/utils/ruoyi'
-
-import { treeselect as menuTreeselect, roleMenuTreeselect } from '@/apis/Treeselect'
-import { treeselect as deptTreeselect, roleDeptTreeselect } from '@/apis/dept'
+import { treeselect as menuTreeselect, roleMenuTreeselect } from '@/apis/system/Treeselect'
+import { treeselect as deptTreeselect, roleDeptTreeselect } from '@/apis/system/dept'
 import { ElForm, ElMessage, ElMessageBox } from 'element-plus'
-import { nextTick } from 'process'
+import pagination from '@/components/pagination/Index.vue'
 export default defineComponent({
+  components: {
+    pagination
+  },
   setup() {
+    const roleSort = ref('1')
     const formRef = ref(ElForm)
     const deptRef = ref<HTMLInputElement | null>(null)
     const menuTreeData = ref<HTMLInputElement | null>(null)
@@ -517,7 +519,7 @@ export default defineComponent({
         roleId: '',
         roleName: '',
         roleKey: '',
-        roleSort: 0,
+        roleSort: '0',
         status: '0',
         menuIds: [],
         deptIds: [],
@@ -601,7 +603,7 @@ export default defineComponent({
         roleId: '',
         roleName: '',
         roleKey: '',
-        roleSort: 0,
+        roleSort: '',
         status: '0',
         menuIds: [],
         deptIds: [],
@@ -620,24 +622,17 @@ export default defineComponent({
     }
 
     /** 修改按钮操作 */
-    const handleUpdate = (row: any) => {
+    const handleUpdate = async(row: any) => {
       formReset()
       const roleId = row.roleId || dataMap.ids
       const roleMenu = getRoleMenuTreeselect(roleId)
-      getRole(roleId).then((response: any) => {
-        dataMap.formVal.roleId = response.data.roleId
-        dataMap.formVal.roleName = response.data.roleName
-        dataMap.formVal.roleKey = response.data.roleKey
-        dataMap.formVal.roleSort = response.data.roleSort
-        dataMap.formVal.status = response.data.status
-        dataMap.formVal.menuIds = response.data.menuIds
-        dataMap.formVal.deptIds = response.data.deptIds
-        dataMap.formVal.menuCheckStrictly = response.data.menuCheckStrictly
-        dataMap.formVal.deptCheckStrictly = response.data.deptCheckStrictly
-        dataMap.formVal.remark = response.data.remark
+      const result = await getRole(roleId)
+      if (result?.code === 200) {
+        dataMap.formVal = result?.data
+        roleSort.value = result.data.roleSort
 
-        dataMap.open = true
         nextTick(() => {
+          dataMap.open = true
           roleMenu.then((res: any) => {
             const checkedKeys = res.checkedKeys
             checkedKeys.forEach((v: any) => {
@@ -648,7 +643,7 @@ export default defineComponent({
           })
         })
         dataMap.title = '修改角色'
-      })
+      }
     }
 
     // 多选框选中数据
@@ -825,8 +820,8 @@ export default defineComponent({
       })
     }
 
-    const changeDate = (e: string) => {
-      console.log(e)
+    const changeDate = (e: {[key: string]: any}) => {
+      console.log(e.target.value)
     }
     onMounted(() => {
       getList()
@@ -835,7 +830,7 @@ export default defineComponent({
         dataMap.statusOptions = response?.data
       })
     })
-    return { ...toRefs(dataMap), changeDate, resetQuery, handleQuery, submitForm, getMenuAllCheckedKeys, handleStatusChange, submitDataScope, cancelDataScope, cancel, handleDataScope, handleDelete, handleExport, deptRef, handleCheckedTreeConnect, handleCheckedTreeNodeAll, handleCheckedTreeExpand, menuTreeData, formRef, formReset, getList, getMenuTreeselect, getDeptTreeselect, getRoleMenuTreeselect, getRoleDeptTreeselect, handleAdd, handleUpdate, handleSelectionChange }
+    return { ...toRefs(dataMap), roleSort, changeDate, resetQuery, handleQuery, submitForm, getMenuAllCheckedKeys, handleStatusChange, submitDataScope, cancelDataScope, cancel, handleDataScope, handleDelete, handleExport, deptRef, handleCheckedTreeConnect, handleCheckedTreeNodeAll, handleCheckedTreeExpand, menuTreeData, formRef, formReset, getList, getMenuTreeselect, getDeptTreeselect, getRoleMenuTreeselect, getRoleDeptTreeselect, handleAdd, handleUpdate, handleSelectionChange }
   }
 
 })

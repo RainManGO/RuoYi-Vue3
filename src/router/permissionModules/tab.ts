@@ -15,7 +15,7 @@ const tabRouter: Array<RouteRecordRaw> = [
     children: [
       {
         path: 'index',
-        component: () => import(/* webpackChunkName: "tab" */ '@/views/tab/Index.vue'),
+        component: () => import(/* webpackChunkName: "tab" */ '@/views/tab/index.vue'),
         name: 'Tab',
         meta: {
           title: 'tab',

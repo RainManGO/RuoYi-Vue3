@@ -2,10 +2,9 @@
  * @Description: 定时任务
  * @Author: ZY
  * @Date: 2021-02-22 15:16:05
- * @LastEditors: ZY
- * @LastEditTime: 2021-02-23 15:03:27
+ * @LastEditors: scy😎
+ * @LastEditTime: 2021-03-04 09:18:34
 -->
-
 <template>
   <div class="app-container">
     <el-form
@@ -245,13 +244,13 @@
     <!-- 添加或修改定时任务对话框 -->
     <el-dialog
       :title="title"
-      v-model:visible="open"
+      v-model="open"
       width="700px"
       append-to-body
     >
       <el-form
-        ref="form"
-        :model="form"
+        ref="formTable"
+        :model="formVal"
         :rules="rules"
         label-width="120px"
       >
@@ -262,7 +261,7 @@
               prop="jobName"
             >
               <el-input
-                v-model="form.jobName"
+                v-model="formVal.jobName"
                 placeholder="请输入任务名称"
               />
             </el-form-item>
@@ -273,7 +272,7 @@
               prop="jobGroup"
             >
               <el-select
-                v-model="form.jobGroup"
+                v-model="formVal.jobGroup"
                 placeholder="请选择"
               >
                 <el-option
@@ -299,7 +298,7 @@
                 </el-tooltip>
               </span>
               <el-input
-                v-model="form.invokeTarget"
+                v-model="formVal.invokeTarget"
                 placeholder="请输入调用目标字符串"
               />
             </el-form-item>
@@ -310,7 +309,7 @@
               prop="cronExpression"
             >
               <el-input
-                v-model="form.cronExpression"
+                v-model="formVal.cronExpression"
                 placeholder="请输入cron执行表达式"
               />
             </el-form-item>
@@ -321,7 +320,7 @@
               prop="concurrent"
             >
               <el-radio-group
-                v-model="form.concurrent"
+                v-model="formVal.concurrent"
                 size="small"
               >
                 <el-radio-button label="0">
@@ -339,7 +338,7 @@
               prop="misfirePolicy"
             >
               <el-radio-group
-                v-model="form.misfirePolicy"
+                v-model="formVal.misfirePolicy"
                 size="small"
               >
                 <el-radio-button label="1">
@@ -356,7 +355,7 @@
           </el-col>
           <el-col :span="24">
             <el-form-item label="状态">
-              <el-radio-group v-model="form.status">
+              <el-radio-group v-model="formVal.status">
                 <el-radio
                   v-for="dict in statusOptions"
                   :key="dict.dictValue"
@@ -387,9 +386,10 @@
     <!-- 任务日志详细 -->
     <el-dialog
       title="任务详细"
-      v-model:visible="openView"
+      v-model="openView"
       width="700px"
       append-to-body
+      @opened="showDialog"
     >
       <el-form
         ref="form"
@@ -400,67 +400,67 @@
         <el-row>
           <el-col :span="12">
             <el-form-item label="任务编号：">
-              {{ form.jobId }}
+              {{ formVal.jobId }}
             </el-form-item>
             <el-form-item label="任务名称：">
-              {{ form.jobName }}
+              {{ formVal.jobName }}
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="任务分组：">
-              {{ jobGroupFormat(form) }}
+              {{ jobGroupFormat(formVal) }}
             </el-form-item>
             <el-form-item label="创建时间：">
-              {{ form.createTime }}
+              {{ formVal.createTime }}
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="cron表达式：">
-              {{ form.cronExpression }}
+              {{ formVal.cronExpression }}
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="下次执行时间：">
-              {{ parseTime(form.nextValidTime) }}
+              {{ parseTime(formVal.nextValidTime) }}
             </el-form-item>
           </el-col>
           <el-col :span="24">
             <el-form-item label="调用目标方法：">
-              {{ form.invokeTarget }}
+              {{ formVal.invokeTarget }}
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="任务状态：">
-              <div v-if="form.status === 0">
+              <div v-if="formVal.status === '0'">
                 正常
               </div>
-              <div v-else-if="form.status === 1">
+              <div v-else-if="formVal.status === '1'">
                 失败
               </div>
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="是否并发：">
-              <div v-if="form.concurrent === 0">
+              <div v-if="formVal.concurrent === '0'">
                 允许
               </div>
-              <div v-else-if="form.concurrent === 1">
+              <div v-else-if="formVal.concurrent === '1'">
                 禁止
               </div>
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="执行策略：">
-              <div v-if="form.misfirePolicy === 0">
+              <div v-if="formVal.misfirePolicy === '0'">
                 默认策略
               </div>
-              <div v-else-if="form.misfirePolicy === 1">
+              <div v-else-if="formVal.misfirePolicy === '1'">
                 立即执行
               </div>
-              <div v-else-if="form.misfirePolicy === 2">
+              <div v-else-if="formVal.misfirePolicy === '2'">
                 执行一次
               </div>
-              <div v-else-if="form.misfirePolicy === 3">
+              <div v-else-if="formVal.misfirePolicy === '3'">
                 放弃执行
               </div>
             </el-form-item>
@@ -479,12 +479,23 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, toRefs } from 'vue'
-// import { listJob, getJob, delJob, addJob, updateJob, exportJob, runJob, changeJobStatus } from '@/apis/monitor/job'
-
+import { defineComponent, onMounted, reactive, toRefs, ref, unref } from 'vue'
+import { listJob, getJob, delJob, addJob, updateJob, exportJob, runJob, changeJobStatus } from '@/apis/monitor/job'
+import { getDicts } from '@/apis/system/system'
+import pagination from '@/components/pagination/Index.vue'
+import { ElForm, ElMessage, ElMessageBox } from 'element-plus'
+import { useRouter } from 'vue-router'
+import { download, selectDictLabel, parseTime } from '@/utils/ruoyi'
 export default defineComponent({
+  components: {
+    pagination
+  },
   setup() {
-    const state = reactive({
+    const router = useRouter()
+    const queryForm = ref(ElForm)
+    const formTable = ref< HTMLInputElement | null>(null)
+    const dataMap = reactive({
+      isFirst: false,
       // 遮罩层
       loading: true,
       // 选中数组
@@ -496,7 +507,7 @@ export default defineComponent({
       // 显示搜索条件
       showSearch: true,
       // 总条数
-      total: 0,
+      total: 100,
       // 定时任务表格数据
       jobList: [],
       // 弹出层标题
@@ -518,7 +529,16 @@ export default defineComponent({
         status: undefined
       },
       // 表单参数
-      form: {},
+      formVal: {
+        jobId: undefined,
+        jobName: undefined,
+        jobGroup: undefined,
+        invokeTarget: undefined,
+        cronExpression: undefined,
+        misfirePolicy: 1,
+        concurrent: 1,
+        status: '0'
+      },
       // 表单校验
       rules: {
         jobName: [
@@ -533,17 +553,180 @@ export default defineComponent({
       }
     })
 
-    // const getList = () => {
-    //   state.loading = true
-    //   listJob(state.queryParams).then((res) => {
-    //     state.jobList = res.rows
-    //     state.total = res.total
-    //     state.loading = false
-    //   })
-    // }
+    /** 查询定时任务列表 */
+    const getList = () => {
+      dataMap.loading = true
+      dataMap.isFirst = true
+      listJob(dataMap.queryParams).then((response: any) => {
+        dataMap.jobList = response.rows
+        dataMap.total = response.total
+        dataMap.loading = false
+      })
+    }
 
+    // 表单重置
+    const reset = () => {
+      dataMap.formVal = {
+        jobId: undefined,
+        jobName: undefined,
+        jobGroup: undefined,
+        invokeTarget: undefined,
+        cronExpression: undefined,
+        misfirePolicy: 1,
+        concurrent: 1,
+        status: '0'
+      }
+    }
+    // 取消按钮
+    const cancel = () => {
+      dataMap.open = false
+      reset()
+    }
+
+    // 任务组名字典翻译
+    const jobGroupFormat = (row: {[key: string]: any}) => {
+      console.log(row)
+      return selectDictLabel(dataMap.jobGroupOptions, row.jobGroup)
+    }
+    // 状态字典翻译
+    const statusFormat = (row: {[key: string]: any}) => {
+      return selectDictLabel(dataMap.statusOptions, row.status)
+    }
+
+    /** 搜索按钮操作 */
+    const handleQuery = () => {
+      dataMap.queryParams.pageNum = 1
+      getList()
+    }
+    /** 重置按钮操作 */
+    const resetQuery = () => {
+      const form = unref(queryForm)
+      form.resetFields()
+      handleQuery()
+    }
+    // 多选框选中数据
+    const handleSelectionChange = (selection: any) => {
+      dataMap.ids = selection.map((item: any) => item.jobId)
+      dataMap.single = selection.length !== 1
+      dataMap.multiple = !selection.length
+    }
+
+    // 任务状态修改
+    const handleStatusChange = (row: {[key: string]: any}) => {
+      if (dataMap.isFirst) {
+        const text = row.status === '0' ? '启用' : '停用'
+        ElMessageBox.confirm('确认要"' + text + '""' + row.jobName + '"任务吗?', '警告', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(function() {
+          return changeJobStatus(row.jobId, row.status)
+        }).then(() => {
+          ElMessage.success(text + '成功')
+        }).catch(function() {
+          row.status = row.status === '0' ? '1' : '0'
+        })
+      }
+    }
+    /* 立即执行一次 */
+    const handleRun = (row: {[key: string]: any}) => {
+      ElMessageBox.confirm('确认要立即执行一次"' + row.jobName + '"任务吗?', '警告', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(function() {
+        return runJob(row.jobId, row.jobGroup)
+      }).then((response: any) => {
+        response.code === 200 ? ElMessage.success('执行成功') : ElMessage.error(response.msg)
+      })
+    }
+
+    /** 任务详细信息 */
+    const handleView = (row: {[key: string]: any}) => {
+      console.log(row)
+      getJob(row.jobId).then(response => {
+        dataMap.openView = true
+        dataMap.formVal = response?.data
+      })
+    }
+    /** 任务日志列表查询 */
+    const handleJobLog = () => {
+      router.push('/monitor/job/log')
+    }
+    /** 新增按钮操作 */
+    const handleAdd = () => {
+      reset()
+      dataMap.open = true
+      dataMap.title = '添加任务'
+    }
+    /** 修改按钮操作 */
+    const handleUpdate = (row: {[key: string]: any}) => {
+      reset()
+      const jobId = row.jobId || dataMap.ids
+      getJob(jobId).then(response => {
+        dataMap.formVal = response?.data
+        dataMap.open = true
+        dataMap.title = '修改任务'
+      })
+    }
+
+    /** 提交按钮 */
+    const submitForm = () => {
+      (formTable.value as any).validate((valid: boolean) => {
+        if (valid) {
+          if (dataMap.formVal.jobId !== undefined) {
+            updateJob(dataMap.formVal).then((response: any) => {
+              response.code === 200 ? ElMessage.success('修改成功') : ElMessage.error(response.msg)
+              dataMap.open = false
+              getList()
+            })
+          } else {
+            addJob(dataMap.formVal).then((response: any) => {
+              response.code === 200 ? ElMessage.success('新增成功') : ElMessage.error(response.msg)
+              dataMap.open = false
+              getList()
+            })
+          }
+        }
+      })
+    }
+    /** 删除按钮操作 */
+    const handleDelete = (row: any) => {
+      const jobIds = row.jobId || dataMap.ids
+      ElMessageBox.confirm('是否确认删除定时任务编号为"' + jobIds + '"的数据项?', '警告', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(function() {
+        return delJob(jobIds)
+      }).then(() => {
+        getList()
+        ElMessage.success('删除成功')
+      })
+    }
+    /** 导出按钮操作 */
+    const handleExport = () => {
+      ElMessageBox.confirm('是否确认导出所有定时任务数据项?', '警告', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(function() {
+        return exportJob(dataMap.queryParams)
+      }).then(response => {
+        download(response?.msg)
+      })
+    }
+    onMounted(() => {
+      getList()
+      getDicts('sys_job_group').then((response: any) => {
+        dataMap.jobGroupOptions = response.data
+      })
+      getDicts('sys_job_status').then((response: any) => {
+        dataMap.statusOptions = response.data
+      })
+    })
     return {
-      ...toRefs(state)
+      ...toRefs(dataMap), handleQuery, parseTime, formTable, queryForm, cancel, handleRun, handleView, getList, handleJobLog, handleAdd, handleUpdate, submitForm, handleDelete, handleExport, statusFormat, jobGroupFormat, handleStatusChange, handleSelectionChange, resetQuery
     }
   }
 })
