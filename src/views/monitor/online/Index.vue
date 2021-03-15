@@ -2,8 +2,8 @@
  * @Description: 在线用户
  * @Author: ZY
  * @Date: 2021-02-22 15:07:22
- * @LastEditors: ZY
- * @LastEditTime: 2021-02-22 18:19:29
+ * @LastEditors: scy😎
+ * @LastEditTime: 2021-03-12 14:13:46
 -->
 <template>
   <div class="app-container">
@@ -205,7 +205,7 @@ export default defineComponent({
         return forceLogout(model.tokenId)
       }).then((res: any) => {
         getList()
-        res?.code === 0 ? ElMessage.success('强退成功') : ElMessage.error(res.msg)
+        res?.code === 200 ? ElMessage.success('强退成功') : ElMessage.error(res.msg)
       })
     }
     onBeforeMount(() => {

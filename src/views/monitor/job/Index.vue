@@ -485,7 +485,7 @@ import { getDicts } from '@/apis/system/system'
 import pagination from '@/components/pagination/Index.vue'
 import { ElForm, ElMessage, ElMessageBox } from 'element-plus'
 import { useRouter } from 'vue-router'
-import { download, selectDictLabel, parseTime } from '@/utils/ruoyi'
+import { selectDictLabel, parseTime } from '@/utils/ruoyi'
 export default defineComponent({
   components: {
     pagination
@@ -535,8 +535,8 @@ export default defineComponent({
         jobGroup: undefined,
         invokeTarget: undefined,
         cronExpression: undefined,
-        misfirePolicy: 1,
-        concurrent: 1,
+        misfirePolicy: '1',
+        concurrent: '1',
         status: '0'
       },
       // 表单校验
@@ -572,8 +572,8 @@ export default defineComponent({
         jobGroup: undefined,
         invokeTarget: undefined,
         cronExpression: undefined,
-        misfirePolicy: 1,
-        concurrent: 1,
+        misfirePolicy: '1',
+        concurrent: '1',
         status: '0'
       }
     }
@@ -711,9 +711,23 @@ export default defineComponent({
         cancelButtonText: '取消',
         type: 'warning'
       }).then(function() {
-        return exportJob(dataMap.queryParams)
-      }).then(response => {
-        download(response?.msg)
+        exportJob(dataMap.queryParams).then((res: any) => {
+          const blob = new Blob([res], { type: 'application/xml;charset=utf-8' })
+          // 获取heads中的filename文件名
+          const downloadElement = document.createElement('a')
+          // 创建下载的链接
+          const href = window.URL.createObjectURL(blob)
+          downloadElement.href = href
+          // 下载后文件名
+          downloadElement.download = `job_${new Date().getTime()}.xlsx`
+          document.body.appendChild(downloadElement)
+          // 点击下载
+          downloadElement.click()
+          // 下载完成移除元素
+          document.body.removeChild(downloadElement)
+          // 释放掉blob对象
+          window.URL.revokeObjectURL(href)
+        })
       })
     }
     onMounted(() => {

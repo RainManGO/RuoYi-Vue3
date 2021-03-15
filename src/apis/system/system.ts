@@ -2,8 +2,8 @@
  * @Description:表格数据接口
  * @Autor: scy😊
  * @Date: 2021-01-12 11:31:47
- * @LastEditors: WJM
- * @LastEditTime: 2021-02-26 16:00:25
+ * @LastEditors: scy😎
+ * @LastEditTime: 2021-03-12 15:00:40
  */
 import https from '@/utils/https'
 import { RootObject } from '@/model/rootObject'
@@ -74,43 +74,43 @@ export const exportType = (data: any) => {
 // 查询操作日志列表
 export const listOperlog = (params: any) => {
   console.log(params)
-  return https().request<any>('monitor/operlog/list', Method.GET, params, ContentType.form)
+  return https().request<any>('system/operlog/list', Method.GET, params, ContentType.form)
 }
 // 查询登录日志列表
 export const listLogin = (params: any) => {
   console.log(params)
-  return https().request<any>('monitor/logininfor/list', Method.GET, params, ContentType.form)
+  return https().request<any>('system/logininfor/list', Method.GET, params, ContentType.form)
 }
 
 // 删除登录日志
 export const delLogin = (infoId: any) => {
-  return https().request<RootObject<any>>(`monitor/logininfor/${infoId}/`, Method.DELETE, undefined, ContentType.form)
+  return https().request<RootObject<any>>(`system/logininfor/${infoId}/`, Method.DELETE, undefined, ContentType.form)
 }
 // 清空登录日志
 export const cleanLogin = (params: any) => {
   console.log(params)
-  return https().request<any>('monitor/logininfor/clean', Method.DELETE, undefined, ContentType.form)
+  return https().request<any>('system/logininfor/clean', Method.DELETE, undefined, ContentType.form)
 }
 // 导出登录日志
 
 export const exportLogin = (data: any) => {
-  return https().request<RootObject<any>>('monitor/logininfor/export/', Method.GET, data, ContentType.form)
+  return https().request<RootObject<any>>('system/logininfor/export/', Method.GET, data, ContentType.form)
 }
 
 // 清空操作日志
 export const cleanOperlog = (params: any) => {
   console.log(params)
-  return https().request<any>('monitor/operlog/clean', Method.DELETE, undefined, ContentType.form)
+  return https().request<any>('system/operlog/clean', Method.DELETE, undefined, ContentType.form)
 }
 // 导出操作日志
 
 export const exportOperlog = (data: any) => {
-  return https().request<RootObject<any>>('monitor/operlog/export/', Method.GET, data, ContentType.form)
+  return https().request<RootObject<any>>('system/operlog/export/', Method.GET, data, ContentType.form)
 }
 
 // 删除操作日志
 export const delOperlog = (operId: any) => {
-  return https().request<RootObject<any>>(`monitor/operlog/${operId}/`, Method.DELETE, undefined, ContentType.form)
+  return https().request<RootObject<any>>(`system/operlog/${operId}/`, Method.DELETE, undefined, ContentType.form)
 }
 
 //= ==============参数管理==================//

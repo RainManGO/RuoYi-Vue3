@@ -2,8 +2,8 @@
  * @Description: app actions
  * @Author: ZY
  * @Date: 2020-12-23 10:25:37
- * @LastEditors: ZY
- * @LastEditTime: 2021-02-23 20:38:59
+ * @LastEditors: scy😎
+ * @LastEditTime: 2021-03-12 11:02:18
  */
 import { ActionTree, ActionContext } from 'vuex'
 import { RootState, useStore } from '@/store'
@@ -48,13 +48,13 @@ export const actions: ActionTree<UserState, RootState> & Actions = {
 
   async [UserActionTypes.ACTION_LOGIN](
     { commit }: AugmentedActionContext,
-    params: { userInfo: { username: string, password: string }, callback: Function}
+    params: { userInfo: { username: string, password: string, code: number, uuid: string }, callback: Function}
   ) {
     try {
       const res = await loginRequest(params.userInfo)
-      if (res?.code === OK && res.token) {
-        setToken(res.token)
-        commit(UserMutationTypes.SET_TOKEN, res.token)
+      if (res?.code === OK && res.data.access_token) {
+        setToken(res.data.access_token)
+        commit(UserMutationTypes.SET_TOKEN, res.data.access_token)
       } else {
         ElMessage.error(res?.msg)
         params.callback()
