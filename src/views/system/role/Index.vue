@@ -434,13 +434,15 @@
 
 <script lang='ts'>
 import { defineComponent, onMounted, reactive, toRefs, ref, unref, nextTick } from 'vue'
-import { listRole, getRole, exportRole, delRole, dataScope, changeRoleStatus, updateRole, addRole } from '@/apis/system/role'
+import { listRole, getRole, delRole, dataScope, changeRoleStatus, updateRole, addRole } from '@/apis/system/role'
 import { getDicts } from '@/apis/system/system'
-import { download } from '@/utils/ruoyi'
 import { treeselect as menuTreeselect, roleMenuTreeselect } from '@/apis/system/Treeselect'
 import { treeselect as deptTreeselect, roleDeptTreeselect } from '@/apis/system/dept'
 import { ElForm, ElMessage, ElMessageBox } from 'element-plus'
 import pagination from '@/components/pagination/Index.vue'
+import axios from 'axios'
+import { getToken } from '@/utils/cookies'
+import { downloadfile } from '@/utils/file'
 export default defineComponent({
   components: {
     pagination
@@ -616,6 +618,18 @@ export default defineComponent({
 
     /** 新增按钮操作 */
     const handleAdd = () => {
+      dataMap.formVal = {
+        roleId: '',
+        roleName: '',
+        roleKey: '',
+        roleSort: '0',
+        status: '0',
+        menuIds: [],
+        deptIds: [],
+        menuCheckStrictly: true,
+        deptCheckStrictly: true,
+        remark: ''
+      }
       getMenuTreeselect()
       dataMap.open = true
       dataMap.title = '添加角色'
@@ -691,9 +705,18 @@ export default defineComponent({
         cancelButtonText: '取消',
         type: 'warning'
       }).then(function() {
-        return exportRole(queryParams)
-      }).then(response => {
-        download(response?.msg)
+        axios({
+          url: process.env.VUE_APP_BASE_API + '/system/role/export', // 获取文件流的接口路径
+          method: 'post',
+          data: queryParams,
+          responseType: 'blob',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            Authorization: getToken()
+          }
+        }).then((res: any) => {
+          downloadfile(res.data)
+        })
       })
     }
 
@@ -706,16 +729,20 @@ export default defineComponent({
         type: 'warning'
       }).then(function() {
         return delRole(roleIds)
-      }).then(() => {
-        getList()
-        ElMessage.success('删除成功')
+      }).then((response: any) => {
+        if (response.code === 200) {
+          getList()
+          ElMessage.success('删除成功')
+        } else {
+          getList()
+          ElMessage.error(response.msg)
+        }
       })
     }
 
     /** 分配数据权限操作 */
     const handleDataScope = (row: any) => {
       formReset()
-
       const roleDeptTreeselect = getRoleDeptTreeselect(row.roleId)
       getRole(row.roleId).then(response => {
         dataMap.formVal = response?.data
@@ -752,10 +779,16 @@ export default defineComponent({
     const submitDataScope = () => {
       if (dataMap.formVal.roleId !== undefined) {
         dataMap.formVal.deptIds = getDeptAllCheckedKeys()
-        dataScope(dataMap.formVal).then(() => {
-          ElMessage.success('修改成功')
-          dataMap.openDataScope = false
-          getList()
+        dataScope(dataMap.formVal).then((response: any) => {
+          if (response.code === 200) {
+            ElMessage.success('修改成功')
+            dataMap.openDataScope = false
+            getList()
+          } else {
+            ElMessage.error(response.msg)
+            dataMap.openDataScope = false
+            getList()
+          }
         })
       }
     }
@@ -792,6 +825,13 @@ export default defineComponent({
 
     /** 重置按钮操作 */
     const resetQuery = () => {
+      dataMap.queryParams = {
+        pageNum: 1,
+        pageSize: 10,
+        roleName: undefined,
+        roleKey: undefined,
+        status: undefined
+      }
       dataMap.dateRange = []
       // this.resetForm('queryForm')
       handleQuery()
@@ -801,12 +841,18 @@ export default defineComponent({
       const form = unref(formRef)
       form.validate((valid: any) => {
         if (valid) {
-          if (dataMap.formVal.roleId !== undefined) {
+          if (dataMap.formVal.roleId !== '') {
             dataMap.formVal.menuIds = getMenuAllCheckedKeys()
-            updateRole(dataMap.formVal).then(() => {
-              ElMessage.success('修改成功')
-              dataMap.open = false
-              getList()
+            updateRole(dataMap.formVal).then((response: any) => {
+              if (response.code === 200) {
+                ElMessage.success('修改成功')
+                dataMap.open = false
+                getList()
+              } else {
+                ElMessage.success(response.msg)
+                dataMap.open = false
+                getList()
+              }
             })
           } else {
             dataMap.formVal.menuIds = getMenuAllCheckedKeys()

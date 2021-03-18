@@ -38,7 +38,7 @@ export const delJob = (jobId: string) => {
 
 // 导出定时任务调度
 export const exportJob = (query?: RequestParams) => {
-  return https().request<RootPageObject<JobModel>>('job/job/export', Method.POST, query, ContentType.form)
+  return https().request<RootPageObject<JobModel>>('job/job/export', Method.POST, query, ContentType.json)
 }
 
 // 任务状态修改
@@ -47,7 +47,7 @@ export const changeJobStatus = (jobId: string, status: string) => {
     jobId,
     status
   }
-  return https().request<RootPageObject<JobModel>>('job/job/changeStatus', Method.PUT, data, ContentType.form)
+  return https().request<RootPageObject<JobModel>>('job/job/changeStatus', Method.PUT, data, ContentType.json)
 }
 
 // 定时任务立即执行一次

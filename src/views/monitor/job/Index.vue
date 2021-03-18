@@ -480,12 +480,15 @@
 
 <script lang="ts">
 import { defineComponent, onMounted, reactive, toRefs, ref, unref } from 'vue'
-import { listJob, getJob, delJob, addJob, updateJob, exportJob, runJob, changeJobStatus } from '@/apis/monitor/job'
+import { listJob, getJob, delJob, addJob, updateJob, runJob, changeJobStatus } from '@/apis/monitor/job'
 import { getDicts } from '@/apis/system/system'
 import pagination from '@/components/pagination/Index.vue'
 import { ElForm, ElMessage, ElMessageBox } from 'element-plus'
 import { useRouter } from 'vue-router'
 import { selectDictLabel, parseTime } from '@/utils/ruoyi'
+import axios from 'axios'
+import { getToken } from '@/utils/cookies'
+import { downloadfile } from '@/utils/file'
 export default defineComponent({
   components: {
     pagination
@@ -711,22 +714,17 @@ export default defineComponent({
         cancelButtonText: '取消',
         type: 'warning'
       }).then(function() {
-        exportJob(dataMap.queryParams).then((res: any) => {
-          const blob = new Blob([res], { type: 'application/xml;charset=utf-8' })
-          // 获取heads中的filename文件名
-          const downloadElement = document.createElement('a')
-          // 创建下载的链接
-          const href = window.URL.createObjectURL(blob)
-          downloadElement.href = href
-          // 下载后文件名
-          downloadElement.download = `job_${new Date().getTime()}.xlsx`
-          document.body.appendChild(downloadElement)
-          // 点击下载
-          downloadElement.click()
-          // 下载完成移除元素
-          document.body.removeChild(downloadElement)
-          // 释放掉blob对象
-          window.URL.revokeObjectURL(href)
+        axios({
+          url: process.env.VUE_APP_BASE_API + '/job/job/export', // 获取文件流的接口路径
+          method: 'post',
+          data: dataMap.queryParams,
+          responseType: 'blob',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            Authorization: getToken()
+          }
+        }).then((res: any) => {
+          downloadfile(res.data)
         })
       })
     }

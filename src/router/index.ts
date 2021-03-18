@@ -50,6 +50,7 @@ export const constantRoutes: Array<RouteRecordRaw> = [
       }
     ]
   },
+  ...permissionModules,
   ...constantModules
 ]
 

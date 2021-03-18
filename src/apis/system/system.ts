@@ -135,13 +135,13 @@ export const getConfigKey = (params: any) => {
 
 // 新增参数配置
 export const addConfig = (data: any) => {
-  return https().request<RootObject<any>>('system/config/', Method.POST, data, ContentType.form)
+  return https().request<RootObject<any>>('system/config/', Method.POST, data, ContentType.json)
 }
 
 // 修改参数配置
 
 export const updateConfig = (data: any) => {
-  return https().request<RootObject<any>>('system/config/', Method.PUT, data, ContentType.form)
+  return https().request<RootObject<any>>('system/config/', Method.PUT, data, ContentType.json)
 }
 
 // 删除参数配置
@@ -177,13 +177,13 @@ export const getPost = (postId: any) => {
 // 新增岗位
 
 export const addPost = (data: any) => {
-  return https().request<RootObject<any>>('system/post/', Method.POST, data, ContentType.form)
+  return https().request<RootObject<any>>('system/post/', Method.POST, data, ContentType.json)
 }
 
 // 修改岗位
 
 export const updatePost = (data: any) => {
-  return https().request<RootObject<any>>('system/post/', Method.PUT, data, ContentType.form)
+  return https().request<RootObject<any>>('system/post/', Method.PUT, data, ContentType.json)
 }
 
 // 删除岗位
