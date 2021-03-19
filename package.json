@@ -15,7 +15,7 @@
   },
   "dependencies": {
     "@dragndrop/vue-dropzone": "^0.0.4",
-    "axios-mapper": "^0.5.",
+    "axios-mapper": "^0.5.3",
     "chalk": "^4.1.0",
     "clipboard": "^2.0.6",
     "core-js": "^3.6.5",
