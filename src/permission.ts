@@ -2,8 +2,8 @@
  * @Description: 权限
  * @Author: ZY
  * @Date: 2020-12-28 09:12:46
- * @LastEditors: ZY
- * @LastEditTime: 2021-02-23 20:35:15
+ * @LastEditors: WJM
+ * @LastEditTime: 2021-03-20 14:56:48
  */
 
 import NProgress from 'nprogress'
@@ -16,6 +16,7 @@ import { UserActionTypes } from './store/modules/user/action-types'
 import { PermissionActionType } from './store/modules/permission/action-types'
 import { ElMessage } from 'element-plus'
 import whiteList from './config/default/whitelist'
+import { doLogin } from '@/apis/system/user'
 // import settings from '@/config/default/setting.config'
 NProgress.configure({ showSpinner: false })
 
@@ -77,7 +78,19 @@ router.beforeEach(async(to: RouteLocationNormalized, _: RouteLocationNormalized,
       next()
     } else {
       // Other pages that do not have permission to access are redirected to the login page.
-      next(`/login?redirect=${to.path}`)
+      // next(`/login?redirect=${to.path}`)
+      const params = {
+        targetUrl: '/'
+      }
+      doLogin(params).then((data: any) => {
+        const htmlReg = /<[^>]+>/g
+        if (htmlReg.test(data)) {
+          const oppcUrl = process.env.VUE_APP_OPPC_API + '/boss.system/cas/doLogin?targetUrl=' + window.document.location.origin
+          console.log(oppcUrl)
+          window.location.href = oppcUrl
+        }
+      }
+      )
       NProgress.done()
     }
   }

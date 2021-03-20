@@ -2,12 +2,13 @@
  * @Description: 用户相关接口
  * @Author: ZY
  * @Date: 2020-12-28 14:40:50
- * @LastEditors: scy😎
- * @LastEditTime: 2021-03-03 08:37:33
+ * @LastEditors: WJM
+ * @LastEditTime: 2021-03-20 10:19:56
  */
 import { RootObject } from '@/model/rootObject'
 import { UserInfoModel, Users, UserDesc } from '@/model/userModel'
 import https from '@/utils/https'
+import loginHttps from '@/utils/loginHttps'
 import { LoginModel } from '@/views/user-manager/login/model/loginModel'
 import { RequestParams, ContentType, Method } from 'axios-mapper'
 import { SmsModel } from '@/model/imgModel'
@@ -114,4 +115,9 @@ export const uploadAvatar = (params: any) => {
 
 export const importTemplate = () => {
   return https().request<any>('system/user/importTemplate', Method.GET, undefined, ContentType.json)
+}
+
+// 单点登录
+export const doLogin = (params: any) => {
+  return loginHttps().request<any>('boss.system/cas/doLogin', Method.GET, params, ContentType.form)
 }

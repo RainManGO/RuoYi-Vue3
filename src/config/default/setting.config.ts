@@ -2,8 +2,8 @@
  * @Description: 设置属性类
  * @Author: ZY
  * @Date: 2020-12-08 09?:45?:47
- * @LastEditors: ZY
- * @LastEditTime: 2021-01-25 19:58:42
+ * @LastEditors: WJM
+ * @LastEditTime: 2021-03-19 14:46:54
  */
 
 import { Language, Environment, RouterSource, RouterMode, TokenStorageName } from '@/constant/settings'
@@ -13,6 +13,8 @@ export interface Settings{
   title:string
   //基础url
   baseURL?: string
+  // oppcurl
+  oppcURL?: string
   // pro版本copyright可随意修改
   copyright?: string
   // 缓存路由的最大数量
@@ -63,6 +65,8 @@ const settings: Settings = {
   title:'Vue3管理后台',
   //基础url
   baseURL: process.env.VUE_APP_BASE_API,
+  // oppcurl
+  oppcURL: process.env.VUE_APP_OPPC_API,
   // pro版本copyright可随意修改
   copyright: 'zy',
   // 缓存路由的最大数量
