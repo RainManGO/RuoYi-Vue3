@@ -587,7 +587,7 @@ import Treeselect from '@/components/tree-select/Index.vue'
 // import Treeselect from '@riophae/vue-treeselect'
 // import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 import { defineComponent, reactive, toRefs, ref, unref, onMounted, watchEffect } from 'vue'
-import { ElMessage, ElMessageBox, ElTree } from 'element-plus'
+import { ElMessage, ElMessageBox, ElTree, ElUpload } from 'element-plus'
 import { download, parseTime } from '@/utils/ruoyi'
 import { getDicts, getConfigKey } from '@/apis/system/system'
 import { downloadfile } from '@/utils/file'
@@ -600,6 +600,7 @@ export default defineComponent({
     const treeRef = ref(ElTree)
     const queryForm = ref<HTMLInputElement | null>(null)
     const addForm = ref<HTMLInputElement | null>(null)
+    const uploadRef = ref(ElUpload)
     const dataMap = reactive({
       props: { // 配置项（必选）
         value: 'id',
@@ -809,10 +810,11 @@ export default defineComponent({
     }
     /** 新增按钮操作 */
     const handleAdd = () => {
+      console.log(dataMap.formVal)
       dataMap.addformFlag = true
       dataMap.formVal = {
         userId: undefined,
-        deptId: '',
+        deptId: '103',
         userName: undefined,
         nickName: undefined,
         password: '',
@@ -825,6 +827,7 @@ export default defineComponent({
         roleIds: []
       }
       dataMap.originOptions = []
+      getTreeselect()
       getUser().then(response => {
         dataMap.postOptions = response.posts
         dataMap.roleOptions = response.roles
@@ -948,8 +951,8 @@ export default defineComponent({
     }
     // 提交上传文件
     const submitFileForm = () => {
-    //   this.$refs.upload.submit()
-      console.log('upload')
+      const UpFile = unref(uploadRef)
+      UpFile.submit()
     }
 
     const getParentValue = (event: any) => {
@@ -982,9 +985,8 @@ export default defineComponent({
 
     const showDialog = () => {
       getTreeselect()
-      resetForm()
     }
-    return { ...toRefs(dataMap), getDeptId, getParentValue, resetForm, addForm, showDialog, flatten, parseTime, queryForm, treeRef, handleQuery, handleExport, submitFileForm, handleImport, handleFileSuccess, handleStatusChange, handleFileUploadProgress, importTemplateDown, handleNodeClick, filterNode, getTreeselect, getList, resetQuery, handleAdd, handleSelectionChange, handleUpdate, handleResetPwd, submitForm, handleDelete }
+    return { ...toRefs(dataMap), uploadRef, getDeptId, getParentValue, resetForm, addForm, showDialog, flatten, parseTime, queryForm, treeRef, handleQuery, handleExport, submitFileForm, handleImport, handleFileSuccess, handleStatusChange, handleFileUploadProgress, importTemplateDown, handleNodeClick, filterNode, getTreeselect, getList, resetQuery, handleAdd, handleSelectionChange, handleUpdate, handleResetPwd, submitForm, handleDelete }
   }
 })
 </script>

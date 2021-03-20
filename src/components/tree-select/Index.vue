@@ -119,6 +119,9 @@ export default defineComponent({
           if (!props.user) {
             state.valueId = 0
             state.valueTitle = '主类目'
+          } else {
+            state.valueId = 0
+            state.valueTitle = ''
           }
         }
         instance.ctx.$refs.selectTree.setCurrentKey(props.defalut)
