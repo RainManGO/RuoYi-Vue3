@@ -474,7 +474,7 @@ export default defineComponent({
       }).then(function() {
         return delType(dictIds)
       }).then((response: {[key: string]: any} |null) => {
-        if (response?.code === 0) {
+        if (response?.code === 200) {
           getList()
           ElMessage.success('删除成功')
         } else {

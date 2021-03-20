@@ -19,6 +19,7 @@
         :node-key="treeProps.value"
         :default-expanded-keys="defaultExpandedKey"
         @node-click="handleNodeClick"
+        :disabled="disabled"
       />
     </el-option>
   </el-select>
@@ -63,6 +64,9 @@ export default defineComponent({
           children: 'children'
         }
       }
+    },
+    disabled: {
+      type: Boolean, default: false
     }
   },
   emits: ['callBack'],

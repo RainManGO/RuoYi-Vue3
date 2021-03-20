@@ -174,12 +174,6 @@
         :show-overflow-tooltip="true"
       />
       <el-table-column
-        label="操作地点"
-        align="center"
-        prop="operLocation"
-        :show-overflow-tooltip="true"
-      />
-      <el-table-column
         label="操作状态"
         align="center"
         prop="status"

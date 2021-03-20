@@ -856,10 +856,16 @@ export default defineComponent({
             })
           } else {
             dataMap.formVal.menuIds = getMenuAllCheckedKeys()
-            addRole(dataMap.formVal).then(() => {
-              ElMessage.success('修改成功')
-              dataMap.open = false
-              getList()
+            addRole(dataMap.formVal).then((response: any) => {
+              if (response.code === 200) {
+                ElMessage.success(' 新增成功')
+                dataMap.open = false
+                getList()
+              } else {
+                ElMessage.success(response.msg)
+                dataMap.open = false
+                getList()
+              }
             })
           }
         }

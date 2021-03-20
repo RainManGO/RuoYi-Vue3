@@ -182,6 +182,7 @@
                 :defalut="parentId"
                 :user="true"
                 @callBack="getDeptId"
+                :disabled="disabled"
               />
             </el-form-item>
           </el-col>
@@ -296,7 +297,8 @@ export default defineComponent({
     const formDialog = ref(ElForm)
 
     const dataMap = reactive({
-      formUpdata: {},
+      disabled: false,
+      formUpdata: {} as any,
       isAdd: false,
       originOptions: [],
       props: { // 配置项（必选）
@@ -331,6 +333,7 @@ export default defineComponent({
       phone: '',
       email: '',
       status: '',
+      deptidfix: 0,
       // 表单参数
       // 表单校验
       rules: {
@@ -445,13 +448,16 @@ export default defineComponent({
     }
     /** 修改按钮操作 */
     const handleUpdate = async(row: any) => {
+      dataMap.disabled = true
       dataMap.isAdd = false
+      console.log(row.deptId)
+      dataMap.deptidfix = row.deptId
+
       const result = await getDept(row.deptId)
       if (result?.code === 200) {
         dataMap.formUpdata = result.data
         dataMap.deptName = result.data.deptName
         dataMap.parentId = result.data.parentId
-        dataMap.deptId = result.data.deptId
         dataMap.orderNum = result.data.orderNum
         dataMap.leader = result.data.leader
         dataMap.phone = result.data.phone
@@ -479,7 +485,7 @@ export default defineComponent({
           }
           if (!dataMap.isAdd) {
             dataMap.formUpdata.parentId = dataMap.parentId
-            dataMap.formUpdata.deptId = dataMap.deptId
+            dataMap.formUpdata.deptId = dataMap.deptidfix
             dataMap.formUpdata.deptName = dataMap.deptName
             dataMap.formUpdata.orderNum = dataMap.orderNum
             dataMap.formUpdata.leader = dataMap.leader

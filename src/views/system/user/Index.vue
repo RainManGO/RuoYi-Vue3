@@ -756,9 +756,6 @@ export default defineComponent({
       treeselect().then(response => {
         dataMap.deptOptions = response?.data
         dataMap.originOptions = flatten(response?.data)
-
-        console.log(dataMap.originOptions, '--------------------------------------------')
-        console.log(response?.data, '=====================================================================')
       })
     }
 
@@ -828,7 +825,6 @@ export default defineComponent({
         roleIds: []
       }
       dataMap.originOptions = []
-      getTreeselect()
       getUser().then(response => {
         dataMap.postOptions = response.posts
         dataMap.roleOptions = response.roles
@@ -986,6 +982,7 @@ export default defineComponent({
 
     const showDialog = () => {
       getTreeselect()
+      resetForm()
     }
     return { ...toRefs(dataMap), getDeptId, getParentValue, resetForm, addForm, showDialog, flatten, parseTime, queryForm, treeRef, handleQuery, handleExport, submitFileForm, handleImport, handleFileSuccess, handleStatusChange, handleFileUploadProgress, importTemplateDown, handleNodeClick, filterNode, getTreeselect, getList, resetQuery, handleAdd, handleSelectionChange, handleUpdate, handleResetPwd, submitForm, handleDelete }
   }
