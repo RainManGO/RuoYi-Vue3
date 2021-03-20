@@ -144,7 +144,6 @@
         @queryTable="getList"
       /> -->
     </el-row>
-
     <el-table
       v-loading="loading"
       :data="configList"
@@ -318,12 +317,14 @@
 
 <script lang='ts'>
 // import { listConfig, getConfig, delConfig, exportConfig, clearCache, getDicts } from '@/apis/system'
-import { listConfig, getDicts, updateConfig, addConfig, getConfig, delConfig, exportConfig } from '@/apis/system/system'
+import { listConfig, getDicts, updateConfig, addConfig, getConfig, delConfig } from '@/apis/system/system'
 import { defineComponent, onMounted, reactive, toRefs, ref, unref } from 'vue'
 import { ElForm, ElMessage, ElMessageBox } from 'element-plus'
-import { download, parseTime } from '@/utils/ruoyi'
+import { parseTime } from '@/utils/ruoyi'
 import pagination from '@/components/pagination/Index.vue'
-
+import axios from 'axios'
+import { getToken } from '@/utils/cookies'
+import { downloadfile } from '@/utils/file'
 export default defineComponent({
   components: {
     pagination
@@ -431,9 +432,9 @@ export default defineComponent({
       const form = unref(formDialog)
       form.validate((valid: any) => {
         if (valid) {
-          if (dataMap.formData.configId === '') {
+          if (dataMap.formData.configId) {
             updateConfig(dataMap.formData).then((res) => {
-              res?.code === 200 ? ElMessage.success('新增成功') : ElMessage.warning(res?.msg)
+              res?.code === 200 ? ElMessage.success('修改成功') : ElMessage.warning(res?.msg)
               dataMap.open = false
               getList()
             })
@@ -485,7 +486,7 @@ export default defineComponent({
       }).then((res) => {
         if (res?.code === 200) {
           getList()
-          ElMessage.error('删除成功')
+          ElMessage.success('删除成功')
         } else {
           ElMessage.error(res?.msg)
         }
@@ -500,10 +501,23 @@ export default defineComponent({
         cancelButtonText: '取消',
         type: 'warning'
       }).then(function() {
-        return exportConfig(queryParams)
-      }).then((response) => {
-        download(response?.msg)
+        axios({
+          url: process.env.VUE_APP_BASE_API + '/system/config/export', // 获取文件流的接口路径
+          method: 'post',
+          data: queryParams,
+          responseType: 'blob',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            Authorization: getToken()
+          }
+        }).then((res: any) => {
+          downloadfile(res.data)
+        })
       })
+    }
+
+    const cancel = () => {
+      dataMap.open = false
     }
     onMounted(() => {
       getList()
@@ -511,7 +525,7 @@ export default defineComponent({
         dataMap.typeOptions = response?.data
       })
     })
-    return { ...toRefs(dataMap), parseTime, handleExport, formDialog, getList, handleQuery, resetQuery, queryForm, handleAdd, submitForm, handleUpdate, handleSelectionChange, handleDelete }
+    return { ...toRefs(dataMap), cancel, parseTime, handleExport, formDialog, getList, handleQuery, resetQuery, queryForm, handleAdd, submitForm, handleUpdate, handleSelectionChange, handleDelete }
   }
 })
 </script>

@@ -307,12 +307,13 @@
 
 <script lang="ts">
 import { reactive, toRefs, defineComponent, onMounted, ref, unref } from 'vue'
-import { listType, getType, addType, updateType, getDicts, delType, exportType } from '@/apis/system/system'
+import { listType, getType, addType, updateType, getDicts, delType } from '@/apis/system/system'
 import { ElForm, ElMessage, ElMessageBox } from 'element-plus'
 // import { ElMessage } from 'element-plus'
-import { download } from '@/utils/ruoyi'
 import pagination from '@/components/pagination/Index.vue'
-
+import { downloadfile } from '@/utils/file'
+import { getToken } from '@/utils/cookies'
+import axios from 'axios'
 export default defineComponent({
   components: {
     pagination
@@ -449,13 +450,13 @@ export default defineComponent({
       const form = unref(postFormNode)
       form.validate((valid: Boolean) => {
         if (valid) {
-          if (data.formData?.dictId !== undefined) {
+          if (data.formData?.dictId !== '') {
             updateType(data.formData).then((res: {[key: string]: any} | null) => {
-              res?.code === 0 ? ElMessage.success('修改成功') : ElMessage.error(res?.msg)
+              res?.code === 200 ? ElMessage.success('修改成功') : ElMessage.error(res?.msg)
             })
           } else {
             addType(data.formData).then((res: {[key: string]: any} | null) => {
-              res?.code === 0 ? ElMessage.success('新增成功') : ElMessage.error(res?.msg)
+              res?.code === 200 ? ElMessage.success('新增成功') : ElMessage.error(res?.msg)
             })
           }
           data.open = false
@@ -473,7 +474,7 @@ export default defineComponent({
       }).then(function() {
         return delType(dictIds)
       }).then((response: {[key: string]: any} |null) => {
-        if (response?.code === 0) {
+        if (response?.code === 200) {
           getList()
           ElMessage.success('删除成功')
         } else {
@@ -488,10 +489,19 @@ export default defineComponent({
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
-      }).then(function() {
-        return exportType(queryParams)
-      }).then((response: any) => {
-        download(response.msg)
+      }).then(() => {
+        axios({
+          url: process.env.VUE_APP_BASE_API + 'system/dict/type/export', // 获取文件流的接口路径
+          method: 'post',
+          data: queryParams,
+          responseType: 'blob',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            Authorization: getToken()
+          }
+        }).then((res: any) => {
+          downloadfile(res.data)
+        })
       })
     }
     onMounted(() => {

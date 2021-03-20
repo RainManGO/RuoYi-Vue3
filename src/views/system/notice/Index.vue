@@ -400,9 +400,16 @@ export default defineComponent({
     }
     /** 新增按钮操作 */
     const handleAdd = () => {
+      dataMap.formVal = {
+        noticeId: '',
+        noticeTitle: '',
+        noticeType: '',
+        noticeContent: '',
+        status: '0'
+      }
       reset()
       dataMap.open = true
-      dataMap.title = '添加公告'
+      dataMap.title = '新增'
     }
 
     /** 修改按钮操作 */
@@ -419,14 +426,16 @@ export default defineComponent({
     const submitForm = () => {
       (queryForm.value as any).validate((valid: Boolean) => {
         if (valid) {
-          if (dataMap.formVal.noticeId !== undefined) {
+          console.log(dataMap.formVal.noticeId)
+          if (dataMap.formVal.noticeId !== '') {
             updateNotice(dataMap.formVal).then(() => {
               ElMessage.success('修改成功')
               dataMap.open = false
               getList()
             })
           } else {
-            addNotice(dataMap.formVal).then(() => {
+            addNotice(dataMap.formVal).then((res) => {
+              console.log(res)
               ElMessage.success('新增成功')
               dataMap.open = false
               getList()

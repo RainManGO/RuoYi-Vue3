@@ -22,13 +22,13 @@ export const delDept = (deptId: any) => {
 // 修改部门
 
 export const updateDept = (data: any) => {
-  return https().request<RootObject<any>>('system/dept/', Method.PUT, data, ContentType.form)
+  return https().request<RootObject<any>>('system/dept/', Method.PUT, data, ContentType.json)
 }
 
 // 新增部门
 
 export const addDept = (data: any) => {
-  return https().request<RootObject<any>>('system/dept/', Method.POST, data, ContentType.form)
+  return https().request<RootObject<any>>('system/dept/', Method.POST, data, ContentType.json)
 }
 
 // 根据角色ID查询部门树结构

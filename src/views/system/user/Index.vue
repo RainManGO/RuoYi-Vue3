@@ -353,6 +353,7 @@
                 :accordion="isAccordion"
                 @getValue="getParentValue($event)"
                 :user="true"
+                @callBack="getDeptId"
               />
             </el-form-item>
           </el-col>
@@ -577,7 +578,7 @@
 </template>
 
 <script lang='ts'>
-import { listUser, getUser, delUser, addUser, updateUser, exportUser, resetUserPwd, changeUserStatus, importTemplate } from '@/apis/system/user'
+import { listUser, getUser, delUser, addUser, updateUser, resetUserPwd, changeUserStatus, importTemplate } from '@/apis/system/user'
 import { getToken } from '@/utils/cookies'
 import { treeselect } from '@/apis/system/dept'
 
@@ -586,10 +587,11 @@ import Treeselect from '@/components/tree-select/Index.vue'
 // import Treeselect from '@riophae/vue-treeselect'
 // import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 import { defineComponent, reactive, toRefs, ref, unref, onMounted, watchEffect } from 'vue'
-import { ElMessage, ElMessageBox, ElTree } from 'element-plus'
+import { ElMessage, ElMessageBox, ElTree, ElUpload } from 'element-plus'
 import { download, parseTime } from '@/utils/ruoyi'
 import { getDicts, getConfigKey } from '@/apis/system/system'
-
+import { downloadfile } from '@/utils/file'
+import axios from 'axios'
 export default defineComponent({
   components: {
     Treeselect
@@ -598,6 +600,7 @@ export default defineComponent({
     const treeRef = ref(ElTree)
     const queryForm = ref<HTMLInputElement | null>(null)
     const addForm = ref<HTMLInputElement | null>(null)
+    const uploadRef = ref(ElUpload)
     const dataMap = reactive({
       props: { // 配置项（必选）
         value: 'id',
@@ -807,10 +810,11 @@ export default defineComponent({
     }
     /** 新增按钮操作 */
     const handleAdd = () => {
+      console.log(dataMap.formVal)
       dataMap.addformFlag = true
       dataMap.formVal = {
         userId: undefined,
-        deptId: '',
+        deptId: '103',
         userName: undefined,
         nickName: undefined,
         password: '',
@@ -870,10 +874,16 @@ export default defineComponent({
               getList()
             })
           } else {
-            addUser(dataMap.formVal).then(() => {
-              ElMessage.success('x新增成功')
-              dataMap.open = false
-              getList()
+            addUser(dataMap.formVal).then((response: any) => {
+              if (response.code === 200) {
+                ElMessage.success('新增成功')
+                dataMap.open = false
+                getList()
+              } else {
+                ElMessage.error(response.msg)
+                dataMap.open = false
+                getList()
+              }
             })
           }
         }
@@ -902,9 +912,18 @@ export default defineComponent({
         cancelButtonText: '取消',
         type: 'warning'
       }).then(function() {
-        return exportUser(queryParams)
-      }).then(response => {
-        download(response.msg)
+        axios({
+          url: process.env.VUE_APP_BASE_API + '/system/user/export', // 获取文件流的接口路径
+          method: 'post',
+          data: queryParams,
+          responseType: 'blob',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            Authorization: getToken()
+          }
+        }).then((res: any) => {
+          downloadfile(res.data)
+        })
       })
     }
     /** 导入按钮操作 */
@@ -932,8 +951,16 @@ export default defineComponent({
     }
     // 提交上传文件
     const submitFileForm = () => {
-    //   this.$refs.upload.submit()
-      console.log('upload')
+      const UpFile = unref(uploadRef)
+      UpFile.submit()
+    }
+
+    const getParentValue = (event: any) => {
+      console.log(event)
+    }
+
+    const getDeptId = (e: any) => {
+      dataMap.formVal.deptId = e
     }
 
     watchEffect(() => {
@@ -959,7 +986,7 @@ export default defineComponent({
     const showDialog = () => {
       getTreeselect()
     }
-    return { ...toRefs(dataMap), resetForm, addForm, showDialog, flatten, parseTime, queryForm, treeRef, handleQuery, handleExport, submitFileForm, handleImport, handleFileSuccess, handleStatusChange, handleFileUploadProgress, importTemplateDown, handleNodeClick, filterNode, getTreeselect, getList, resetQuery, handleAdd, handleSelectionChange, handleUpdate, handleResetPwd, submitForm, handleDelete }
+    return { ...toRefs(dataMap), uploadRef, getDeptId, getParentValue, resetForm, addForm, showDialog, flatten, parseTime, queryForm, treeRef, handleQuery, handleExport, submitFileForm, handleImport, handleFileSuccess, handleStatusChange, handleFileUploadProgress, importTemplateDown, handleNodeClick, filterNode, getTreeselect, getList, resetQuery, handleAdd, handleSelectionChange, handleUpdate, handleResetPwd, submitForm, handleDelete }
   }
 })
 </script>

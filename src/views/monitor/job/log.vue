@@ -290,11 +290,14 @@
 </template>
 
 <script lang='ts'>
-import { listJobLog, delJobLog, exportJobLog, cleanJobLog } from '@/apis/monitor/jobLog'
+import { listJobLog, delJobLog, cleanJobLog } from '@/apis/monitor/jobLog'
 import { getDicts } from '@/apis/system/system'
-import { selectDictLabel, download } from '@/utils/ruoyi'
+import { selectDictLabel } from '@/utils/ruoyi'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { defineComponent, reactive, toRefs, onMounted } from 'vue'
+import { downloadfile } from '@/utils/file'
+import { getToken } from '@/utils/cookies'
+import axios from 'axios'
 export default defineComponent({
   name: 'JobLog',
   setup() {
@@ -403,9 +406,18 @@ export default defineComponent({
         cancelButtonText: '取消',
         type: 'warning'
       }).then(function() {
-        return exportJobLog(queryParams)
-      }).then((response: any) => {
-        download(response.msg)
+        axios({
+          url: process.env.VUE_APP_BASE_API + 'monitor/jobLog/export', // 获取文件流的接口路径
+          method: 'post',
+          data: queryParams,
+          responseType: 'blob',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            Authorization: getToken()
+          }
+        }).then((res: any) => {
+          downloadfile(res.data)
+        })
       })
     }
     onMounted(() => {
