@@ -580,7 +580,7 @@ export default defineComponent({
     const submitForm = () => {
       (ctx.$refs.dialogForm as any).validate((valid: Boolean) => {
         if (valid) {
-          if (state.form.menuId !== undefined) {
+          if (state.form.menuId !== -1) {
             updateMenu(state.form).then(() => {
               ElMessage.success('修改成功')
               state.open = false

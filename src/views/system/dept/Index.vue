@@ -158,6 +158,7 @@
       :title="title"
       v-model="open"
       width="600px"
+      @opened="dialogshow"
     >
       <el-form
         ref="formDialog"
@@ -173,15 +174,16 @@
               label="上级部门"
               prop="parentId"
             >
-              <!-- <Treeselect
-                :multiple="true"
-                :disable-branch-nodes="true"
-                search-nested
-                v-model="form.parentId"
+              <Treeselect
+                :treeProps="props"
                 :options="deptOptions"
-                :normalizer="normalizer"
+                placeholder="请选择归属部门"
+                :originOptions="originOptions"
+                :defalut="formVal.parentId"
+                :user="true"
+                @callBack="getDeptId"
+                :disabled="disabled"
               />
-              <treeselect-value :value="value" /> -->
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -190,7 +192,7 @@
               prop="deptName"
             >
               <el-input
-                v-model="deptName"
+                v-model="formVal.deptName"
                 placeholder="请输入部门名称"
               />
             </el-form-item>
@@ -202,7 +204,7 @@
             >
               <el-input-number
                 :min="0"
-                v-model="orderNum"
+                v-model="formVal.orderNum"
                 controls-position="right"
               />
             </el-form-item>
@@ -213,7 +215,7 @@
               prop="leader"
             >
               <el-input
-                v-model="leader"
+                v-model="formVal.leader"
                 placeholder="请输入负责人"
                 maxlength="20"
               />
@@ -225,7 +227,7 @@
               prop="phone"
             >
               <el-input
-                v-model="phone"
+                v-model="formVal.phone"
                 placeholder="请输入联系电话"
                 maxlength="11"
               />
@@ -237,7 +239,7 @@
               prop="email"
             >
               <el-input
-                v-model="email"
+                v-model="formVal.email"
                 placeholder="请输入邮箱"
                 maxlength="50"
               />
@@ -245,7 +247,7 @@
           </el-col>
           <el-col :span="12">
             <el-form-item label="部门状态">
-              <el-radio-group v-model="status">
+              <el-radio-group v-model="formVal.status">
                 <el-radio
                   v-for="dict in statusOptions"
                   :key="dict.dictValue"
@@ -281,21 +283,30 @@
 <script lang="ts">
 import { defineComponent, onMounted, reactive, toRefs, unref, ref } from 'vue'
 import { getDicts } from '@/apis/system/system'
-import { listDept, getDept, listDeptExcludeChild, delDept, updateDept, addDept } from '@/apis/system/dept'
-// // import the styles
-// import Treeselect from 'vue3-treeselect'
-// import 'vue3-treeselect/dist/vue3-treeselect.css'
+import { listDept, getDept, delDept, updateDept, addDept, treeselect } from '@/apis/system/dept'
+import Treeselect from '@/components/tree-select/Index.vue'
 import { handleTree, parseTime } from '@/utils/ruoyi'
 import { ElForm, ElMessage } from 'element-plus'
+
 export default defineComponent({
-  // components: {
-  //   Treeselect
-  // },
+  components: {
+    Treeselect
+  },
   setup() {
     const queryForm = ref(ElForm)
     const formDialog = ref(ElForm)
 
     const dataMap = reactive({
+      disabled: false,
+      formUpdata: {} as any,
+      isAdd: false,
+      originOptions: [],
+      props: { // 配置项（必选）
+        value: 'id',
+        label: 'label',
+        children: 'children'
+        // disabled:true
+      },
       loading: true,
       // 显示搜索条件
       showSearch: true,
@@ -314,14 +325,18 @@ export default defineComponent({
         deptName: undefined,
         status: undefined
       },
-      deptId: '',
-      parentId: '',
-      deptName: '',
-      orderNum: 0,
-      leader: '',
-      phone: '',
-      email: '',
-      status: '',
+      formVal: {
+        deptId: '',
+        parentId: '',
+        deptName: '',
+        orderNum: 0,
+        leader: '',
+        phone: '',
+        email: '',
+        status: ''
+      },
+
+      deptidfix: 0,
       // 表单参数
       // 表单校验
       rules: {
@@ -351,16 +366,7 @@ export default defineComponent({
       },
       test: '8347213498'
     })
-    const formVal = ref({
-      deptId: dataMap.deptId,
-      parentId: dataMap.parentId,
-      deptName: dataMap.deptName,
-      orderNum: dataMap.orderNum,
-      leader: dataMap.leader,
-      phone: dataMap.phone,
-      email: dataMap.email,
-      status: dataMap.status
-    })
+
     /** 查询部门列表 */
     const getList = () => {
       dataMap.loading = true
@@ -383,6 +389,7 @@ export default defineComponent({
     // 取消按钮
     const cancel = () => {
       dataMap.open = false
+      dataMap.isAdd = false
     }
 
     /** 搜索按钮操作 */
@@ -395,65 +402,73 @@ export default defineComponent({
       form.resetFields()
       handleQuery()
     }
-
-    /** 新增按钮操作 */
-    const handleAdd = async(row: any) => {
-      dataMap.deptName = ''
-      dataMap.deptId = ''
-      dataMap.parentId = ''
-      dataMap.orderNum = 0
-      dataMap.leader = ''
-      dataMap.phone = ''
-      dataMap.email = ''
-      dataMap.status = ''
-      if (row !== undefined) {
-        dataMap.parentId = row.deptId
+    const flatten = (origin: any) => {
+      let result: any = []
+      for (let i = 0; i < origin.length; i++) {
+        const item = origin[i]
+        if (Array.isArray(item.children)) {
+          result = result.concat(flatten(item.children))
+          result.push(item)
+        } else {
+          result.push(item)
+        }
+      }
+      return result
+    }
+    /** 查询部门下拉树结构 */
+    const getTreeselect = () => {
+      treeselect().then(response => {
+        dataMap.deptOptions = response?.data
+        dataMap.originOptions = flatten(response?.data) as any
+      })
+    }
+    const handleAdd = (row: any) => {
+      dataMap.isAdd = true
+      dataMap.formVal.parentId = {} as any
+      if (row.deptId) {
+        dataMap.formVal = {} as any
+        dataMap.formVal.parentId = row.deptId
       }
       dataMap.open = true
       dataMap.title = '添加部门'
-      const res = await listDept()
-      if (res?.code === 200) {
-        dataMap.deptOptions = handleTree(res.data, 'deptId')
-      }
     }
     /** 修改按钮操作 */
     const handleUpdate = async(row: any) => {
+      dataMap.disabled = true
+      dataMap.isAdd = false
+      console.log(row.deptId)
+      dataMap.deptidfix = row.deptId
+
       const result = await getDept(row.deptId)
       if (result?.code === 200) {
-        dataMap.deptName = result.data.deptName
-        dataMap.deptId = result.data.deptId
-        dataMap.parentId = result.data.parentId
-        dataMap.orderNum = result.data.orderNum
-        dataMap.leader = result.data.leader
-        dataMap.phone = result.data.phone
-        dataMap.email = result.data.email
-        dataMap.status = result.data.status
+        dataMap.formUpdata = result.data
+        dataMap.formVal.deptName = result.data.deptName
+        dataMap.formVal.parentId = result.data.parentId
+        dataMap.formVal.orderNum = result.data.orderNum
+        dataMap.formVal.leader = result.data.leader
+        dataMap.formVal.phone = result.data.phone
+        dataMap.formVal.email = result.data.email
+        dataMap.formVal.status = result.data.status
         dataMap.title = '修改部门'
         dataMap.open = true
       }
-      listDeptExcludeChild(row.deptId).then((response: any) => {
-        dataMap.deptOptions = handleTree(response.data, 'deptId')
-      })
     }
     /** 提交按钮 */
     const submitForm = () => {
       const formNode = unref(formDialog)
-
       formNode.validate((valid: any) => {
         console.log(valid)
         if (valid) {
-          const form = {
-            deptId: dataMap.deptId,
-            parentId: dataMap.parentId,
-            deptName: dataMap.deptName,
-            orderNum: Number(dataMap.orderNum),
-            leader: dataMap.leader,
-            phone: dataMap.phone,
-            email: dataMap.email,
-            status: dataMap.status
-          }
-          if (dataMap.deptId !== undefined) {
-            updateDept(form).then((res: any) => {
+          if (!dataMap.isAdd) {
+            dataMap.formUpdata.parentId = dataMap.formVal.deptId
+            dataMap.formUpdata.deptId = dataMap.deptidfix
+            dataMap.formUpdata.deptName = dataMap.formVal.deptName
+            dataMap.formUpdata.orderNum = dataMap.formVal.orderNum
+            dataMap.formUpdata.leader = dataMap.formVal.leader
+            dataMap.formUpdata.phone = dataMap.formVal.phone
+            dataMap.formUpdata.email = dataMap.formVal.email
+            dataMap.formUpdata.status = dataMap.formVal.status
+            updateDept(dataMap.formUpdata).then((res: any) => {
               if (res?.code === 200) {
                 ElMessage.success('修改成功')
                 dataMap.open = false
@@ -464,9 +479,9 @@ export default defineComponent({
               }
             })
           } else {
-            addDept(form).then((res: any) => {
+            addDept(dataMap.formVal).then((res: any) => {
               if (res?.code === 200) {
-                ElMessage.success('修改成功')
+                ElMessage.success('新增成功')
                 dataMap.open = false
                 getList()
               } else {
@@ -480,17 +495,6 @@ export default defineComponent({
     }
     /** 删除按钮操作 */
     const handleDelete = async(row: any) => {
-      // this.$confirm('是否确认删除名称为"' + row.deptName + '"的数据项?', '警告', {
-      //   confirmButtonText: '确定',
-      //   cancelButtonText: '取消',
-      //   type: 'warning'
-      // }).then(function() {
-      //   return delDept(row.deptId)
-      // }).then(() => {
-      //   getList()
-      //   ElMessage.success('删除成功')
-      // })
-
       const result = await delDept(row.deptId)
       if (result?.code === 200) {
         getList()
@@ -500,16 +504,24 @@ export default defineComponent({
     }
 
     const statusFormat = (row: any) => {
-      return row.status === 0 ? '停用' : ' 正常'
+      return row.status === '0' ? '正常' : '  停用'
+    }
+
+    const getDeptId = (e: any) => {
+      dataMap.formVal.deptId = e
+    }
+    const dialogshow = () => {
+      getTreeselect()
     }
     onMounted(() => {
       getList()
+      getTreeselect()
       getDicts('sys_normal_disable').then((response: any) => {
         dataMap.statusOptions = response.data
       })
     })
 
-    return { ...toRefs(dataMap), parseTime, formVal, formDialog, statusFormat, queryForm, getList, normalizer, handleDelete, cancel, handleQuery, resetQuery, handleAdd, handleUpdate, submitForm }
+    return { ...toRefs(dataMap), dialogshow, parseTime, getDeptId, flatten, getTreeselect, formDialog, statusFormat, queryForm, getList, normalizer, handleDelete, cancel, handleQuery, resetQuery, handleAdd, handleUpdate, submitForm }
   }
 })
 

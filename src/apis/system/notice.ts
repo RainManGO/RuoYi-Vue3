@@ -18,7 +18,7 @@ export const getNotice = (noticeId: number) => {
 // 新增公告
 
 export const addNotice = (params: any) => {
-  return https().request<any>('system/notice', Method.GET, params, ContentType.json)
+  return https().request<any>('system/notice', Method.POST, params, ContentType.json)
 }
 // 修改公告
 

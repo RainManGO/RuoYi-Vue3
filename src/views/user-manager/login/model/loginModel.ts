@@ -2,8 +2,8 @@
  * @Description:
  * @Author: ZY
  * @Date: 2020-12-29 09:12:24
- * @LastEditors: scy😊
- * @LastEditTime: 2021-02-03 15:30:21
+ * @LastEditors: scy😎
+ * @LastEditTime: 2021-03-15 09:45:04
  */
 // {
 //     "code": 0,
@@ -14,7 +14,12 @@
 // }
 
 export interface LoginModel {
-  token: string
+  data: Data
   code: number | string
   msg: string
+}
+
+export interface Data {
+	access_token: string
+	expires_in: number
 }

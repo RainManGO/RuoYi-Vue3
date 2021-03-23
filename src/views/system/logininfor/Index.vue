@@ -141,21 +141,6 @@
         :show-overflow-tooltip="true"
       />
       <el-table-column
-        label="登录地点"
-        align="center"
-        prop="loginLocation"
-      />
-      <el-table-column
-        label="浏览器"
-        align="center"
-        prop="browser"
-      />
-      <el-table-column
-        label="操作系统"
-        align="center"
-        prop="os"
-      />
-      <el-table-column
         label="登录状态"
         align="center"
         prop="status"
@@ -174,7 +159,7 @@
         width="180"
       >
         <template #default="scope">
-          <span>{{ scope.row.loginTime }}</span>
+          <span>{{ scope.row.accessTime }}</span>
         </template>
       </el-table-column>
     </el-table>
@@ -190,12 +175,13 @@
 </template>
 
 <script lang='ts'>
-import { listLogin, getDicts, delLogin, exportLogin, cleanLogin } from '@/apis/system/system'
+import { listLogin, getDicts, delLogin, cleanLogin } from '@/apis/system/system'
 import { defineComponent, onMounted, reactive, toRefs, ref, unref } from 'vue'
 import { ElForm, ElMessage, ElMessageBox } from 'element-plus'
-import { download } from '@/utils/ruoyi'
 import pagination from '@/components/pagination/Index.vue'
-
+import axios from 'axios'
+import { getToken } from '@/utils/cookies'
+import { downloadfile } from '@/utils/file'
 export default defineComponent({
   components: {
     pagination
@@ -282,7 +268,7 @@ export default defineComponent({
       }).then((res) => {
         if (res?.code === 200) {
           getList()
-          ElMessage.error('删除成功')
+          ElMessage.success('删除成功')
         } else {
           ElMessage.error(res?.msg)
         }
@@ -311,7 +297,7 @@ export default defineComponent({
       }).then((res) => {
         if (res?.code === 200) {
           getList()
-          ElMessage.error('删除成功')
+          ElMessage.success('删除成功')
         } else {
           ElMessage.error(res?.msg)
         }
@@ -326,9 +312,18 @@ export default defineComponent({
         cancelButtonText: '取消',
         type: 'warning'
       }).then(function() {
-        return exportLogin(queryParams)
-      }).then((response) => {
-        download(response?.msg)
+        axios({
+          url: process.env.VUE_APP_BASE_API + '/system/logininfor/export', // 获取文件流的接口路径
+          method: 'post',
+          data: queryParams,
+          responseType: 'blob',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            Authorization: getToken()
+          }
+        }).then((res: any) => {
+          downloadfile(res.data)
+        })
       })
     }
     onMounted(() => {
