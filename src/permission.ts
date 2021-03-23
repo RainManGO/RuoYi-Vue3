@@ -3,7 +3,7 @@
  * @Author: ZY
  * @Date: 2020-12-28 09:12:46
  * @LastEditors: WJM
- * @LastEditTime: 2021-03-20 14:56:48
+ * @LastEditTime: 2021-03-23 10:24:52
  */
 
 import NProgress from 'nprogress'
@@ -36,7 +36,7 @@ router.beforeEach(async(to: RouteLocationNormalized, _: RouteLocationNormalized,
   NProgress.start()
   const store = useStore()
   // Determine whether the user has logged in
-  if (useStore().state.user.token) {
+  if (useStore().state.user.session) {
     if (to.path === '/login') {
       // If is logged in, redirect to the home page
       next({ path: '/' })
@@ -80,9 +80,11 @@ router.beforeEach(async(to: RouteLocationNormalized, _: RouteLocationNormalized,
       // Other pages that do not have permission to access are redirected to the login page.
       // next(`/login?redirect=${to.path}`)
       const params = {
-        targetUrl: '/'
+        // targetUrl: window.document.location.origin
+        targetUrl: '/dashboard'
       }
       doLogin(params).then((data: any) => {
+        console.log('data', data)
         const htmlReg = /<[^>]+>/g
         if (htmlReg.test(data)) {
           const oppcUrl = process.env.VUE_APP_OPPC_API + '/boss.system/cas/doLogin?targetUrl=' + window.document.location.origin

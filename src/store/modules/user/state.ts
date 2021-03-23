@@ -2,13 +2,14 @@
  * @Description:
  * @Author: ZY
  * @Date: 2020-12-28 11:26:33
- * @LastEditors: ZY
- * @LastEditTime: 2021-02-22 17:19:37
+ * @LastEditors: WJM
+ * @LastEditTime: 2021-03-23 10:22:40
  */
-import { getToken } from '@/utils/cookies'
+import { getToken, getSession } from '@/utils/cookies'
 
 export interface UserState{
     token: string
+    session: string
     name: string
     avatar: string
     introduction: string
@@ -19,6 +20,7 @@ export interface UserState{
 
 export const state: UserState = {
   token: getToken() || '',
+  session: getSession() || '',
   name: '',
   avatar: '',
   introduction: '',
