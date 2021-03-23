@@ -3,21 +3,20 @@
  * @Author: ZY
  * @Date: 2020-12-28 14:40:50
  * @LastEditors: WJM
- * @LastEditTime: 2021-03-23 11:41:29
+ * @LastEditTime: 2021-03-23 15:14:25
  */
 import { RootObject } from '@/model/rootObject'
 import { UserInfoModel, Users, UserDesc } from '@/model/userModel'
 import https from '@/utils/https'
-import loginHttps from '@/utils/loginHttps'
 import { LoginModel } from '@/views/user-manager/login/model/loginModel'
 import { RequestParams, ContentType, Method } from 'axios-mapper'
 import { SmsModel } from '@/model/imgModel'
 import { praseStrEmpty } from '@/utils/ruoyi'
 export const loginRequest = (userInfo: RequestParams) => {
-  return https(false).request<LoginModel>('auth/login', Method.POST, userInfo, ContentType.json)
+  return https().request<LoginModel>('auth/login', Method.POST, userInfo, ContentType.json)
 }
 export const userInfoRequest = () => {
-  return https().request<UserInfoModel<UserDesc>>('system/user/getInfo', Method.GET, undefined, ContentType.form)
+  return https().request<UserInfoModel<UserDesc>>('boss.system/user/getInfo', Method.GET, undefined, ContentType.form)
 }
 
 export const getUsers = (user: any) => {
@@ -115,9 +114,4 @@ export const uploadAvatar = (params: any) => {
 
 export const importTemplate = () => {
   return https().request<any>('system/user/importTemplate', Method.GET, undefined, ContentType.json)
-}
-
-// 单点登录
-export const doLogin = (params: any) => {
-  return loginHttps().request<any>('boss.system/cas/doLogin', Method.GET, params, ContentType.form)
 }

@@ -2,12 +2,12 @@
  * @Description: app actions
  * @Author: ZY
  * @Date: 2020-12-23 10:25:37
- * @LastEditors: scy😎
- * @LastEditTime: 2021-03-12 11:02:18
+ * @LastEditors: WJM
+ * @LastEditTime: 2021-03-23 15:32:03
  */
 import { ActionTree, ActionContext } from 'vuex'
 import { RootState, useStore } from '@/store'
-import { state, UserState } from './state'
+import { UserState } from './state'
 import { Mutations } from './mutations'
 import { UserMutationTypes } from './mutation-types'
 import { UserActionTypes } from './action-types'
@@ -74,9 +74,9 @@ export const actions: ActionTree<UserState, RootState> & Actions = {
   async [UserActionTypes.ACTION_GET_USER_INFO](
     { commit }: AugmentedActionContext
   ) {
-    if (state.token === '') {
-      throw Error('token is undefined!')
-    }
+    // if (state.token === '') {
+    //   throw Error('token is undefined!')
+    // }
     await userInfoRequest().then((res) => {
       if (res?.code === OK) {
         commit(UserMutationTypes.SET_ROLES, res.roles)

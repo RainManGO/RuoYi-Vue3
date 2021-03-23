@@ -2,19 +2,19 @@
  * @Description: axios 封装网络请求
  * @Author: ZY
  * @Date: 2020-12-28 14:45:32
- * @LastEditors: ZY
- * @LastEditTime: 2021-02-02 17:41:39
+ * @LastEditors: WJM
+ * @LastEditTime: 2021-03-23 15:14:11
  */
 
-import { useStore } from '@/store'
 import HttpClient, { HttpClientConfig } from 'axios-mapper'
 import networkConfig from '@/config/default/net.config'
-const https = (hasToken = true) => {
+const https = () => {
   const config: HttpClientConfig = {
     baseURL: networkConfig.host,
     headers: {
-      Authorization: hasToken ? useStore().state.user.token : ''
-    }
+
+    },
+    withCredentials: true
   }
   return new HttpClient(config)
 }

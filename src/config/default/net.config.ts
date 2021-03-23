@@ -2,8 +2,8 @@
  * @Description:
  * @Author: ZY
  * @Date: 2020-12-08 09:45:25
- * @LastEditors: ZY
- * @LastEditTime: 2021-01-26 12:27:00
+ * @LastEditors: WJM
+ * @LastEditTime: 2021-03-23 15:15:31
  */
 
 import { ContentType, Device } from '@/constant/headers'
@@ -29,6 +29,7 @@ export interface NetworkConfig{
     loading?: false
     errorShowType?: InfoShowType
     header?: {}
+    withCredentials: boolean
 }
 
 const networkConfig: NetworkConfig = {
@@ -36,7 +37,8 @@ const networkConfig: NetworkConfig = {
   timeout: 10000,
   loading: false,
   errorShowType: InfoShowType.LOG,
-  header: _header
+  header: _header,
+  withCredentials: true
 }
 
 export default networkConfig

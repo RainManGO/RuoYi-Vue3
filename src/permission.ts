@@ -3,7 +3,7 @@
  * @Author: ZY
  * @Date: 2020-12-28 09:12:46
  * @LastEditors: WJM
- * @LastEditTime: 2021-03-23 10:24:52
+ * @LastEditTime: 2021-03-23 15:46:33
  */
 
 import NProgress from 'nprogress'
@@ -15,8 +15,9 @@ import { useStore } from './store'
 import { UserActionTypes } from './store/modules/user/action-types'
 import { PermissionActionType } from './store/modules/permission/action-types'
 import { ElMessage } from 'element-plus'
-import whiteList from './config/default/whitelist'
-import { doLogin } from '@/apis/system/user'
+import { userInfoRequest } from '@/apis/system/user'
+// import whiteList from './config/default/whitelist'
+// import { doLogin } from '@/apis/system/user'
 // import settings from '@/config/default/setting.config'
 NProgress.configure({ showSpinner: false })
 
@@ -35,14 +36,14 @@ router.beforeEach(async(to: RouteLocationNormalized, _: RouteLocationNormalized,
   // Start progress bar
   NProgress.start()
   const store = useStore()
-  // Determine whether the user has logged in
-  if (useStore().state.user.session) {
-    if (to.path === '/login') {
-      // If is logged in, redirect to the home page
-      next({ path: '/' })
-      NProgress.done()
-    } else {
-      // Check whether the user has obtained his permission roles
+  userInfoRequest().then(async(res) => {
+    console.log('res', res)
+    const htmlReg = /<[^>]+>/g
+    if (htmlReg.test(String(res))) {
+      const oppcUrl = process.env.VUE_APP_BASE_API + '/boss.system/cas/doLogin?targetUrl=' + window.document.location.origin
+      console.log(oppcUrl)
+      // window.location.href = oppcUrl
+    } else if (res?.code === 200) {
       if (store.state.user.roles.length === 0) {
         try {
           // Note: roles must be a object array! such as: ['admin'] or ['developer', 'editor']
@@ -71,31 +72,11 @@ router.beforeEach(async(to: RouteLocationNormalized, _: RouteLocationNormalized,
         next()
       }
     }
-  } else {
-    // Has no token
-    if (whiteList.indexOf(to.path) !== -1) {
-      // In the free login whitelist, go directly
-      next()
-    } else {
-      // Other pages that do not have permission to access are redirected to the login page.
-      // next(`/login?redirect=${to.path}`)
-      const params = {
-        // targetUrl: window.document.location.origin
-        targetUrl: '/dashboard'
-      }
-      doLogin(params).then((data: any) => {
-        console.log('data', data)
-        const htmlReg = /<[^>]+>/g
-        if (htmlReg.test(data)) {
-          const oppcUrl = process.env.VUE_APP_OPPC_API + '/boss.system/cas/doLogin?targetUrl=' + window.document.location.origin
-          console.log(oppcUrl)
-          window.location.href = oppcUrl
-        }
-      }
-      )
-      NProgress.done()
-    }
-  }
+    // if(res.code === 0){
+    // }
+  })
+  // Check whether the user has obtained his permission roles
+  NProgress.done()
 })
 
 router.afterEach(() => {
