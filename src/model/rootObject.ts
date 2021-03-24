@@ -7,6 +7,9 @@
  */
 
 export interface RootObject<T>{
+  permissions: string[]
+  user: any
+  roles: string[]
   code: number
   msg: string
   data: T

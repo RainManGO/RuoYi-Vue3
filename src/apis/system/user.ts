@@ -3,7 +3,7 @@
  * @Author: ZY
  * @Date: 2020-12-28 14:40:50
  * @LastEditors: WJM
- * @LastEditTime: 2021-03-23 15:14:25
+ * @LastEditTime: 2021-03-24 09:44:09
  */
 import { RootObject } from '@/model/rootObject'
 import { UserInfoModel, Users, UserDesc } from '@/model/userModel'
@@ -85,7 +85,7 @@ export const changeUserStatus = (userId: string, status: string | number) => {
 // 查询用户个人信息
 
 export const getUserProfile = () => {
-  return https().request<any>('system/user/profile', Method.GET, undefined, ContentType.form)
+  return https().request<any>('boss.system/user/profile', Method.GET, undefined, ContentType.form)
 }
 
 // 修改用户个人信息
