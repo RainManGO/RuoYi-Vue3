@@ -3,7 +3,7 @@
  * @Author: ZY
  * @Date: 2020-12-28 09:12:46
  * @LastEditors: WJM
- * @LastEditTime: 2021-03-24 10:16:47
+ * @LastEditTime: 2021-03-24 16:51:48
  */
 
 import NProgress from 'nprogress'
@@ -15,7 +15,7 @@ import { useStore } from './store'
 import { UserActionTypes } from './store/modules/user/action-types'
 import { PermissionActionType } from './store/modules/permission/action-types'
 import { ElMessage } from 'element-plus'
-import { getUserProfile } from '@/apis/system/user'
+import { getCheckLogin } from '@/apis/system/user'
 // import settings from '@/config/default/setting.config'
 NProgress.configure({ showSpinner: false })
 
@@ -34,7 +34,7 @@ router.beforeEach(async(to: RouteLocationNormalized, _: RouteLocationNormalized,
   // Start progress bar
   NProgress.start()
   const store = useStore()
-  await getUserProfile().then((res) => {
+  await getCheckLogin().then((res) => {
     const htmlReg = /<[^>]+>/g
     if (htmlReg.test(String(res))) {
       const oppcUrl = process.env.VUE_APP_BASE_API + '/boss.system/cas/doLogin?targetUrl=' + window.document.location.href

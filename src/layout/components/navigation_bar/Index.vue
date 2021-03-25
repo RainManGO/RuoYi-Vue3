@@ -2,8 +2,8 @@
  * @Description: 导航栏
  * @Author: ZY
  * @Date: 2020-12-17 15:52:19
- * @LastEditors: ZY
- * @LastEditTime: 2021-01-27 19:16:50
+ * @LastEditors: WJM
+ * @LastEditTime: 2021-03-25 09:04:49
 -->
 <template>
   <div class="navbar">
@@ -91,9 +91,10 @@ import SizeSelect from '@/components/size_select/Index.vue'
 import { computed, reactive, toRefs } from 'vue'
 import { useStore } from '@/store'
 import { AppActionTypes } from '@/store/modules/app/action-types'
+import { checkLoginOut } from '@/apis/system/user'
 import { useI18n } from 'vue-i18n'
 import { UserActionTypes } from '@/store/modules/user/action-types'
-import { useRoute, useRouter } from 'vue-router'
+// import { useRoute, useRouter } from 'vue-router'
 export default {
   components: {
     BreadCrumb,
@@ -104,8 +105,8 @@ export default {
   },
   setup() {
     const store = useStore()
-    const route = useRoute()
-    const router = useRouter()
+    // const route = useRoute()
+    // const router = useRouter()
     const { t } = useI18n()
     const sidebar = computed(() => {
       return store.state.app.sidebar
@@ -122,9 +123,12 @@ export default {
       },
       logout: () => {
         useStore().dispatch(UserActionTypes.ACTION_LOGIN_OUT)
-        router.push(`/login?redirect=${route.fullPath}`).catch(err => {
-          console.warn(err)
+        checkLoginOut().then((res) => {
+          console.log(res)
         })
+        // router.push(`/login?redirect=${route.fullPath}`).catch(err => {
+        //   console.warn(err)
+        // })
       }
     })
     return {

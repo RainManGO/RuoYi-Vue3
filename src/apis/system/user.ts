@@ -3,7 +3,7 @@
  * @Author: ZY
  * @Date: 2020-12-28 14:40:50
  * @LastEditors: WJM
- * @LastEditTime: 2021-03-24 09:44:09
+ * @LastEditTime: 2021-03-25 09:01:00
  */
 import { RootObject } from '@/model/rootObject'
 import { UserInfoModel, Users, UserDesc } from '@/model/userModel'
@@ -80,6 +80,18 @@ export const changeUserStatus = (userId: string, status: string | number) => {
     status
   }
   return https().request<any>('system/user/changeStatus', Method.PUT, data, ContentType.json)
+}
+
+// 查询是否登录
+
+export const getCheckLogin = () => {
+  return https().request<any>('boss.system/user/checkLogin', Method.GET, undefined, ContentType.form)
+}
+
+// 查询是否登录
+
+export const checkLoginOut = () => {
+  return https().request<any>('boss.system/user/logout', Method.GET, undefined, ContentType.form)
 }
 
 // 查询用户个人信息
