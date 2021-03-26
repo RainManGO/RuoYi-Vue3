@@ -3,7 +3,7 @@
  * @Author: ZY
  * @Date: 2020-12-28 11:26:33
  * @LastEditors: WJM
- * @LastEditTime: 2021-03-23 17:17:25
+ * @LastEditTime: 2021-03-25 16:35:52
  */
 import { getToken } from '@/utils/cookies'
 
@@ -15,7 +15,6 @@ export interface UserState{
     roles: string[]
     email: string
     permissions: string[]
-    isLogin: boolean
 }
 
 export const state: UserState = {
@@ -25,6 +24,5 @@ export const state: UserState = {
   introduction: '',
   roles: [],
   email: '',
-  permissions: [],
-  isLogin: false
+  permissions: []
 }

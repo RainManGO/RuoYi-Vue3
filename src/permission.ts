@@ -3,7 +3,7 @@
  * @Author: ZY
  * @Date: 2020-12-28 09:12:46
  * @LastEditors: WJM
- * @LastEditTime: 2021-03-24 16:51:48
+ * @LastEditTime: 2021-03-25 17:04:15
  */
 
 import NProgress from 'nprogress'
@@ -19,32 +19,15 @@ import { getCheckLogin } from '@/apis/system/user'
 // import settings from '@/config/default/setting.config'
 NProgress.configure({ showSpinner: false })
 
-// const getPageTitle = (key: string) => {
-//   const i18n = useI18n()
-//   const title = settings.title
-//   const hasKey = i18n.te(`route.${key}`)
-//   if (hasKey) {
-//     const pageName = i18n.t(`route.${key}`)
-//     return `${pageName} - ${title}`
-//   }
-//   return `${title}`
-// }
-
 router.beforeEach(async(to: RouteLocationNormalized, _: RouteLocationNormalized, next: any) => {
   // Start progress bar
   NProgress.start()
   const store = useStore()
-  await getCheckLogin().then((res) => {
-    const htmlReg = /<[^>]+>/g
-    if (htmlReg.test(String(res))) {
-      const oppcUrl = process.env.VUE_APP_BASE_API + '/boss.system/cas/doLogin?targetUrl=' + window.document.location.href
-      window.location.href = oppcUrl
-    } else {
-      store.dispatch(UserActionTypes.ACTION_SET_CAS_LOGIN, true)
-    }
+  getCheckLogin().then(() => {
+    console.log('res')
   })
-
-  if (store.state.user.roles.length === 0 && store.state.user.isLogin === true) {
+  return
+  if (store.state.user.roles.length === 0) {
     try {
       // Note: roles must be a object array! such as: ['admin'] or ['developer', 'editor']
       await store.dispatch(UserActionTypes.ACTION_GET_USER_INFO, undefined)

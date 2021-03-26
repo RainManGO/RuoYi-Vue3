@@ -3,7 +3,7 @@
  * @Author: ZY
  * @Date: 2020-12-23 10:25:37
  * @LastEditors: WJM
- * @LastEditTime: 2021-03-23 17:19:44
+ * @LastEditTime: 2021-03-25 16:31:46
  */
 import { MutationTree } from 'vuex'
 import { UserState } from './state'
@@ -17,7 +17,6 @@ export type Mutations<S = UserState> = {
   [UserMutationTypes.SET_ROLES](state: S, roles: string[]): void
   [UserMutationTypes.SET_EMAIL](state: S, email: string): void
   [UserMutationTypes.SET_PERMISSION](state: S, permissions: string[]): void
-  [UserMutationTypes.SET_ISLOGIN](state: S, isLogin: boolean): void
 }
 
 export const mutations: MutationTree<UserState> & Mutations = {
@@ -47,10 +46,6 @@ export const mutations: MutationTree<UserState> & Mutations = {
 
   [UserMutationTypes.SET_PERMISSION](state: UserState, permissions: string[]) {
     state.permissions = permissions
-  },
-
-  [UserMutationTypes.SET_ISLOGIN](state: UserState, isLogin: boolean) {
-    state.isLogin = isLogin
   }
 
 }

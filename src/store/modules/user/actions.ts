@@ -3,7 +3,7 @@
  * @Author: ZY
  * @Date: 2020-12-23 10:25:37
  * @LastEditors: WJM
- * @LastEditTime: 2021-03-24 08:51:22
+ * @LastEditTime: 2021-03-25 16:35:44
  */
 import { ActionTree, ActionContext } from 'vuex'
 import { RootState, useStore } from '@/store'
@@ -30,10 +30,6 @@ export interface Actions {
   [UserActionTypes.ACTION_LOGIN](
     { commit }: AugmentedActionContext,
    params: {userInfo: { username: string, password: string }, callback: Function}
-  ): void
-  [UserActionTypes.ACTION_SET_CAS_LOGIN](
-    { commit }: AugmentedActionContext,
-   isLogin: boolean
   ): void
   [UserActionTypes.ACTION_RESET_TOKEN](
     { commit }: AugmentedActionContext
@@ -76,19 +72,10 @@ export const actions: ActionTree<UserState, RootState> & Actions = {
     commit(UserMutationTypes.SET_ROLES, [])
   },
 
-  [UserActionTypes.ACTION_SET_CAS_LOGIN](
-    { commit }: AugmentedActionContext, isLogin: boolean) {
-    commit(UserMutationTypes.SET_ISLOGIN, isLogin)
-  },
-
   async [UserActionTypes.ACTION_GET_USER_INFO](
     { commit }: AugmentedActionContext
   ) {
-    // if (state.token === '') {
-    //   throw Error('token is undefined!')
-    // }
     await userInfoRequest().then((res) => {
-      console.log(res?.code)
       if (res?.code === OK) {
         commit(UserMutationTypes.SET_ROLES, res.roles)
         commit(UserMutationTypes.SET_NAME, res.user.userName)

@@ -3,7 +3,7 @@
  * @Author: ZY
  * @Date: 2020-12-28 14:40:50
  * @LastEditors: WJM
- * @LastEditTime: 2021-03-25 09:01:00
+ * @LastEditTime: 2021-03-25 16:42:54
  */
 import { RootObject } from '@/model/rootObject'
 import { UserInfoModel, Users, UserDesc } from '@/model/userModel'
@@ -88,7 +88,7 @@ export const getCheckLogin = () => {
   return https().request<any>('boss.system/user/checkLogin', Method.GET, undefined, ContentType.form)
 }
 
-// 查询是否登录
+// 退出登录
 
 export const checkLoginOut = () => {
   return https().request<any>('boss.system/user/logout', Method.GET, undefined, ContentType.form)
