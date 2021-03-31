@@ -12,12 +12,12 @@ import { UserActionTypes } from '../store/modules/user/action-types'
 
 // 查询是否登录
 export const getCheckLogin = () => {
-  return https().request<any>('boss.system/user/checkLogin', Method.GET, undefined, ContentType.form)
+  return https.request<any>('boss.system/user/checkLogin', Method.GET, undefined, ContentType.form)
 }
 
 // 退出登录
 export const checkLoginOut = () => {
-  return https().request<any>('boss.system/user/logout', Method.GET, undefined, ContentType.form)
+  return https.request<any>('boss.system/user/logout', Method.GET, undefined, ContentType.form)
 }
 
 export const casCheckLogin = () => {

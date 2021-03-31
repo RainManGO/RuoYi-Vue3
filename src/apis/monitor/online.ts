@@ -10,13 +10,14 @@ import { RequestParams, Method, ContentType } from 'axios-mapper'
 import https from '@/utils/https'
 import { OnlineUserModel } from '@/model/monitor/onlineUserModel'
 import { RootPageObject } from '@/model/rootPageModel'
+import { ServerPath } from '@/constant/network'
 
 // 查询在线用户列表
 export const list = (query: RequestParams) => {
-  return https().request<RootPageObject<OnlineUserModel>>('system/online/list', Method.GET, query, ContentType.form)
+  return https.request<RootPageObject<OnlineUserModel>>(`${ServerPath.SYSTEM}/online/list`, Method.GET, query, ContentType.form)
 }
 
 // 强退用户
 export const forceLogout = (tokenId: string) => {
-  return https().request<RootPageObject<OnlineUserModel>>(`system/online/${tokenId}`, Method.DELETE)
+  return https.request<RootPageObject<OnlineUserModel>>(`${ServerPath.SYSTEM}/online/${tokenId}`, Method.DELETE)
 }

@@ -10,7 +10,8 @@ import https from '@/utils/https'
 // import { ContentType, Method } from 'axios-mapper'
 import { RootObject } from '@/model/rootObject'
 import { RemoteRoute } from '@/model/remoteRouteModel'
+import { ServerPath } from '@/constant/network'
 
 export const getRoutesList = () => {
-  return https().request<RootObject<RemoteRoute[]>>('boss.system/menu/getRouters')
+  return https.request<RootObject<RemoteRoute[]>>(`${ServerPath.SYSTEM}/menu/getRouters`)
 }

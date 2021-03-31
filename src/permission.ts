@@ -3,7 +3,7 @@
  * @Author: ZY
  * @Date: 2020-12-28 09:12:46
  * @LastEditors: WJM
- * @LastEditTime: 2021-03-25 17:04:15
+ * @LastEditTime: 2021-03-26 14:34:58
  */
 
 import NProgress from 'nprogress'
@@ -23,10 +23,9 @@ router.beforeEach(async(to: RouteLocationNormalized, _: RouteLocationNormalized,
   // Start progress bar
   NProgress.start()
   const store = useStore()
-  getCheckLogin().then(() => {
+  await getCheckLogin().then(() => {
     console.log('res')
   })
-  return
   if (store.state.user.roles.length === 0) {
     try {
       // Note: roles must be a object array! such as: ['admin'] or ['developer', 'editor']

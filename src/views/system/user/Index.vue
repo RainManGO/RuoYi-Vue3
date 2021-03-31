@@ -679,7 +679,7 @@ export default defineComponent({
         // 设置上传的请求头部
         headers: { Authorization: 'Bearer ' + getToken() },
         // 上传的地址
-        url: process.env.VUE_APP_BASE_API + '/system/user/importData'
+        url: process.env.VUE_APP_BASE_API + '/boss.system/user/importData'
       },
       // 查询参数
       queryParams: {
@@ -913,7 +913,7 @@ export default defineComponent({
         type: 'warning'
       }).then(function() {
         axios({
-          url: process.env.VUE_APP_BASE_API + '/system/user/export', // 获取文件流的接口路径
+          url: process.env.VUE_APP_BASE_API + '/boss.system/user/export', // 获取文件流的接口路径
           method: 'post',
           data: queryParams,
           responseType: 'blob',

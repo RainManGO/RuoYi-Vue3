@@ -11,3 +11,12 @@ export enum InfoShowType{
      NOTIFICATION,
      TOAST
  }
+
+export enum ServerPath {
+    SYSTEM = 'boss.system',
+    AUTH = 'boss.auth',
+    JOB = 'boss.job',
+    MONITOR = 'boss.monitor',
+    FILE = 'boss.file',
+    GEN = 'boss.gen'
+}

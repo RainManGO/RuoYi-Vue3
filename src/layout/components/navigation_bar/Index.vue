@@ -87,7 +87,6 @@ import Hamburger from '@/components/hamburger/Index.vue'
 import Screenfull from '@/components/screenfull/Index.vue'
 import LangSelect from '@/components/lang_select/Index.vue'
 import SizeSelect from '@/components/size_select/Index.vue'
-
 import { computed, reactive, toRefs } from 'vue'
 import { useStore } from '@/store'
 import { AppActionTypes } from '@/store/modules/app/action-types'
@@ -149,7 +148,6 @@ export default {
   position: relative;
   background: #fff;
   box-shadow: 0 1px 4px rgba(0, 21, 41, 0.08);
-
   .hamburger-container {
     line-height: 46px;
     height: 100%;
@@ -158,30 +156,24 @@ export default {
     cursor: pointer;
     transition: background 0.3s;
     -webkit-tap-highlight-color: transparent;
-
     &:hover {
       background: rgba(0, 0, 0, 0.025);
     }
   }
-
   .breadcrumb-container {
     float: left;
   }
-
   .errLog-container {
     display: inline-block;
     vertical-align: top;
   }
-
   .right-menu {
     float: right;
     height: 100%;
     line-height: 50px;
-
     &:focus {
       outline: none;
     }
-
     .right-menu-item {
       display: inline-block;
       padding: 0 8px;
@@ -189,31 +181,26 @@ export default {
       font-size: 18px;
       color: #5a5e66;
       vertical-align: text-bottom;
-
       &.hover-effect {
         cursor: pointer;
         transition: background 0.3s;
-
         &:hover {
           background: rgba(0, 0, 0, 0.025);
         }
       }
     }
-
     .avatar-container {
       .avatar-wrapper {
         margin-top: 5px;
         margin-right: 16px;
         margin-left: 16px;
         position: relative;
-
         .user-avatar {
           cursor: pointer;
           width: 40px;
           height: 40px;
           border-radius: 10px;
         }
-
         .el-icon-caret-bottom {
           cursor: pointer;
           position: absolute;

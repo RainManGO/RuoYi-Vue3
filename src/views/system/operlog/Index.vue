@@ -513,7 +513,7 @@ export default defineComponent({
         type: 'warning'
       }).then(function() {
         axios({
-          url: process.env.VUE_APP_BASE_API + '/system/operlog/export', // 获取文件流的接口路径
+          url: process.env.VUE_APP_BASE_API + '/boss.system/operlog/export', // 获取文件流的接口路径
           method: 'post',
           data: queryParams,
           responseType: 'blob',
