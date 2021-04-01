@@ -3,7 +3,7 @@
  * @Author: ZY
  * @Date: 2020-12-17 15:52:19
  * @LastEditors: WJM
- * @LastEditTime: 2021-03-25 09:04:49
+ * @LastEditTime: 2021-04-01 13:11:28
 -->
 <template>
   <div class="navbar">
@@ -123,11 +123,11 @@ export default {
       logout: () => {
         useStore().dispatch(UserActionTypes.ACTION_LOGIN_OUT)
         checkLoginOut().then((res) => {
-          console.log(res)
+          if (res.code === 200) {
+            const oppcUrl = res.data + '?targetUrl=' + window.document.location.origin
+            window.location.href = oppcUrl
+          }
         })
-        // router.push(`/login?redirect=${route.fullPath}`).catch(err => {
-        //   console.warn(err)
-        // })
       }
     })
     return {

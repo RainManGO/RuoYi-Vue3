@@ -3,7 +3,7 @@
  * @Author: ZY
  * @Date: 2020-12-28 09:12:46
  * @LastEditors: WJM
- * @LastEditTime: 2021-03-26 14:34:58
+ * @LastEditTime: 2021-04-01 13:09:01
  */
 
 import NProgress from 'nprogress'
@@ -34,9 +34,9 @@ router.beforeEach(async(to: RouteLocationNormalized, _: RouteLocationNormalized,
       // Generate accessible routes map based on role
       const accessRoutes = await store.dispatch(PermissionActionType.ACTION_SET_ROUTES, undefined)
       // // Dynamically add accessible routes
-      console.log(accessRoutes)
+      // console.log(accessRoutes)
       accessRoutes.forEach((route) => {
-        console.log(route, '==================================')
+        // console.log(route, '==================================')
         router.addRoute(route)
       })
       // Hack: ensure addRoutes is complete

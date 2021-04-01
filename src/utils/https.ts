@@ -3,7 +3,7 @@
  * @Author: ZY
  * @Date: 2020-12-28 14:45:32
  * @LastEditors: WJM
- * @LastEditTime: 2021-04-01 08:53:05
+ * @LastEditTime: 2021-04-01 13:07:36
  */
 
 import HttpClient, { HttpClientConfig } from 'axios-mapper'
@@ -22,11 +22,9 @@ const https = new HttpClient(config)
 
 https.httpClient.interceptors.response.use(
   response => {
-    console.log('response', response)
     return response
   },
   err => {
-    console.log('response', err.response)
     if (err.response.status === 401) {
       const oppcUrl = err.response.data.data + '?targetUrl=' + window.document.location.href
       window.location.href = oppcUrl
