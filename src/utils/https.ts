@@ -3,7 +3,7 @@
  * @Author: ZY
  * @Date: 2020-12-28 14:45:32
  * @LastEditors: WJM
- * @LastEditTime: 2021-03-26 10:21:41
+ * @LastEditTime: 2021-04-01 08:53:05
  */
 
 import HttpClient, { HttpClientConfig } from 'axios-mapper'
@@ -12,7 +12,9 @@ import networkConfig from '@/config/default/net.config'
 
 const config: HttpClientConfig = {
   baseURL: networkConfig.host,
-  headers: {},
+  headers: {
+    'X-Requested-With': 'XMLHttpRequest'
+  },
   withCredentials: true
 }
 
@@ -20,15 +22,15 @@ const https = new HttpClient(config)
 
 https.httpClient.interceptors.response.use(
   response => {
-    const htmlReg = /<[^>]+>/g
-    if (htmlReg.test(String(response.data))) {
-      const oppcUrl = process.env.VUE_APP_BASE_API + '/boss.system/cas/doLogin?targetUrl=' + window.document.location.href
-      window.location.href = oppcUrl
-    }
+    console.log('response', response)
     return response
   },
   err => {
     console.log('response', err.response)
+    if (err.response.status === 401) {
+      const oppcUrl = err.response.data.data + '?targetUrl=' + window.document.location.href
+      window.location.href = oppcUrl
+    }
     return Promise.reject(err)
   }
 )
