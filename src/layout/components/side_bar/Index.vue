@@ -2,11 +2,14 @@
  * @Description:
  * @Author: ZY
  * @Date: 2020-12-24 10:35:47
- * @LastEditors: ZY
- * @LastEditTime: 2021-02-23 20:45:52
+ * @LastEditors: SCY
+ * @LastEditTime: 2021-04-08 15:08:59
 -->
 <template>
-  <div :class="{'has-logo': showLogo}">
+  <div
+    :class="{'has-logo': showLogo}"
+    class="sideWrap"
+  >
     <SidebarLogo
       v-if="showLogo"
       :collapse="isCollapse"
@@ -40,6 +43,7 @@ import SidebarLogo from './SidebarLogo.vue'
 import variables from '@/styles/_variables.scss'
 import { useStore } from '@/store'
 import { useRoute } from 'vue-router'
+
 export default defineComponent({
   components: {
     SidebarItem,
@@ -62,7 +66,8 @@ export default defineComponent({
       console.log(store.state.settings.sidebarTextTheme)
 
       if (store.state.settings.sidebarTextTheme) {
-        return store.state.settings.theme
+        return '#57CAEB'
+        // return store.state.settings.theme
       } else {
         return variables.menuActiveText
       }
@@ -123,6 +128,9 @@ export default defineComponent({
 </style>
 
 <style lang="scss" scoped>
+.sideWrap{
+  padding: 0 30px;
+}
 .el-scrollbar {
   height: 100%
 }
@@ -138,4 +146,5 @@ export default defineComponent({
   height: 100%;
   width: 100% !important;
 }
+
 </style>

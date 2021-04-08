@@ -2,8 +2,8 @@
  * @Description: 首页柱形图小组件
  * @Author: ZY
  * @Date: 2021-01-15 18:48:40
- * @LastEditors: ZY
- * @LastEditTime: 2021-01-26 09:57:33
+ * @LastEditors: SCY
+ * @LastEditTime: 2021-04-08 15:14:59
 -->
 
 <template>
@@ -75,6 +75,7 @@ export default defineComponent({
           }
         }],
         series: [{
+          color: ['#57CAEB', '#5DDAB4', '#57CAEB', '#435EBE'],
           name: 'pageA',
           type: 'bar',
           stack: 'vistors',

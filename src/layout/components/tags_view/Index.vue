@@ -2,8 +2,8 @@
  * @Description:
  * @Author: ZY
  * @Date: 2020-12-24 10:35:59
- * @LastEditors: ZY
- * @LastEditTime: 2021-01-28 16:31:09
+ * @LastEditors: SCY
+ * @LastEditTime: 2021-04-08 15:09:57
 -->
 <template>
   <div
@@ -26,7 +26,7 @@
         @click.middle="!isAffix(tag)?closeSelectedTag(tag):''"
         @contextmenu.prevent="openMenu(tag, $event)"
       >
-        {{ tag.meta.title }}
+        {{ t('route.' + tag.meta.title) }}
         <span
           v-if="!isAffix(tag)"
           class="el-icon-close"
@@ -208,6 +208,7 @@ export default defineComponent({
 
     const addTags = () => {
       if (currentRoute.name) {
+        console.log(currentRoute.name, 'currentRoute.namecurrentRoute.namecurrentRoute.namecurrentRoute.namecurrentRoute.namecurrentRoute.namecurrentRoute.namecurrentRoute.name')
         store.dispatch(TagsActionTypes.ACTION_ADD_VIEW, currentRoute)
       }
       return false
@@ -230,8 +231,10 @@ export default defineComponent({
     }
 
     watch(() => currentRoute.name, () => {
-      addTags()
-      moveToCurrentTag()
+      if (currentRoute.name !== 'Login') {
+        addTags()
+        moveToCurrentTag()
+      }
     })
 
     // watch(state.visible.value, (value) => {
@@ -292,8 +295,7 @@ export default defineComponent({
   height: 34px;
   width: 100%;
   background: #fff;
-  border-bottom: 1px solid #d8dce5;
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.12), 0 0 3px 0 rgba(0, 0, 0, 0.04);
+  border-bottom: 1px solid #eee;
 
   .tags-view-wrapper {
     .tags-view-item {
@@ -301,14 +303,16 @@ export default defineComponent({
       position: relative;
       cursor: pointer;
       height: 26px;
-      line-height: 26px;
-      border: 1px solid #d8dce5;
+      line-height: 25px;
+   border: 1px solid rgba(124,141,181,.3);
+border-radius: 4px;
       color: #495060;
       background: #fff;
       padding: 0 8px;
       font-size: 12px;
       margin-left: 5px;
       margin-top: 4px;
+      box-sizing: border-box;
 
       &:first-of-type {
         margin-left: 15px;
@@ -319,20 +323,8 @@ export default defineComponent({
       }
 
       &.active {
-        background-color: #42b983;
+        background-color: #5DDAB4;
         color: #fff;
-        border-color: #42b983;
-
-        &::before {
-          content: '';
-          background: #fff;
-          display: inline-block;
-          width: 8px;
-          height: 8px;
-          border-radius: 50%;
-          position: relative;
-          margin-right: 2px;
-        }
       }
     }
   }
@@ -348,7 +340,6 @@ export default defineComponent({
     font-size: 12px;
     font-weight: 400;
     color: #333;
-    box-shadow: 2px 2px 3px 0 rgba(0, 0, 0, 0.3);
 
     li {
       margin: 0;

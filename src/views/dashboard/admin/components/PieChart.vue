@@ -2,8 +2,8 @@
  * @Description: 首页饼图组件
  * @Author: ZY
  * @Date: 2021-01-18 11:08:53
- * @LastEditors: ZY
- * @LastEditTime: 2021-01-26 10:19:45
+ * @LastEditors: SCY
+ * @LastEditTime: 2021-04-08 15:16:28
 -->
 <template>
   <div
@@ -57,6 +57,7 @@ export default defineComponent({
         },
         series: [
           {
+            color: ['#435EBE', '#5DDAB4', '#9694FF', '#FF7976', '#57CAEB'],
             name: 'WEEKLY WRITE ARTICLES',
             type: 'pie',
             roseType: 'radius',

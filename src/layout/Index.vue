@@ -2,8 +2,8 @@
  * @Description: app 布局入口
  * @Author: ZY
  * @Date: 2020-12-17 15:32:33
- * @LastEditors: ZY
- * @LastEditTime: 2021-01-27 17:02:39
+ * @LastEditors: SCY
+ * @LastEditTime: 2021-04-08 15:08:11
 -->
 <template>
   <div
@@ -141,6 +141,7 @@ export default defineComponent({
   left: 0;
   z-index: 1001;
   overflow: hidden;
+  background-color: #fff  !important;
 }
 
 .fixed-header {

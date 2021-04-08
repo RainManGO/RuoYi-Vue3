@@ -2,8 +2,8 @@
  * @Description: 首页折现图组件
  * @Author: ZY
  * @Date: 2021-01-18 09:31:32
- * @LastEditors: ZY
- * @LastEditTime: 2021-01-26 10:04:16
+ * @LastEditors: SCY
+ * @LastEditTime: 2021-04-08 15:15:49
 -->
 <template>
   <div
@@ -86,6 +86,7 @@ export default defineComponent({
             data: ['expected', 'actual']
           },
           series: [{
+
             name: 'expected',
             itemStyle: {
               color: '#FF005A',
