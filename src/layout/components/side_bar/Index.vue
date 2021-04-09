@@ -3,7 +3,7 @@
  * @Author: ZY
  * @Date: 2020-12-24 10:35:47
  * @LastEditors: SCY
- * @LastEditTime: 2021-04-08 15:08:59
+ * @LastEditTime: 2021-04-09 14:43:24
 -->
 <template>
   <div
@@ -129,7 +129,7 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .sideWrap{
-  padding: 0 30px;
+  // padding: 0 30px;
 }
 .el-scrollbar {
   height: 100%
